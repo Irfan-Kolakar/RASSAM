@@ -4,9 +4,27 @@ const connectDB = require("../lib/mongo");
 const crypto = require("crypto");
 
 module.exports = async function handler(req, res) {
+  // CORS: allow requests from the RASSAM frontend
+  const allowedOrigin = "https://rassam-market.vercel.app";
+  const origin = req.headers.origin;
+
+  if (origin === allowedOrigin) {
+    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization",
+    );
+  }
+
+  // Browser preflight must finish before connecting to MongoDB
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
   try {
     await connectDB();
-
     const db = require("mongoose").connection.db;
 
     // Allow customers to place orders
