@@ -317,11 +317,14 @@ dialog.checkout-dialog .checkout-top-close:hover {
       submitting = true;
       submit.disabled = true;
       try {
-        const res = await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...fd, items }),
-        });
+        const res = await fetch(
+          "https://rassam-backend.vercel.app/api/orders",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...fd, items }),
+          },
+        );
         const result = await res.json();
         if (!res.ok || !result.success) {
           throw new Error(result.message || "Could not place the order.");
