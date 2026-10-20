@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3ecdf" />
+    <meta
+      name="description"
+      content="Browse affordable student electronics components on RASSAM."
+    />
+    <title>Buy Components — RASSAM</title>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="design.css" />
+
+    <!-- Load order matters: app.js (catalogue + Stash) first, then filters, then this page. -->
+    <script src="app.js" defer></script>
+    <script src="filters.js" defer></script>
+    <script src="shop.js" defer></script>
+    <script src="checkout.js" defer></script>
+
+    <style>
+      /* Page-only tweaks for shop.html (design.css is left untouched). */
+      .shop-filter-close {
+        display: none;
+      }
+      @media (max-width: 900px) {
+        /* design.css hides the Filters button everywhere; phones still need it. */
+        body:has(.shop-main) .shop-filter-toggle,
+        body:has(.shop-main) #filter-toggle {
+          display: inline-flex !important;
+        }
+      }
+      .shop-card-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .shop-card-actions .btn {
+        min-height: 44px;
+        margin-top: 0;
+        padding: 0 14px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        justify-content: center;
+      }
+      /* PRIMARY: Buy Now (opens the product page) */
+      body:has(.shop-main) .shop-grid .shop-card .btn.shop-buy-link {
+        min-height: 48px;
+        color: #fff !important;
+        background: linear-gradient(135deg, #d65b8c, #a63f68) !important;
+        border: 1px solid #f0b8cd !important;
+        box-shadow: 0 8px 20px rgba(214, 91, 140, 0.3);
+        font-weight: 800;
+      }
+      body:has(.shop-main) .shop-grid .shop-card .btn.shop-buy-link:hover {
+        background: linear-gradient(135deg, #e06a9a, #b5457a) !important;
+        transform: translateY(-2px);
+      }
+      /* SECONDARY: Stash It (adds to the drawer, no redirect) */
+      body:has(.shop-main) .shop-grid .shop-card .btn.shop-stash-btn {
+        color: #cfe3bd !important;
+        background: transparent !important;
+        border: 1.5px solid #82956a !important;
+        font-weight: 700;
+      }
+      body:has(.shop-main)
+        .shop-grid
+        .shop-card
+        .btn.shop-stash-btn:hover:not(:disabled),
+      body:has(.shop-main)
+        .shop-grid
+        .shop-card
+        .btn.shop-stash-btn.is-stashed {
+        color: #10120e !important;
+        background: #aab995 !important;
+        border-color: #aab995 !important;
+      }
+      body:has(.shop-main) .shop-grid .shop-card .btn:focus-visible {
+        outline: 3px solid #f0b8cd;
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="rassam-mark" viewBox="0 0 32 32">
+        <path
+          d="M10 24V13M10 17c0-5 3-8 8-8h2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        />
+        <circle cx="10" cy="24" r="2.4" fill="currentColor" />
+        <circle cx="23.5" cy="9" r="2.6" fill="currentColor" opacity=".5" />
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="navbar">
+      <a class="logo" href="index.html" aria-label="RASSAM home">
+        <span class="logo-mark"
+          ><svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#rassam-mark" /></svg
+        ></span>
+        <span>rassam</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="shop.html" class="is-current" aria-current="page"
+          >Buy Components</a
+        >
+        <a href="index.html#sell">Sell</a>
+      </nav>
+      <div class="nav-actions">
+        <button
+          class="btn btn-ghost stash-nav-button"
+          id="open-stash"
+          type="button"
+          aria-controls="stash-drawer"
+          aria-expanded="false"
+        >
+          STASH IT! <span class="stash-count" id="stash-count">0</span>
+        </button>
+        <button
+          class="menu-toggle"
+          id="menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <nav
+      class="mobile-nav"
+      id="mobile-nav"
+      aria-label="Mobile navigation"
+      hidden
+    >
+      <a href="index.html">Home <span>↗</span></a>
+      <a href="shop.html">Buy Components <span>↗</span></a>
+      <a href="index.html#sell">Sell <span>↗</span></a>
+    </nav>
+
+    <main id="main" class="shop-main section-shell">
+      <div class="shop-head">
+        <div>
+          <p class="eyebrow">Buy components</p>
+          <h1>Find your <em>next part.</em></h1>
+          <p>Student prices on boards, sensors, motors and more.</p>
+        </div>
+        <label class="search-box" for="shop-search">
+          <span aria-hidden="true">⌕</span>
+          <input
+            id="shop-search"
+            type="search"
+            placeholder="Search boards, sensors, motors…"
+            autocomplete="off"
+          />
+          <kbd>/</kbd>
+        </label>
+      </div>
+
+      <div class="shop-toolbar">
+        <div class="toolbar-left">
+          <button
+            class="btn btn-ghost shop-filter-toggle"
+            id="filter-toggle"
+            type="button"
+            aria-controls="shop-filters"
+          >
+            Filters <span id="filter-count"></span>
+          </button>
+          <span class="results-count" id="results-count"></span>
+        </div>
+        <div class="toolbar-right">
+          <label class="shop-sort">
+            Sort
+            <select id="shop-sort">
+              <option value="default">Featured</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="shop-active-filters" id="shop-active-filters" hidden>
+        <div id="active-chips"></div>
+        <button
+          class="btn-link clear-all-filters"
+          id="clear-all-filters"
+          type="button"
+        >
+          Clear all
+        </button>
+      </div>
+
+      <div class="shop-layout">
+        <div class="shop-filter-backdrop" id="filter-backdrop" hidden></div>
+
+        <aside class="shop-filters" id="shop-filters" aria-label="Filters">
+          <div class="filters-head">
+            <h2>Filters</h2>
+            <button
+              class="btn-icon shop-filter-close"
+              id="filter-close"
+              type="button"
+              aria-label="Close filters"
+            >
+              ×
+            </button>
+          </div>
+
+          <fieldset>
+            <legend>Category</legend>
+            <div id="filter-categories"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Price</legend>
+            <div class="fx-panel" id="fx-panel" aria-label="Filter by price">
+              <div class="fx-slider">
+                <div class="fx-slider-fill" id="fx-fill"></div>
+                <input
+                  type="range"
+                  id="fx-lo"
+                  value="0"
+                  aria-label="Minimum price"
+                />
+                <input
+                  type="range"
+                  id="fx-hi"
+                  value="100"
+                  aria-label="Maximum price"
+                />
+              </div>
+              <p class="fx-range-text" id="fx-range-text"></p>
+            </div>
+            <!-- filters.js writes the chosen range into these; shop.js reads them. -->
+            <div hidden>
+              <input id="filter-price-min" type="number" />
+              <input id="filter-price-max" type="number" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Availability</legend>
+            <label class="filter-checkbox">
+              <input type="checkbox" id="filter-stock" /> In stock only
+            </label>
+          </fieldset>
+
+          <button class="btn btn-ghost" id="reset-all-filters" type="button">
+            Reset all
+          </button>
+        </aside>
+
+        <div class="shop-content">
+          <div class="shop-grid" id="shop-grid" aria-live="polite"></div>
+          <div class="empty-results" id="empty-results" hidden>
+            <h3>Nothing matches that.</h3>
+            <p>
+              Try a shorter search, another category, or a wider price range.
+            </p>
+            <button class="btn btn-primary" type="button" id="reset-empty">
+              Show all components
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer section-shell">
+      <div class="footer-bottom">
+        <span>© <span id="current-year">2026</span> RASSAM</span>
+        <span>Made with ♥ by Irfan Kolakar</span>
+        <span>RASSAM 1.0</span>
+      </div>
+    </footer>
+
+    <!-- STASH DRAWER (same markup as the home page; logic lives in app.js) -->
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside
+      class="stash-drawer"
+      id="stash-drawer"
+      aria-labelledby="drawer-title"
+      aria-hidden="true"
+      inert
+    >
+      <div class="drawer-header">
+        <h2 id="drawer-title">Stash <span id="drawer-count"></span></h2>
+        <button
+          class="btn-icon"
+          id="close-stash"
+          type="button"
+          aria-label="Close stash"
+        >
+          ×
+        </button>
+      </div>
+      <div class="stash-items" id="stash-items"></div>
+      <div class="stash-empty" id="stash-empty">
+        <div class="stash-empty-art" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><use href="#rassam-mark" /></svg>
+        </div>
+        <h3>Nothing stashed yet.</h3>
+        <p>Find a part that sparks an idea.</p>
+        <a class="btn btn-primary" id="discover-components" href="#shop-grid">
+          Explore components
+        </a>
+      </div>
+      <div class="drawer-footer" id="drawer-footer" hidden>
+        <div class="drawer-subtotal">
+          <span>Subtotal</span><strong id="stash-subtotal">₹0</strong>
+        </div>
+        <p class="drawer-disclaimer">
+          Stashing doesn't reserve stock until you pay.
+        </p>
+        <button
+          class="btn btn-primary drawer-review"
+          id="review-stash"
+          type="button"
+        >
+          Checkout →
+        </button>
+        <button
+          class="btn-link continue-shopping"
+          id="continue-shopping"
+          type="button"
+        >
+          Keep exploring
+        </button>
+      </div>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

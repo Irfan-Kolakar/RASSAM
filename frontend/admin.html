@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8eee9" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>RASSAM — Admin Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      :root {
+        --sakura-bg: #f8eee9;
+        --sakura-paper: #fffdf9;
+        --sakura-pink: #c95778;
+        --sakura-pink-dark: #a83d60;
+        --sakura-pink-soft: #f5dce3;
+        --sakura-ink: #432d35;
+        --sakura-muted: #87767b;
+        --sakura-green: #627f70;
+        --sakura-border: #eadbd7;
+        --sakura-shadow: 0 18px 50px rgba(105, 61, 72, 0.08);
+      }
+
+      body.admin-page {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(
+            ellipse at 8% 10%,
+            rgba(242, 190, 199, 0.28),
+            transparent 35%
+          ),
+          radial-gradient(
+            ellipse at 95% 40%,
+            rgba(199, 216, 200, 0.22),
+            transparent 32%
+          ),
+          var(--sakura-bg);
+        color: var(--sakura-ink);
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .admin-page * {
+        box-sizing: border-box;
+      }
+      .admin-page button,
+      .admin-page input,
+      .admin-page textarea,
+      .admin-page select {
+        font: inherit;
+      }
+      .admin-page button {
+        cursor: pointer;
+      }
+      .admin-page button:focus-visible,
+      .admin-page input:focus-visible,
+      .admin-page textarea:focus-visible,
+      .admin-page select:focus-visible {
+        outline: 3px solid rgba(201, 87, 120, 0.35);
+        outline-offset: 3px;
+      }
+
+      .admin-shell {
+        width: min(1120px, calc(100% - 36px));
+        margin: 0 auto;
+      }
+
+      .admin-nav {
+        background: rgba(255, 253, 249, 0.94);
+        border-bottom: 1px solid var(--sakura-border);
+      }
+
+      .admin-nav-inner {
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .admin-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .admin-brand-mark {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--sakura-pink);
+        color: white;
+        font-family: "Playfair Display", serif;
+        font-size: 25px;
+        box-shadow: 0 5px 15px rgba(201, 87, 120, 0.22);
+      }
+      .admin-brand-name {
+        letter-spacing: 0.18em;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .admin-brand-sub {
+        display: block;
+        margin-top: 4px;
+        color: var(--sakura-muted);
+        font-size: 9px;
+        letter-spacing: 0.15em;
+      }
+
+      .admin-nav-label {
+        color: var(--sakura-green);
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .admin-banner {
+        position: relative;
+        overflow: hidden;
+        margin: 24px 0 0;
+        padding: 34px clamp(22px, 5vw, 56px);
+        border: 1px solid rgba(201, 87, 120, 0.16);
+        border-radius: 25px;
+        background:
+          radial-gradient(
+            ellipse at 78% 120%,
+            rgba(255, 255, 255, 0.75),
+            transparent 48%
+          ),
+          linear-gradient(115deg, #f1c9c6, #f7e0d8 55%, #e9d8d1);
+      }
+
+      .admin-banner::after {
+        content: "❀";
+        position: absolute;
+        right: 6%;
+        top: -44px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 190px;
+        line-height: 1;
+        transform: rotate(-18deg);
+        pointer-events: none;
+      }
+
+      .admin-eyebrow {
+        margin: 0 0 12px;
+        color: #80525d;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .admin-banner h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: #693849;
+        font:
+          500 clamp(34px, 5vw, 55px)/1.08 "Playfair Display",
+          serif;
+        letter-spacing: -0.035em;
+      }
+
+      .admin-banner p:last-child {
+        position: relative;
+        z-index: 1;
+        max-width: 490px;
+        margin: 14px 0 0;
+        color: #795b61;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .admin-main {
+        padding: 24px 0 55px;
+      }
+      .admin-login,
+      .admin-panel {
+        background: var(--sakura-paper);
+        border: 1px solid var(--sakura-border);
+        border-radius: 22px;
+        box-shadow: var(--sakura-shadow);
+      }
+
+      .admin-login {
+        max-width: 530px;
+        margin: 0 auto;
+        padding: clamp(22px, 4vw, 36px);
+      }
+      .admin-login h2,
+      .admin-section-title {
+        margin: 0;
+        font:
+          500 26px/1.25 "Playfair Display",
+          serif;
+        color: var(--sakura-ink);
+      }
+
+      .admin-description {
+        color: var(--sakura-muted);
+        font-size: 13px;
+        line-height: 1.7;
+        margin: 9px 0 22px;
+      }
+
+      .admin-field-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sakura-ink);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .admin-input-wrap {
+        display: flex;
+        gap: 8px;
+      }
+      .admin-input,
+      .admin-reply-text,
+      .admin-select {
+        width: 100%;
+        min-width: 0;
+        padding: 13px 14px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 12px;
+        background: #fffdfa;
+        color: var(--sakura-ink);
+      }
+
+      .admin-input::placeholder,
+      .admin-reply-text::placeholder {
+        color: #a49397;
+      }
+      .admin-input:focus,
+      .admin-reply-text:focus,
+      .admin-select:focus {
+        border-color: var(--sakura-pink);
+      }
+
+      .admin-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 43px;
+        padding: 11px 17px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: var(--sakura-pink);
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+      .admin-button:hover {
+        background: var(--sakura-pink-dark);
+        transform: translateY(-1px);
+      }
+      .admin-button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+        transform: none;
+      }
+      .admin-button-secondary {
+        color: var(--sakura-pink-dark);
+        background: #fff8f8;
+        border-color: #eacbd5;
+      }
+      .admin-button-secondary:hover {
+        background: var(--sakura-pink-soft);
+      }
+
+      .admin-status {
+        min-height: 20px;
+        margin: 14px 0 0;
+        font-size: 12px;
+        color: var(--sakura-green);
+        line-height: 1.6;
+      }
+      .admin-status[data-kind="error"] {
+        color: #b52f4c;
+      }
+      .admin-status[data-kind="info"] {
+        color: var(--sakura-muted);
+      }
+
+      .admin-dashboard[hidden],
+      .admin-login[hidden] {
+        display: none !important;
+      }
+
+      .admin-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      .admin-stat {
+        padding: 20px;
+        border-radius: 18px;
+        background: rgba(255, 253, 249, 0.8);
+        border: 1px solid var(--sakura-border);
+      }
+      .admin-stat-label {
+        color: var(--sakura-muted);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .admin-stat-value {
+        display: block;
+        margin-top: 10px;
+        font:
+          500 30px "Playfair Display",
+          serif;
+        color: var(--sakura-pink-dark);
+      }
+
+      .admin-panel {
+        padding: clamp(18px, 3vw, 28px);
+      }
+      .admin-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .admin-panel-head p {
+        margin: 6px 0 0;
+        color: var(--sakura-muted);
+        font-size: 12px;
+      }
+      .admin-actions {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+      }
+
+      .admin-order-list {
+        display: grid;
+        gap: 16px;
+      }
+      .order-card {
+        min-width: 0;
+        padding: 20px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 17px;
+        background: #fffdfa;
+      }
+
+      .order-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0e5e1;
+      }
+
+      .order-customer {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+      }
+      .order-id {
+        display: inline-block;
+        margin-top: 7px;
+        color: var(--sakura-muted);
+        font:
+          11px "JetBrains Mono",
+          monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .order-badges {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+      .order-badge {
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #f6e4e9;
+        color: #8b4058;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: capitalize;
+      }
+      .order-badge.delivery {
+        background: #e6eee6;
+        color: #4e6d5c;
+      }
+
+      .order-details {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        padding: 17px 0;
+      }
+      .order-detail-label {
+        display: block;
+        color: var(--sakura-muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 6px;
+      }
+      .order-detail-value {
+        font-size: 12px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+      }
+      .order-items {
+        padding: 13px 14px;
+        border-radius: 12px;
+        background: #f8f2ed;
+        font-size: 12px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+      }
+
+      .order-messages {
+        display: grid;
+        gap: 9px;
+        margin-top: 15px;
+      }
+      .order-msg {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #f8f0ed;
+        font-size: 12px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+      .order-msg.admin {
+        background: #f5e2e8;
+      }
+      .order-msg small {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--sakura-muted);
+        font-size: 10px;
+        text-transform: capitalize;
+      }
+
+      .order-reply {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(145px, 0.55fr) auto;
+        gap: 9px;
+        align-items: start;
+        margin-top: 16px;
+      }
+      .admin-reply-text {
+        resize: vertical;
+        min-height: 46px;
+        font-size: 12px;
+      }
+      .admin-select {
+        font-size: 12px;
+        min-height: 46px;
+      }
+
+      .admin-empty {
+        padding: 34px 18px;
+        border: 1px dashed #e2c9cf;
+        border-radius: 15px;
+        text-align: center;
+        color: var(--sakura-muted);
+        font-size: 13px;
+        line-height: 1.8;
+      }
+      .admin-footer {
+        padding: 20px 0 30px;
+        text-align: center;
+        color: var(--sakura-muted);
+        font-size: 10px;
+        letter-spacing: 0.08em;
+      }
+      .admin-footer span {
+        color: var(--sakura-pink);
+      }
+
+      @media (max-width: 650px) {
+        .admin-shell {
+          width: min(100% - 22px, 1120px);
+        }
+        .admin-nav-inner {
+          min-height: 65px;
+        }
+        .admin-nav-label {
+          font-size: 9px;
+          text-align: right;
+        }
+        .admin-banner {
+          margin-top: 14px;
+          padding: 27px 22px;
+          border-radius: 19px;
+        }
+        .admin-banner::after {
+          right: -20px;
+          top: -10px;
+          font-size: 120px;
+        }
+        .admin-main {
+          padding-top: 16px;
+        }
+        .admin-summary {
+          gap: 8px;
+        }
+        .admin-stat {
+          padding: 13px 11px;
+        }
+        .admin-stat-label {
+          font-size: 9px;
+          letter-spacing: 0.04em;
+        }
+        .admin-stat-value {
+          font-size: 24px;
+        }
+        .admin-input-wrap {
+          flex-direction: column;
+        }
+        .admin-input-wrap .admin-button {
+          width: 100%;
+        }
+        .order-details {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .order-reply {
+          grid-template-columns: 1fr;
+        }
+        .order-reply .admin-button {
+          width: 100%;
+        }
+        .order-card {
+          padding: 15px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .admin-page *,
+        .admin-page *::before,
+        .admin-page *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="admin-page">
+    <header class="admin-nav">
+      <div class="admin-shell admin-nav-inner">
+        <div class="admin-brand">
+          <div class="admin-brand-mark" aria-hidden="true">R</div>
+          <div>
+            <div class="admin-brand-name">RASSAM</div>
+            <span class="admin-brand-sub">THE STUDENT MARKETPLACE</span>
+          </div>
+        </div>
+        <span class="admin-nav-label"
+          >Private admin studio · <span aria-hidden="true">✿</span></span
+        >
+      </div>
+    </header>
+
+    <div class="admin-shell">
+      <section class="admin-banner">
+        <p class="admin-eyebrow">RASSAM · MANAGEMENT</p>
+        <h1>Orders, with care.</h1>
+        <p>
+          Your marketplace operations in one place. Manage orders, keep
+          customers updated, and follow each delivery.
+        </p>
+      </section>
+
+      <main class="admin-main">
+        <section class="admin-login" id="login-panel">
+          <p class="admin-eyebrow">RESTRICTED ACCESS</p>
+          <h2>Welcome back.</h2>
+          <p class="admin-description">
+            Enter your administrator token to access the order inbox. Your token
+            is checked by the backend.
+          </p>
+
+          <form id="login-form">
+            <label class="admin-field-label" for="token"
+              >Administrator token</label
+            >
+            <div class="admin-input-wrap">
+              <input
+                class="admin-input"
+                id="token"
+                type="password"
+                placeholder="Enter your admin token"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                class="admin-button admin-button-secondary"
+                id="toggle-token"
+                type="button"
+                aria-label="Show administrator token"
+              >
+                Show
+              </button>
+            </div>
+            <button
+              class="admin-button"
+              id="login-button"
+              type="submit"
+              style="width: 100%; margin-top: 13px"
+            >
+              Unlock admin inbox <span aria-hidden="true">→</span>
+            </button>
+          </form>
+          <p
+            class="admin-status"
+            id="login-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </section>
+
+        <section class="admin-dashboard" id="dashboard" hidden>
+          <div class="admin-summary">
+            <div class="admin-stat">
+              <span class="admin-stat-label">Total orders loaded</span>
+              <strong class="admin-stat-value" id="stat-total">—</strong>
+            </div>
+            <div class="admin-stat">
+              <span class="admin-stat-label">Awaiting payment</span>
+              <strong class="admin-stat-value" id="stat-pending">—</strong>
+            </div>
+            <div class="admin-stat">
+              <span class="admin-stat-label">Delivered</span>
+              <strong class="admin-stat-value" id="stat-delivered">—</strong>
+            </div>
+          </div>
+
+          <section class="admin-panel">
+            <div class="admin-panel-head">
+              <div>
+                <h2 class="admin-section-title">Orders inbox.</h2>
+                <p id="last-loaded">Your latest customer orders appear here.</p>
+              </div>
+              <div class="admin-actions">
+                <button
+                  class="admin-button admin-button-secondary"
+                  id="refresh"
+                  type="button"
+                >
+                  ↻ Refresh
+                </button>
+                <button
+                  class="admin-button admin-button-secondary"
+                  id="logout"
+                  type="button"
+                >
+                  Lock inbox
+                </button>
+              </div>
+            </div>
+
+            <p
+              class="admin-status"
+              id="dashboard-status"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <div class="admin-order-list" id="orders">
+              <div class="admin-empty">
+                Your orders will appear here after loading.
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="admin-footer">
+        RASSAM · MADE WITH <span>♥</span> FOR STUDENT BUILDERS
+      </footer>
+    </div>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const $ = (selector) => document.querySelector(selector);
+        const tokenInput = $("#token");
+        const loginPanel = $("#login-panel");
+        const dashboard = $("#dashboard");
+        const loginStatus = $("#login-status");
+        const dashboardStatus = $("#dashboard-status");
+        const ordersContainer = $("#orders");
+        const loginButton = $("#login-button");
+
+        let adminToken = "";
+        let refreshTimer = null;
+        let requestInProgress = false;
+
+        const esc = (value) =>
+          String(value ?? "").replace(
+            /[&<>"']/g,
+            (char) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[char],
+          );
+
+        const setStatus = (element, message, kind = "info") => {
+          element.textContent = message;
+          element.dataset.kind = kind;
+        };
+
+        async function api(path, options = {}) {
+          const headers = new Headers(options.headers || {});
+          headers.set("Content-Type", "application/json");
+          headers.set("X-Admin-Token", adminToken);
+
+          const response = await fetch(path, {
+            ...options,
+            headers,
+            cache: "no-store",
+          });
+
+          const data = await response.json().catch(() => ({}));
+
+          if (!response.ok || !data.success) {
+            if (response.status === 401 || response.status === 403) {
+              lockInbox("Access denied. Check your admin token.");
+            }
+            throw new Error(
+              data.message || `Request failed (${response.status}).`,
+            );
+          }
+
+          return data;
+        }
+
+        function formatDate(value) {
+          if (!value) return "Date unavailable";
+          const date = new Date(value);
+          return Number.isNaN(date.getTime())
+            ? "Date unavailable"
+            : date.toLocaleString();
+        }
+
+        function renderOrders(orders) {
+          const safeOrders = Array.isArray(orders) ? orders : [];
+
+          $("#stat-total").textContent = safeOrders.length;
+          $("#stat-pending").textContent = safeOrders.filter((order) =>
+            String(order.status || "")
+              .toLowerCase()
+              .includes("awaiting"),
+          ).length;
+          $("#stat-delivered").textContent = safeOrders.filter(
+            (order) =>
+              String(order.delivery || "").toLowerCase() === "delivered",
+          ).length;
+
+          if (!safeOrders.length) {
+            ordersContainer.innerHTML =
+              '<div class="admin-empty">No orders to show yet.<br>New orders will appear here when the backend returns them.</div>';
+            return;
+          }
+
+          ordersContainer.innerHTML = safeOrders
+            .map((order) => {
+              const items = Array.isArray(order.items) ? order.items : [];
+              const messages = Array.isArray(order.messages)
+                ? order.messages
+                : [];
+              const delivery = order.delivery || "not set";
+              const orderId = esc(order.id);
+
+              const itemText = items.length
+                ? items
+                    .map((item) => `${esc(item.id)} × ${esc(item.qty)}`)
+                    .join(" · ")
+                : "No item details supplied";
+
+              const messageHTML = messages.length
+                ? messages
+                    .map(
+                      (message) => `
+                <div class="order-msg ${String(message.from).toLowerCase() === "admin" ? "admin" : ""}">
+                  <small>${esc(message.from || "message")} · ${esc(formatDate(message.createdAt))}</small>
+                  ${esc(message.text)}
+                </div>
+              `,
+                    )
+                    .join("")
+                : '<div class="admin-empty">No messages for this order yet.</div>';
+
+              const amount = Number(order.amountRupees);
+              const amountText = Number.isFinite(amount)
+                ? `₹${amount.toLocaleString("en-IN")}`
+                : "Not provided";
+
+              return `
+            <article class="order-card" data-id="${orderId}">
+              <div class="order-card-head">
+                <div>
+                  <h3 class="order-customer">${esc(order.name || "Customer")}</h3>
+                  <span class="order-id">${orderId}</span>
+                </div>
+                <div class="order-badges">
+                  <span class="order-badge">${esc(order.status || "status unknown")}</span>
+                  <span class="order-badge delivery">${esc(delivery)}</span>
+                </div>
+              </div>
+
+              <div class="order-details">
+                <div>
+                  <span class="order-detail-label">Contact</span>
+                  <div class="order-detail-value">${esc(order.phone || "Not provided")}</div>
+                </div>
+                <div>
+                  <span class="order-detail-label">PIN code</span>
+                  <div class="order-detail-value">${esc(order.pincode || "Not provided")}</div>
+                </div>
+                <div>
+                  <span class="order-detail-label">Delivery address</span>
+                  <div class="order-detail-value">${esc(order.address || "Not provided")}</div>
+                </div>
+                <div>
+                  <span class="order-detail-label">Order total</span>
+                  <div class="order-detail-value">${esc(amountText)}</div>
+                </div>
+              </div>
+
+              <div class="order-items"><strong>Items:</strong> ${itemText}</div>
+              <div class="order-messages">${messageHTML}</div>
+
+              <form class="order-reply">
+                <textarea class="admin-reply-text" name="message" rows="2"
+                  maxlength="500" placeholder="Write a message to the customer"></textarea>
+                <select class="admin-select" name="delivery" aria-label="Update delivery status">
+                  <option value="">Delivery: no change</option>
+                  <option value="packed" ${delivery === "packed" ? "selected" : ""}>Packed</option>
+                  <option value="shipped" ${delivery === "shipped" ? "selected" : ""}>Shipped</option>
+                  <option value="delivered" ${delivery === "delivered" ? "selected" : ""}>Delivered</option>
+                </select>
+                <button class="admin-button" type="submit">Send update</button>
+              </form>
+            </article>
+          `;
+            })
+            .join("");
+        }
+
+        async function loadOrders() {
+          if (!adminToken || requestInProgress) return;
+
+          requestInProgress = true;
+          $("#refresh").disabled = true;
+          setStatus(dashboardStatus, "Loading orders…");
+
+          try {
+            const data = await api("/api/admin/inbox");
+            renderOrders(data.orders);
+            $("#last-loaded").textContent =
+              `Last refreshed ${new Date().toLocaleTimeString()}`;
+            setStatus(
+              dashboardStatus,
+              "Orders loaded successfully.",
+              "success",
+            );
+          } catch (error) {
+            setStatus(
+              dashboardStatus,
+              error.message || "Unable to load orders.",
+              "error",
+            );
+          } finally {
+            requestInProgress = false;
+            $("#refresh").disabled = false;
+          }
+        }
+
+        function startAutoRefresh() {
+          stopAutoRefresh();
+          refreshTimer = setInterval(() => {
+            const active = document.activeElement;
+            const isEditing =
+              active &&
+              (active.matches("textarea") ||
+                active.matches("input") ||
+                active.matches("select"));
+            if (
+              !document.hidden &&
+              !isEditing &&
+              !requestInProgress &&
+              adminToken
+            ) {
+              loadOrders();
+            }
+          }, 20000);
+        }
+
+        function stopAutoRefresh() {
+          if (refreshTimer) clearInterval(refreshTimer);
+          refreshTimer = null;
+        }
+
+        function lockInbox(message = "Admin inbox locked.") {
+          stopAutoRefresh();
+          adminToken = "";
+          tokenInput.value = "";
+          loginPanel.hidden = false;
+          dashboard.hidden = true;
+          setStatus(loginStatus, message, "info");
+        }
+
+        $("#toggle-token").addEventListener("click", () => {
+          const show = tokenInput.type === "password";
+          tokenInput.type = show ? "text" : "password";
+          $("#toggle-token").textContent = show ? "Hide" : "Show";
+          $("#toggle-token").setAttribute(
+            "aria-label",
+            show ? "Hide administrator token" : "Show administrator token",
+          );
+        });
+
+        $("#login-form").addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const value = tokenInput.value.trim();
+          if (!value) {
+            setStatus(loginStatus, "Enter your administrator token.", "error");
+            return;
+          }
+
+          adminToken = value;
+          loginButton.disabled = true;
+          loginButton.textContent = "Checking access…";
+
+          try {
+            const data = await api("/api/admin/inbox");
+            loginPanel.hidden = true;
+            dashboard.hidden = false;
+            renderOrders(data.orders);
+            $("#last-loaded").textContent =
+              `Last refreshed ${new Date().toLocaleTimeString()}`;
+            setStatus(dashboardStatus, "Admin access verified.", "success");
+            startAutoRefresh();
+          } catch (error) {
+            adminToken = "";
+            setStatus(
+              loginStatus,
+              error.message || "Unable to verify admin access.",
+              "error",
+            );
+          } finally {
+            loginButton.disabled = false;
+            loginButton.innerHTML =
+              'Unlock admin inbox <span aria-hidden="true">→</span>';
+          }
+        });
+
+        $("#refresh").addEventListener("click", loadOrders);
+
+        $("#logout").addEventListener("click", () => lockInbox());
+
+        ordersContainer.addEventListener("submit", async (event) => {
+          const form = event.target;
+          if (
+            !(form instanceof HTMLFormElement) ||
+            !form.matches(".order-reply")
+          )
+            return;
+          event.preventDefault();
+
+          const card = form.closest(".order-card");
+          const orderId = card?.dataset.id;
+          const message = form.elements.namedItem("message").value.trim();
+          const delivery = form.elements.namedItem("delivery").value;
+
+          if (!orderId) {
+            setStatus(
+              dashboardStatus,
+              "Could not identify this order.",
+              "error",
+            );
+            return;
+          }
+          if (!message && !delivery) {
+            setStatus(
+              dashboardStatus,
+              "Write a message or choose a delivery update.",
+              "error",
+            );
+            return;
+          }
+
+          const submitButton = form.querySelector('button[type="submit"]');
+          submitButton.disabled = true;
+          submitButton.textContent = "Sending…";
+
+          try {
+            await api("/api/admin/reply", {
+              method: "POST",
+              body: JSON.stringify({ orderId, text: message, delivery }),
+            });
+            setStatus(dashboardStatus, "Your update was sent.", "success");
+            await loadOrders();
+          } catch (error) {
+            setStatus(
+              dashboardStatus,
+              error.message || "Unable to send update.",
+              "error",
+            );
+          } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Send update";
+          }
+        });
+
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) return;
+          if (adminToken && !requestInProgress) loadOrders();
+        });
+      })();
+    </script>
+  </body>
+</html>

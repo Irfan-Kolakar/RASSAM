@@ -1,0 +1,850 @@
+/* ==========================================================
+   RASSAM — SAKURA STASH
+   Extends style.css. Does not redesign the homepage.
+   ========================================================== */
+
+.stash-main {
+  --sakura-ink: #382a32;
+  --sakura-muted: #806d78;
+  --sakura-pink: #d77d9e;
+  --sakura-pink-dark: #a94d72;
+  --sakura-blush: #f8e8ee;
+  --sakura-paper: #fffaf7;
+  --sakura-border: #ead6dd;
+  --sakura-green: #697b60;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 65vh;
+  padding-top: 66px;
+  padding-bottom: 100px;
+  color: var(--sakura-ink);
+}
+
+/* Gentle botanical atmosphere */
+.stash-main::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 18px;
+  right: -10px;
+  width: 240px;
+  height: 270px;
+  pointer-events: none;
+  opacity: 0.52;
+  background:
+    radial-gradient(ellipse at 75% 15%, #efc1d0 0 5px, transparent 6px),
+    radial-gradient(ellipse at 64% 26%, #f3d1dc 0 8px, transparent 9px),
+    radial-gradient(ellipse at 88% 33%, #e8b0c3 0 6px, transparent 7px),
+    radial-gradient(ellipse at 71% 43%, #f0c8d5 0 7px, transparent 8px),
+    radial-gradient(ellipse at 91% 54%, #f4d5df 0 5px, transparent 6px);
+  transform: rotate(-12deg);
+}
+
+/* Header */
+.stash-page-header {
+  position: relative;
+  max-width: 760px;
+  margin-bottom: 42px;
+}
+
+.stash-page-header::before {
+  content: "✿";
+  display: block;
+  margin-bottom: 12px;
+  color: var(--sakura-pink);
+  font-size: 22px;
+}
+
+.stash-page-header h1 {
+  margin: 0 0 14px;
+  color: var(--sakura-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(46px, 7vw, 78px);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.stash-page-header h1 em {
+  color: var(--sakura-pink-dark);
+  font-style: italic;
+}
+
+.stash-page-subtitle {
+  margin: 0;
+  color: var(--sakura-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: 0.015em;
+}
+
+/* Empty state */
+.stash-page-empty {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  overflow: hidden;
+  padding: 76px 24px;
+  border: 1px solid var(--sakura-border);
+  border-radius: 26px;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(245, 213, 225, 0.6),
+      transparent 62%
+    ),
+    var(--sakura-paper);
+  text-align: center;
+}
+
+.stash-page-empty::before,
+.stash-page-empty::after {
+  position: absolute;
+  color: #e5afc2;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.stash-page-empty::before {
+  content: "✿";
+  top: 22px;
+  left: 26px;
+  font-size: 28px;
+  transform: rotate(-18deg);
+}
+
+.stash-page-empty::after {
+  content: "❀";
+  right: 26px;
+  bottom: 18px;
+  font-size: 32px;
+  transform: rotate(18deg);
+}
+
+.stash-page-empty .stash-empty-art {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  border: 1px solid #e9c5d2;
+  border-radius: 50%;
+  background: #f8e8ee;
+  color: var(--sakura-pink-dark);
+}
+
+.stash-page-empty .stash-empty-art svg {
+  width: 38px;
+  height: 38px;
+}
+
+.stash-page-empty h2 {
+  margin: 0;
+  color: var(--sakura-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(27px, 4vw, 36px);
+  font-weight: 400;
+}
+
+.stash-page-empty p {
+  max-width: 390px;
+  margin: 0 0 8px;
+  color: var(--sakura-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Main two-column layout */
+.stash-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 38px;
+  align-items: start;
+}
+
+.stash-item-list {
+  min-width: 0;
+}
+
+/* Product rows */
+.stash-page-item {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--sakura-border);
+  animation: sakura-item-appear 380ms ease both;
+}
+
+.stash-page-item:first-child {
+  border-top: 1px solid var(--sakura-border);
+}
+
+.stash-page-item-image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
+  overflow: hidden;
+  border: 1px solid #ead4dd;
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 75% 20%,
+      rgba(241, 198, 215, 0.62),
+      transparent 48%
+    ),
+    #fff7f7;
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.stash-page-item-image::after {
+  content: "✿";
+  position: absolute;
+  right: 7px;
+  bottom: 3px;
+  color: #dca0b6;
+  font-size: 15px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.stash-page-item-image:hover {
+  transform: translateY(-2px);
+  border-color: #d99ab2;
+  box-shadow: 0 8px 24px rgba(145, 79, 105, 0.09);
+}
+
+.stash-page-item-image .product-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.stash-page-item-image .product-art span {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  font-size: 24px;
+  box-shadow: none;
+}
+
+.stash-page-item-image .product-art i {
+  width: 76px;
+  height: 76px;
+}
+
+.stash-page-item-image .product-art b {
+  display: none;
+}
+
+/* Product information */
+.stash-page-item-info {
+  min-width: 0;
+}
+
+.stash-page-item-info .product-category {
+  margin: 0 0 8px;
+  color: var(--sakura-muted);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.stash-page-item-info h3 {
+  margin: 0 0 9px;
+  color: var(--sakura-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(18px, 2vw, 23px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.stash-page-item-info h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.stash-page-item-info h3 a:hover {
+  color: var(--sakura-pink-dark);
+}
+
+.stash-page-item-condition {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 7px;
+  color: var(--sakura-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.stash-page-item-condition strong {
+  color: var(--sakura-ink);
+  font-weight: 600;
+}
+
+.sakura-status-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sakura-green);
+}
+
+.stash-page-item-unit {
+  margin: 0 0 13px;
+  color: var(--sakura-muted);
+  font-size: 13px;
+}
+
+/* Quantity controls */
+.stash-item-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  min-height: 36px;
+  border: 1px solid var(--sakura-border);
+  border-radius: 11px;
+  background: #fffdfb;
+}
+
+.stash-item-controls .quantity-button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sakura-ink);
+  font-size: 20px;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.stash-item-controls .quantity-button:hover:not(:disabled) {
+  background: var(--sakura-blush);
+  color: var(--sakura-pink-dark);
+}
+
+.stash-item-controls .quantity-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.stash-item-controls .quantity-value {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  color: var(--sakura-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Item price and removal */
+.stash-page-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  text-align: right;
+}
+
+.stash-page-item-sub {
+  color: var(--sakura-ink);
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.stash-page-item .remove-item {
+  margin: 0;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: #a35c76;
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
+}
+
+.stash-page-item .remove-item:hover {
+  color: #873853;
+  text-decoration-color: currentColor;
+}
+
+/* Order summary */
+.stash-summary {
+  position: sticky;
+  top: 32px;
+  padding: 27px;
+  border: 1px solid var(--sakura-border);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      ellipse at 100% 0%,
+      rgba(246, 220, 229, 0.72),
+      transparent 54%
+    ),
+    var(--sakura-paper);
+  box-shadow: 0 12px 34px rgba(104, 64, 82, 0.055);
+}
+
+.stash-summary::before {
+  content: "✿  YOUR LITTLE COLLECTION";
+  display: block;
+  margin-bottom: 16px;
+  color: var(--sakura-pink-dark);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.stash-summary h2 {
+  margin: 0 0 21px;
+  color: var(--sakura-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 29px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.stash-summary-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--sakura-border);
+}
+
+.stash-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--sakura-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.stash-summary-line span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.stash-summary-line span:last-child {
+  flex: 0 0 auto;
+  color: var(--sakura-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stash-summary-empty {
+  margin: 0;
+  color: var(--sakura-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.stash-summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 15px;
+  color: var(--sakura-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stash-summary-total strong {
+  color: var(--sakura-pink-dark);
+  font-size: 27px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.stash-summary-note {
+  margin: 0 0 20px;
+  color: var(--sakura-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.stash-checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 49px;
+  margin-bottom: 10px;
+  padding: 13px 16px;
+  border: 1px solid #a94d72;
+  border-radius: 13px;
+  background: #b65c7e;
+  color: #fffafc;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.stash-checkout-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #984365;
+}
+
+.stash-checkout-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.stash-continue-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--sakura-border);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--sakura-ink);
+  font-size: 12px;
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.stash-continue-btn:hover {
+  border-color: #d69bb2;
+  background: #fff;
+}
+
+/* Accessible keyboard focus */
+.stash-main button:focus-visible,
+.stash-main a:focus-visible {
+  outline: 3px solid rgba(196, 105, 143, 0.55);
+  outline-offset: 4px;
+}
+
+/* Subtle entrance */
+@keyframes sakura-item-appear {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .stash-page-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .stash-summary {
+    position: static;
+  }
+
+  .stash-main::before {
+    right: 0;
+    opacity: 0.35;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .stash-main {
+    padding-top: 42px;
+    padding-bottom: 65px;
+  }
+
+  .stash-page-header {
+    margin-bottom: 30px;
+  }
+
+  .stash-page-item {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 14px;
+    padding: 19px 0;
+  }
+
+  .stash-page-item-image {
+    grid-column: 1;
+    grid-row: 1;
+    width: 76px;
+    height: 76px;
+    border-radius: 15px;
+  }
+
+  .stash-page-item-image .product-art span {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .stash-page-item-image .product-art i {
+    width: 58px;
+    height: 58px;
+  }
+
+  .stash-page-item-info {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .stash-page-item-info h3 {
+    font-size: 19px;
+  }
+
+  .stash-page-item-right {
+    grid-column: 2;
+    grid-row: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .stash-page-item-sub {
+    font-size: 16px;
+  }
+
+  .stash-summary {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .stash-summary-total strong {
+    font-size: 24px;
+  }
+
+  .stash-main::before {
+    width: 140px;
+    height: 190px;
+    opacity: 0.25;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .stash-page-item {
+    animation: none;
+  }
+
+  .stash-page-item-image,
+  .stash-item-controls .quantity-button,
+  .stash-checkout-btn,
+  .stash-continue-btn {
+    transition: none;
+  }
+}
+/* RASSAM — Sakura BUY button */
+
+.stash-page .stash-buy-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 20px;
+  min-height: 44px;
+
+  color: #fffafc !important;
+  background: linear-gradient(135deg, #e879a0, #c85f87);
+
+  border: 1px solid #f5c7d9;
+  border-radius: 999px;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+
+  box-shadow: 0 0 16px rgba(232, 121, 160, 0.35);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.stash-page .stash-buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(232, 121, 160, 0.55);
+}
+
+.stash-page .stash-buy-btn span {
+  color: #fffafc !important;
+}
+
+/* Sakura text accents */
+
+.stash-page .sakura-accent {
+  color: #d77d9e;
+}
+
+.stash-page .sakura-flower,
+.stash-page .stash-eyebrow {
+  color: #c85f87;
+}
+
+/* Sage-green supporting text */
+
+.stash-page #stash-subtitle,
+.stash-page .stash-summary-note {
+  color: #789477;
+}
+
+@media (max-width: 600px) {
+  .stash-page .stash-buy-btn {
+    padding: 10px 14px;
+    font-size: 11px;
+  }
+}
+/* RASSAM Sakura navigation */
+.stash-page .stash-nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stash-page .stash-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 20px;
+  border: 1px solid #d8c3b0;
+  border-radius: 999px;
+  background: #f3e6d5;
+  color: #49372f;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.stash-page .stash-nav-button:hover,
+.stash-page .stash-nav-button.active {
+  background: #211a19;
+  border-color: #d99aae;
+  color: #f8e9dc;
+  transform: translateY(-1px);
+}
+
+.stash-page .stash-nav-button:focus-visible {
+  outline: 2px solid #c87591;
+  outline-offset: 3px;
+}
+
+.stash-page .stash-nav-button .stash-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 23px;
+  height: 23px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background: #d99aae;
+  color: #211a19;
+  font-size: 0.75rem;
+}
+/* =========================================
+   RASSAM — SAKURA GREEN PRICE HIGHLIGHT
+   ========================================= */
+
+.stash-page .stash-total-row {
+  padding: 16px 0;
+  border-top: 1px solid #55443c;
+  align-items: center;
+}
+
+.stash-page .stash-total-row > span {
+  color: #d9e6cf;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stash-page .stash-total-row strong {
+  color: #a9e6a0;
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 18px rgba(126, 220, 122, 0.18);
+}
+
+/* Green price for individual saved products */
+.stash-page .stash-page-item-sub {
+  color: #a9e6a0;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+}
+
+/* Buy More button */
+.stash-page .stash-buy-more {
+  margin-top: 24px;
+  background: linear-gradient(135deg, #c4dfb6, #91bd86);
+  border: 1px solid #b4d5a6;
+  color: #182319;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.stash-page .stash-buy-more:hover {
+  background: linear-gradient(135deg, #d5edc8, #a6d29a);
+  box-shadow: 0 7px 24px rgba(139, 204, 126, 0.2);
+  transform: translateY(-2px);
+}

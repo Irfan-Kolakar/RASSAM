@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08090b" />
+    <meta
+      name="description"
+      content="RASSAM — student-to-student electronics marketplace."
+    />
+    <title>RASSAM — Good projects deserve good components</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237170ff'/%3E%3Cpath d='M10 24V13M10 17c0-5 3-8 8-8h2' fill='none' stroke='%23f7f8f8' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='10' cy='24' r='2.4' fill='%23f7f8f8'/%3E%3Ccircle cx='23.5' cy='9' r='2.6' fill='%23f7f8f8'/%3E%3C/svg%3E"
+    />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="design.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script src="app.js" defer></script>
+    <script src="filters.js" defer></script>
+    <script src="featured.js" defer></script>
+    <script src="motion.js" defer></script>
+    <script src="fx.js" defer></script>
+    <script src="sell.js" defer></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="checkout.js" defer></script>
+    <script src="brand.js" defer></script>
+    <script src="chat.js" defer></script>
+  </head>
+  <body id="top">
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="rassam-mark" viewBox="0 0 32 32">
+        <path
+          d="M10 24V13M10 17c0-5 3-8 8-8h2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        />
+        <circle cx="10" cy="24" r="2.4" fill="currentColor" />
+        <circle cx="23.5" cy="9" r="2.6" fill="currentColor" opacity=".5" />
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="announcement">
+      <span class="announcement-dot"></span>
+      Cash on Delivery, made simple. We keep you updated after every order.
+      <span class="announcement-right">RASSAM 1.0</span>
+    </div>
+
+    <header class="navbar">
+      <a class="logo" href="index.html" aria-label="RASSAM home">
+        <span class="logo-mark"
+          ><svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#rassam-mark" /></svg
+        ></span>
+        <span>rassam</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#marketplace">Discover</a>
+        <a href="shop.html">Buy Components</a>
+        <a href="#marketplace">Browse parts</a>
+        <a href="#sell">Sell</a>
+      </nav>
+      <div class="nav-actions">
+        <button
+          class="btn btn-ghost order-updates-button"
+          id="open-order-updates"
+          type="button"
+          aria-haspopup="dialog"
+        >
+          ORDER UPDATES
+        </button>
+        <button
+          class="btn btn-ghost stash-nav-button"
+          id="open-stash"
+          type="button"
+          aria-controls="stash-drawer"
+          aria-expanded="false"
+        >
+          STASH IT! <span class="stash-count" id="stash-count">0</span>
+        </button>
+        <button
+          class="menu-toggle"
+          id="menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <nav
+      class="mobile-nav"
+      id="mobile-nav"
+      aria-label="Mobile navigation"
+      hidden
+    >
+      <a href="#marketplace">Discover <span>↗</span></a>
+      <a href="shop.html">Buy Components <span>↗</span></a>
+      <a href="#marketplace">Browse parts <span>↗</span></a>
+      <a href="#sell">Sell <span>↗</span></a>
+    </nav>
+
+    <main id="main">
+      <!-- FLORAL EDITORIAL HERO -->
+      <section
+        class="hero hero-floral section-shell"
+        aria-labelledby="hero-title"
+      >
+        <div class="floral-copy">
+          <p class="floral-kicker">
+            <span class="floral-kicker-dot"></span> RASSAM · THE STUDENT
+            COMPONENT EXCHANGE
+          </p>
+          <h1 id="hero-title">
+            Good ideas<br />deserve a <em>second life.</em>
+          </h1>
+          <p class="floral-description">
+            Find the parts you need. Pass on the parts you no longer use. A
+            little less waste, a lot more making.
+          </p>
+          <a class="floral-buy-button" href="shop.html"
+            >Buy components <span aria-hidden="true">↗</span></a
+          >
+          <p class="floral-footnote">
+            PRE-LOVED PARTS · STUDENT PRICES · BIG IDEAS
+          </p>
+        </div>
+        <div class="floral-art" aria-hidden="true">
+          <div class="floral-orbit floral-orbit-one"></div>
+          <div class="floral-orbit floral-orbit-two"></div>
+          <svg
+            class="flower-illustration"
+            viewBox="0 0 560 620"
+            role="img"
+            aria-label="Decorative botanical flower illustration"
+          >
+            <g
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                class="flower-stem"
+                d="M280 565 C277 474 294 396 276 311 C268 273 270 247 280 218"
+                stroke-width="3"
+              />
+              <path
+                d="M279 427 C218 417 183 376 173 326 C222 335 264 368 279 427Z"
+                stroke-width="2.5"
+              />
+              <path
+                d="M282 480 C339 457 378 414 391 361 C342 370 300 413 282 480Z"
+                stroke-width="2.5"
+              />
+              <path
+                d="M279 427 C248 391 218 363 186 343 M282 480 C316 443 350 410 379 379"
+                stroke-width="1.5"
+              />
+              <g class="flower-petals" transform="translate(280 195)">
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(0)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(45)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(90)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(135)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(180)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(225)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(270)" />
+                <ellipse cy="-77" rx="37" ry="77" transform="rotate(315)" />
+                <circle r="35" stroke-width="2.5" />
+                <circle r="22" stroke-width="1.4" stroke-dasharray="2 7" />
+              </g>
+              <path
+                d="M112 164 C146 139 172 147 187 177 C154 196 130 189 112 164Z"
+                stroke-width="1.8"
+              />
+              <path
+                d="M111 164 L177 177 M430 270 C458 244 484 252 496 282 C467 299 443 292 430 270Z"
+                stroke-width="1.8"
+              />
+              <path d="M430 270 L486 282" stroke-width="1.4" />
+              <path
+                d="M350 104 C369 82 393 88 403 112 C381 128 362 122 350 104Z"
+                stroke-width="1.6"
+              />
+              <path d="M350 104 L395 111" stroke-width="1.2" />
+            </g>
+            <g fill="currentColor" opacity=".65">
+              <circle cx="100" cy="340" r="3" />
+              <circle cx="443" cy="160" r="3" />
+              <circle cx="414" cy="452" r="2" />
+              <circle cx="160" cy="493" r="2.5" />
+            </g>
+          </svg>
+          <span class="floral-art-note floral-note-top"
+            >MAKE SOMETHING<br />MATTER.</span
+          >
+          <span class="floral-art-note floral-note-bottom"
+            >FIG. 01 — THE NEXT IDEA</span
+          >
+        </div>
+      </section>
+
+      <!-- SAKURA EDITORIAL INTERLUDE -->
+      <section
+        class="sakura-section section-shell"
+        id="marketplace"
+        aria-labelledby="sakura-title"
+      >
+        <div class="sakura-copy">
+          <p class="sakura-kicker">A SMALL PART. A NEW POSSIBILITY.</p>
+          <h2 id="sakura-title">Let good ideas<br /><em>blossom again.</em></h2>
+          <p>
+            Find useful components passed on by students, and give your next
+            project a thoughtful start.
+          </p>
+          <a class="sakura-button" href="shop.html"
+            >Buy components <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="sakura-art" aria-hidden="true">
+          <svg
+            class="sakura-illustration"
+            viewBox="0 0 640 540"
+            role="img"
+            aria-label="Soft sakura blossom illustration"
+          >
+            <defs>
+              <radialGradient id="petalwash">
+                <stop offset="0" stop-color="#f8d9d7" />
+                <stop offset=".72" stop-color="#e9aaa9" />
+                <stop offset="1" stop-color="#d88e91" />
+              </radialGradient>
+              <linearGradient id="sakurabranch" x1="0" y1="1" x2="1" y2="0">
+                <stop stop-color="#65584a" />
+                <stop offset="1" stop-color="#9b8170" />
+              </linearGradient>
+            </defs>
+            <g fill="none" stroke="url(#sakurabranch)" stroke-linecap="round">
+              <path
+                d="M75 475 C190 390 260 304 335 215 C397 141 464 105 572 64"
+                stroke-width="8"
+              />
+              <path d="M238 338 C210 274 179 235 127 206" stroke-width="5" />
+              <path d="M337 214 C327 153 304 119 266 88" stroke-width="4" />
+              <path d="M414 150 C467 160 505 187 530 225" stroke-width="4" />
+              <path d="M486 105 C500 77 520 61 550 49" stroke-width="3" />
+            </g>
+            <g fill="#b7b79b" opacity=".85">
+              <path
+                d="M181 285 C137 264 117 236 127 206 C165 217 189 246 181 285Z"
+              />
+              <path
+                d="M360 184 C321 166 300 135 266 88 C311 101 347 139 360 184Z"
+              />
+              <path
+                d="M443 155 C477 158 510 185 530 225 C487 216 458 191 443 155Z"
+              />
+            </g>
+            <g class="sakura-bloom" transform="translate(127 206)">
+              <use href="#sakura-flower" />
+            </g>
+            <g
+              class="sakura-bloom bloom-two"
+              transform="translate(266 88) scale(.78)"
+            >
+              <use href="#sakura-flower" />
+            </g>
+            <g
+              class="sakura-bloom bloom-three"
+              transform="translate(414 150) scale(1.04)"
+            >
+              <use href="#sakura-flower" />
+            </g>
+            <g
+              class="sakura-bloom bloom-four"
+              transform="translate(550 49) scale(.68)"
+            >
+              <use href="#sakura-flower" />
+            </g>
+            <g
+              class="sakura-bloom bloom-five"
+              transform="translate(335 215) scale(.72)"
+            >
+              <use href="#sakura-flower" />
+            </g>
+            <g fill="#d99b9b" opacity=".8">
+              <ellipse
+                cx="210"
+                cy="136"
+                rx="5"
+                ry="10"
+                transform="rotate(-36 210 136)"
+              />
+              <ellipse
+                cx="458"
+                cy="292"
+                rx="4"
+                ry="8"
+                transform="rotate(28 458 292)"
+              />
+              <ellipse
+                cx="520"
+                cy="320"
+                rx="5"
+                ry="9"
+                transform="rotate(44 520 320)"
+              />
+              <ellipse
+                cx="295"
+                cy="365"
+                rx="4"
+                ry="8"
+                transform="rotate(-18 295 365)"
+              />
+            </g>
+            <defs>
+              <g
+                id="sakura-flower"
+                fill="url(#petalwash)"
+                stroke="#b7b99b"
+                stroke-width="1.2"
+              >
+                <path
+                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
+                />
+                <path
+                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
+                  transform="rotate(72)"
+                />
+                <path
+                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
+                  transform="rotate(144)"
+                />
+                <path
+                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
+                  transform="rotate(216)"
+                />
+                <path
+                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
+                  transform="rotate(288)"
+                />
+                <circle r="9" fill="#9a8966" stroke="none" />
+                <g stroke="#9a8966" stroke-width="1.5">
+                  <path
+                    d="M0 0 L-4 -14 M0 0 L5 -15 M0 0 L13 -8 M0 0 L14 3 M0 0 L-12 7"
+                  />
+                </g>
+              </g>
+            </defs>
+          </svg>
+          <span class="sakura-caption"
+            >FIG. 02 &nbsp; / &nbsp; NEW LIFE, NEW IDEAS</span
+          >
+        </div>
+      </section>
+
+      <!-- MARKETPLACE -->
+      <section
+        class="marketplace marketplace-engine section-shell"
+        id="marketplace-engine"
+        aria-labelledby="market-title"
+      >
+        <div class="product-toolbar">
+          <label class="search-box" for="product-search">
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="product-search"
+              type="search"
+              placeholder="Search boards, sensors, motors…"
+              autocomplete="off"
+            />
+            <kbd>/</kbd>
+          </label>
+          <span class="results-count" id="results-count"></span>
+        </div>
+
+        <div class="fx-panel" id="fx-panel" aria-label="Filter by price">
+          <div class="fx-slider">
+            <div class="fx-slider-fill" id="fx-fill"></div>
+            <input
+              type="range"
+              id="fx-lo"
+              value="0"
+              aria-label="Minimum price"
+            />
+            <input
+              type="range"
+              id="fx-hi"
+              value="100"
+              aria-label="Maximum price"
+            />
+          </div>
+          <p class="fx-range-text" id="fx-range-text"></p>
+        </div>
+
+        <div hidden>
+          <select id="filter-condition">
+            <option value="all">Any</option>
+            <option value="New">New</option>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+          </select>
+          <select id="filter-availability">
+            <option value="all">All</option>
+            <option value="available">In stock</option>
+            <option value="low">Low stock</option>
+          </select>
+          <input id="filter-price-min" type="number" />
+          <input id="filter-price-max" type="number" />
+          <select id="filter-sort">
+            <option value="default">Default</option>
+            <option value="price-asc">Price ↑</option>
+            <option value="price-desc">Price ↓</option>
+            <option value="newest">Newest</option>
+          </select>
+          <button id="reset-all-filters" type="button"></button>
+        </div>
+
+        <div class="active-filter-row" id="active-filter-row" hidden>
+          <span id="active-filter-label"></span>
+          <button type="button" id="reset-filters" class="btn-link">
+            Clear ×
+          </button>
+        </div>
+
+        <div class="product-grid" id="product-grid" aria-live="polite"></div>
+        <div class="empty-results" id="empty-results" hidden>
+          <h3>Nothing matches that.</h3>
+          <p>Try a shorter search or adjust the price range.</p>
+          <button
+            class="btn btn-primary"
+            type="button"
+            id="reset-filters-empty"
+          >
+            Show all
+          </button>
+        </div>
+        <p class="marketplace-footnote">
+          Adding to your stash doesn't reserve anything until you pay.
+        </p>
+      </section>
+
+      <!-- Popular Picks removed: the full catalogue remains in the marketplace/shop. -->
+
+      <!-- BROWSE BY SHELF -->
+      <section class="featured" id="featured" aria-labelledby="featured-title">
+        <div class="section-shell">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">02 · Walk the shelves</p>
+              <h2 id="featured-title">Browse by <em>shelf.</em></h2>
+            </div>
+            <p class="section-note">
+              Scroll across. Each card filters the shop.
+            </p>
+          </div>
+        </div>
+        <div class="featured-viewport">
+          <div class="featured-track" id="featured-track"></div>
+        </div>
+        <div class="featured-progress" aria-hidden="true">
+          <span id="featured-bar"></span>
+        </div>
+      </section>
+
+      <!-- RELAY -->
+      <section
+        class="relay section-shell"
+        id="relay"
+        aria-labelledby="relay-title"
+      >
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="eyebrow">03 · The idea</p>
+            <h2 id="relay-title">
+              Someone's spare parts.<br /><em>Someone else's next idea.</em>
+            </h2>
+          </div>
+          <p class="section-note">
+            RASSAM connects the people who finish with the people who are
+            starting.
+          </p>
+        </div>
+        <div class="relay-track-wrap">
+          <div class="relay-track" aria-hidden="true"><span></span></div>
+          <div class="relay-cards">
+            <article class="relay-card">
+              <span class="relay-node" aria-hidden="true"></span>
+              <h3>Your next build starts here.</h3>
+              <p>
+                Find the components your project is missing, at student prices.
+              </p>
+              <a class="relay-action" href="shop.html">Explore components →</a>
+            </article>
+            <article class="relay-card">
+              <span class="relay-node" aria-hidden="true"></span>
+              <h3>Got parts sitting around?</h3>
+              <p>
+                Give unused components a second project by listing them for
+                other students.
+              </p>
+              <a class="relay-action" href="#sell">Sell a component →</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELL -->
+      <section class="sell-section section-shell" id="sell">
+        <div class="sell-inner">
+          <div class="sell-copy">
+            <p class="eyebrow">04 · Sell</p>
+            <h2>Got spare parts?<br /><em>Pass them on.</em></h2>
+            <p>
+              That sensor in your drawer could be the missing piece in someone's
+              final-year project.
+            </p>
+          </div>
+          <div class="sell-action">
+            <button class="btn btn-primary" type="button" id="sell-button">
+              List a component →
+            </button>
+            <small>Listings are reviewed by the admin.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section
+        class="how-it-works section-shell"
+        id="how-it-works"
+        aria-labelledby="how-title"
+      >
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="eyebrow">05 · How it works</p>
+            <h2 id="how-title">Three steps to <em>let's build.</em></h2>
+          </div>
+        </div>
+        <div class="steps" data-reveal>
+          <article class="step-card">
+            <span class="step-num">01</span>
+            <h3>Find your part.</h3>
+            <p>
+              Browse the shelves or search for the one thing your circuit needs.
+            </p>
+          </article>
+          <article class="step-card">
+            <span class="step-num">02</span>
+            <h3>Stash your picks.</h3>
+            <p>
+              Collect what you want in one place and review before moving on.
+            </p>
+          </article>
+          <article class="step-card">
+            <span class="step-num">03</span>
+            <h3>Pay and get updates.</h3>
+            <p>
+              Pay when your order arrives, then use the updates panel to check
+              in. We’ll keep the checkout flow focused on Cash on Delivery.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- STORY -->
+      <section
+        class="story section-shell"
+        id="story"
+        aria-labelledby="story-title"
+      >
+        <div class="story-grid">
+          <div class="story-copy" data-reveal>
+            <p class="eyebrow">06 · Why RASSAM exists</p>
+            <h2 id="story-title">
+              Every drawer has a part <em>nobody needs anymore.</em>
+            </h2>
+            <p>
+              Somewhere in a hostel room there is a sensor from a project that
+              ended last semester. Somewhere else, a first-year is stuck waiting
+              for the exact same part, and buying a new one would eat the whole
+              month's budget.
+            </p>
+            <p>
+              RASSAM connects those two people. Seniors pass on what they've
+              finished with, juniors build what they dreamed of.
+            </p>
+          </div>
+          <aside class="story-stats" data-reveal>
+            <div class="stat-card">
+              <strong>Less waste.</strong>
+              <p>Working parts stay in use instead of drawers.</p>
+            </div>
+            <div class="stat-card">
+              <strong>Lower cost.</strong>
+              <p>Good components at student prices.</p>
+            </div>
+            <div class="stat-card">
+              <strong>Built by students.</strong>
+              <p>Shared between people who know the struggle.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section
+        class="final-cta section-shell"
+        id="final-cta"
+        aria-labelledby="cta-title"
+      >
+        <div class="cta-inner" data-reveal>
+          <p class="eyebrow">Start here</p>
+          <h2 id="cta-title">Your next project is <em>one part away.</em></h2>
+          <p>Find what you need, or pass on what you no longer use.</p>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="shop.html">Explore components</a>
+            <a class="btn btn-ghost" href="#sell">Sell a component</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer section-shell">
+      <div class="footer-top">
+        <a class="logo" href="index.html" aria-label="RASSAM home">
+          <span class="logo-mark"
+            ><svg viewBox="0 0 32 32" aria-hidden="true">
+              <use href="#rassam-mark" /></svg
+          ></span>
+          <span>rassam</span>
+        </a>
+        <p>Built for curious minds and unfinished projects.</p>
+        <a class="btn-link" href="#">Back to top ↑</a>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="current-year">2026</span> RASSAM</span>
+        <span>Made with ♥ by Rassam team</span>
+        <span>RASSAM 1.0</span>
+      </div>
+    </footer>
+    <!-- ORDER UPDATES POPUP -->
+    <div id="order-panel-backdrop" class="order-updates-backdrop" hidden></div>
+
+    <section
+      id="order-updates-panel"
+      class="order-updates-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="order-updates-title"
+      hidden
+    >
+      <div class="order-updates-header">
+        <div>
+          <p class="order-updates-eyebrow">RASSAM · ORDER SUPPORT</p>
+          <h2 id="order-updates-title">Stay in the <em>loop.</em></h2>
+          <p>Track your order and talk to our team.</p>
+        </div>
+
+        <button
+          id="close-order-updates"
+          class="btn-icon"
+          type="button"
+          aria-label="Close order updates"
+        >
+          ×
+        </button>
+      </div>
+
+      <form id="order-update-form" class="order-updates-form">
+        <label for="order-update-id">Your order ID</label>
+
+        <div class="order-id-row">
+          <input
+            id="order-update-id"
+            name="orderId"
+            type="text"
+            placeholder="Enter your order ID"
+            maxlength="60"
+            autocomplete="off"
+            required
+          />
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+            id="check-order-updates"
+          >
+            Check
+          </button>
+        </div>
+
+        <p class="order-updates-hint">
+          Find your order ID in your checkout confirmation.
+        </p>
+
+        <div
+          id="order-update-results"
+          class="order-update-results"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+        <div class="order-message-divider"></div>
+
+        <label for="order-update-message">Message RASSAM</label>
+
+        <textarea
+          id="order-update-message"
+          rows="4"
+          maxlength="500"
+          placeholder="Ask us about your order..."
+        ></textarea>
+
+        <div class="order-message-footer">
+          <span>Maximum 500 characters</span>
+
+          <button id="send-order-message" class="btn btn-primary" type="button">
+            Send message →
+          </button>
+        </div>
+
+        <p
+          id="order-message-status"
+          class="order-message-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </form>
+    </section>
+    <!-- END ORDER UPDATES POPUP -->
+
+    <!-- STASH DRAWER -->
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside
+      class="stash-drawer"
+      id="stash-drawer"
+      aria-labelledby="drawer-title"
+      aria-hidden="true"
+      inert
+    >
+      <div class="drawer-header">
+        <h2 id="drawer-title">Stash <span id="drawer-count"></span></h2>
+        <button
+          class="btn-icon"
+          id="close-stash"
+          type="button"
+          aria-label="Close stash"
+        >
+          ×
+        </button>
+      </div>
+      <div class="stash-items" id="stash-items"></div>
+      <div class="stash-empty" id="stash-empty">
+        <div class="stash-empty-art" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><use href="#rassam-mark" /></svg>
+        </div>
+        <h3>Your stash is empty rn 🌸</h3>
+        <p>Find a part you love and stash it first.</p>
+        <button class="btn btn-primary" id="discover-components" type="button">
+          Explore components
+        </button>
+      </div>
+      <div class="drawer-footer" id="drawer-footer" hidden>
+        <div class="drawer-subtotal">
+          <span>Subtotal</span><strong id="stash-subtotal">₹0</strong>
+        </div>
+        <p class="drawer-disclaimer">
+          Your picks are saved here ✨ Ready? Checkout when you’re done.
+        </p>
+        <button
+          class="btn btn-primary drawer-review"
+          id="review-stash"
+          type="button"
+        >
+          Grab your stash →
+        </button>
+        <button
+          class="btn-link continue-shopping"
+          id="continue-shopping"
+          type="button"
+        >
+          Keep exploring
+        </button>
+      </div>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

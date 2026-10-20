@@ -1,0 +1,1016 @@
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e9d8c3" />
+
+    <title>My Stash — RASSAM</title>
+
+    <meta
+      name="description"
+      content="Your saved RASSAM electronics components."
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="stash.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="app.js" defer></script>
+
+    <script src="stash.js" defer></script>
+
+    <style>
+      .stash-page {
+        --paper: #e9d8c3;
+        --cream: #f5e8d9;
+        --ink: #171413;
+        --panel: #211c1a;
+        --border: #55443c;
+        --pink: #d99aae;
+        --sage: #a6b49a;
+        --green: #a9e6a0;
+        --muted: #c6b6a7;
+
+        margin: 0;
+        background: var(--paper);
+        color: var(--cream);
+        font-family: "DM Sans", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .stash-page *,
+      .stash-page *::before,
+      .stash-page *::after {
+        box-sizing: border-box;
+      }
+
+      .stash-page [hidden] {
+        display: none !important;
+      }
+
+      /* Header and navigation */
+
+      .stash-page .site-header {
+        background: var(--paper);
+        border-bottom: 1px solid rgba(60, 40, 30, 0.15);
+      }
+
+      .stash-page .navbar {
+        max-width: 1440px;
+        min-height: 84px;
+        margin: auto;
+        padding: 16px clamp(18px, 5vw, 60px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      .stash-page .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: #392920;
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+      }
+
+      .stash-page .logo-mark {
+        width: 39px;
+        height: 39px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #bd8193;
+        border-radius: 50%;
+        background: var(--ink);
+        color: #f0bdcb;
+      }
+
+      .stash-page .nav-links {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .stash-page .nav-links a,
+      .stash-page .nav-stash-link {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 1px solid #d0bba8;
+        border-radius: 999px;
+        background: rgba(255, 249, 240, 0.55);
+        color: #49372f;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s ease;
+      }
+
+      .stash-page .nav-links a:hover,
+      .stash-page .nav-stash-link:hover,
+      .stash-page .nav-stash-link.active {
+        background: var(--ink);
+        border-color: var(--pink);
+        color: var(--cream);
+      }
+
+      .stash-page .stash-count {
+        min-width: 23px;
+        height: 23px;
+        display: inline-grid;
+        place-items: center;
+        padding: 0 5px;
+        border-radius: 50%;
+        background: var(--pink);
+        color: var(--ink);
+        font-size: 0.73rem;
+        font-weight: 800;
+      }
+
+      /* Main canvas */
+
+      .stash-page .stash-main {
+        position: relative;
+        isolation: isolate;
+        max-width: 1440px;
+        margin: auto;
+        padding: 35px clamp(16px, 4vw, 55px) 65px;
+        background: var(--paper);
+      }
+
+      /* CSS-only Sakura bonsai decoration */
+
+      .stash-page .sakura-decoration {
+        position: absolute;
+        z-index: -1;
+        top: 20px;
+        right: 6%;
+        width: 235px;
+        height: 220px;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+
+      .stash-page .sakura-sun {
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        width: 145px;
+        height: 145px;
+        border-radius: 50%;
+        background: rgba(255, 246, 226, 0.65);
+      }
+
+      .stash-page .sakura-branch {
+        position: absolute;
+        top: 76px;
+        right: 25px;
+        width: 175px;
+        height: 95px;
+        border-top: 6px solid #805b48;
+        border-radius: 50%;
+        transform: rotate(-20deg);
+      }
+
+      .stash-page .sakura-branch::before,
+      .stash-page .sakura-branch::after {
+        content: "";
+        position: absolute;
+        width: 90px;
+        height: 55px;
+        border-top: 4px solid #805b48;
+        border-radius: 50%;
+      }
+
+      .stash-page .sakura-branch::before {
+        top: 2px;
+        right: 70px;
+        transform: rotate(25deg);
+      }
+
+      .stash-page .sakura-branch::after {
+        top: 14px;
+        right: -10px;
+        transform: rotate(-15deg);
+      }
+
+      .stash-page .sakura-crown {
+        position: absolute;
+        top: 8px;
+        right: 0;
+        width: 185px;
+        height: 140px;
+        background:
+          radial-gradient(circle at 20% 34%, #d99aae 0 5px, transparent 6px),
+          radial-gradient(circle at 27% 29%, #f0bdcb 0 5px, transparent 6px),
+          radial-gradient(circle at 33% 36%, #d99aae 0 5px, transparent 6px),
+          radial-gradient(circle at 45% 22%, #e8a8bb 0 6px, transparent 7px),
+          radial-gradient(circle at 51% 29%, #f0bdcb 0 5px, transparent 6px),
+          radial-gradient(circle at 57% 23%, #d99aae 0 5px, transparent 6px),
+          radial-gradient(circle at 67% 39%, #d99aae 0 5px, transparent 6px),
+          radial-gradient(circle at 74% 33%, #f0bdcb 0 6px, transparent 7px),
+          radial-gradient(circle at 80% 41%, #e8a8bb 0 5px, transparent 6px),
+          radial-gradient(circle at 35% 48%, #f0bdcb 0 5px, transparent 6px),
+          radial-gradient(circle at 43% 51%, #d99aae 0 6px, transparent 7px);
+      }
+
+      .stash-page .sakura-ground {
+        position: absolute;
+        right: 0;
+        bottom: 14px;
+        width: 140px;
+        height: 19px;
+        border-radius: 50%;
+        background: #8f705a;
+        opacity: 0.6;
+      }
+
+      .stash-page .sakura-petal {
+        position: absolute;
+        width: 10px;
+        height: 15px;
+        border-radius: 80% 10% 80% 10%;
+        background: var(--pink);
+        transform: rotate(35deg);
+      }
+
+      .stash-page .sakura-petal-one {
+        top: 110px;
+        left: 10px;
+      }
+
+      .stash-page .sakura-petal-two {
+        top: 183px;
+        right: 220px;
+        transform: rotate(75deg);
+      }
+
+      .stash-page .sakura-petal-three {
+        top: 50px;
+        right: 215px;
+        transform: rotate(-25deg);
+      }
+
+      /* Hero */
+
+      .stash-page .stash-page-hero {
+        position: relative;
+        max-width: 730px;
+        min-height: 230px;
+        padding: 27px 0 34px;
+      }
+
+      .stash-page .stash-eyebrow {
+        margin: 0 0 12px;
+        color: #ad637c;
+        font-size: 0.69rem;
+        font-weight: 800;
+        letter-spacing: 0.19em;
+        line-height: 1.7;
+        text-transform: uppercase;
+      }
+
+      .stash-page .stash-page-hero h1 {
+        margin: 0;
+        color: #291e1a;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 7vw, 5.4rem);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1.08;
+      }
+
+      .stash-page .sakura-accent {
+        color: #b95f7c;
+        font-style: italic;
+      }
+
+      .stash-page .sakura-flower {
+        color: #bd6d87;
+        font-size: 0.55em;
+      }
+
+      .stash-page #stash-subtitle {
+        max-width: 430px;
+        margin-top: 16px;
+        color: #735f51;
+        font-size: 0.98rem;
+        line-height: 1.8;
+      }
+
+      /* Main dark panel */
+
+      .stash-page .stash-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(270px, 0.8fr);
+        align-items: start;
+        gap: 27px;
+        padding: clamp(18px, 3vw, 36px);
+        border: 1px solid #59473f;
+        border-radius: 22px;
+        background:
+          radial-gradient(
+            ellipse at 100% 0%,
+            rgba(150, 84, 105, 0.12),
+            transparent 36%
+          ),
+          var(--ink);
+        color: var(--cream);
+        box-shadow: 0 20px 50px rgba(55, 35, 25, 0.15);
+      }
+
+      .stash-page .stash-section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 23px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .stash-page .stash-section-heading .stash-eyebrow,
+      .stash-page .stash-summary > .stash-eyebrow {
+        color: var(--pink);
+      }
+
+      .stash-page .stash-section-heading h2,
+      .stash-page .stash-summary h2 {
+        margin: 0;
+        color: var(--cream);
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.6rem, 3vw, 2rem);
+        font-weight: 500;
+      }
+
+      .stash-page .stash-continue-link {
+        color: #f0bdcb;
+        font-size: 0.84rem;
+        text-decoration: none;
+      }
+
+      .stash-page .stash-continue-link:hover {
+        color: #fff1e7;
+      }
+
+      /* Product rows */
+
+      .stash-page .stash-item-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .stash-page .stash-page-item {
+        display: grid;
+        grid-template-columns: 86px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 17px;
+        border: 1px solid #40332e;
+        border-radius: 15px;
+        background: linear-gradient(145deg, #24201e, #1b1817);
+      }
+
+      .stash-page .stash-page-item-image {
+        width: 86px;
+        aspect-ratio: 1;
+        display: grid;
+        overflow: hidden;
+        place-items: center;
+        border-radius: 12px;
+        background: #e8d4bd;
+      }
+
+      .stash-page .stash-page-item-image .product-art {
+        width: 100%;
+        height: 100%;
+      }
+
+      .stash-page .stash-page-item-info {
+        min-width: 0;
+      }
+
+      .stash-page .product-category {
+        margin: 0 0 7px;
+        color: var(--pink);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .stash-page .stash-page-item-info h3 {
+        margin: 0 0 8px;
+        color: var(--cream);
+        font-size: 0.98rem;
+        font-weight: 700;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .stash-page .stash-page-item-condition {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 0 0 7px;
+        color: var(--sage);
+        font-size: 0.75rem;
+      }
+
+      .stash-page .sakura-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #a6c58d;
+      }
+
+      .stash-page .stash-page-item-unit {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .stash-page .stash-item-controls {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        margin-top: 13px;
+        border: 1px solid #705c52;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .stash-page .quantity-button {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        background: transparent;
+        color: var(--cream);
+        font-size: 1.1rem;
+        cursor: pointer;
+      }
+
+      .stash-page .quantity-button:hover:not(:disabled) {
+        background: #4b3039;
+      }
+
+      .stash-page .quantity-button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .stash-page .quantity-value {
+        min-width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-right: 1px solid #705c52;
+        border-left: 1px solid #705c52;
+        color: var(--cream);
+        font-size: 0.83rem;
+      }
+
+      .stash-page .stash-page-item-right {
+        min-width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+      }
+
+      /* Green prices */
+
+      .stash-page .stash-page-item-sub {
+        color: var(--green) !important;
+        font-family: "DM Sans", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-shadow: 0 0 16px rgba(126, 220, 122, 0.15);
+        white-space: nowrap;
+      }
+
+      .stash-page .remove-item {
+        border: 0;
+        background: transparent;
+        color: #d5a4a6;
+        font-size: 0.75rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        cursor: pointer;
+      }
+
+      .stash-page .remove-item:hover {
+        color: #ffd7dc;
+      }
+
+      /* BUY NOW product button, if rendered by stash.js */
+
+      .stash-page .stash-buy-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 9px 15px;
+        border: 1px solid #e7aabd;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #e9b2c2, #cf8099);
+        color: #241715;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .stash-page .stash-buy-btn:hover {
+        filter: brightness(1.08);
+      }
+
+      /* Summary */
+
+      .stash-page .stash-summary {
+        padding: 25px;
+        border: 1px solid #70554d;
+        border-radius: 17px;
+        background: linear-gradient(155deg, #201b19, #171413 75%);
+      }
+
+      .stash-page .stash-summary h2 {
+        margin-bottom: 22px;
+      }
+
+      .stash-page .stash-summary-lines {
+        display: grid;
+        gap: 14px;
+      }
+
+      .stash-page .stash-summary-line {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--cream);
+        font-size: 0.79rem;
+        line-height: 1.6;
+      }
+
+      .stash-page .stash-summary-line span:first-child {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .stash-page .stash-summary-line span:last-child {
+        color: var(--green);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .stash-page .stash-summary-empty {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.8;
+      }
+
+      .stash-page .stash-summary-divider {
+        height: 1px;
+        margin: 23px 0 17px;
+        background: var(--border);
+      }
+
+      .stash-page .stash-total-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 0;
+        border-top: 1px solid #55443c;
+      }
+
+      .stash-page .stash-total-row > span {
+        color: #d9e6cf;
+        font-weight: 700;
+      }
+
+      .stash-page .stash-total-row strong {
+        color: var(--green) !important;
+        font-family: "DM Sans", sans-serif;
+        font-size: clamp(1.7rem, 3vw, 2.2rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 18px rgba(126, 220, 122, 0.2);
+      }
+
+      /* Buttons */
+
+      .stash-page .stash-primary-button {
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 23px;
+        padding: 13px 18px;
+        border: 1px solid #b5d7a7;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #c4dfb6, #91bd86);
+        color: #182319;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .stash-page .stash-primary-button:hover {
+        background: linear-gradient(135deg, #d5edc8, #a6d29a);
+        box-shadow: 0 7px 22px rgba(139, 204, 126, 0.18);
+        transform: translateY(-2px);
+      }
+
+      /* BUY MORE replaces checkout on this page */
+
+      .stash-page .stash-buy-more {
+        margin-top: 24px;
+        background: linear-gradient(135deg, #c4dfb6, #91bd86);
+        color: #182319;
+      }
+
+      .stash-page .stash-summary-note {
+        display: flex;
+        align-items: start;
+        gap: 10px;
+        margin: 21px 0 0;
+        padding-top: 17px;
+        border-top: 1px solid var(--border);
+        color: var(--sage);
+        font-size: 0.77rem;
+        line-height: 1.8;
+      }
+
+      .stash-page .stash-summary-note > span:first-child {
+        color: var(--pink);
+        font-size: 1.2rem;
+      }
+
+      /* Empty state */
+
+      .stash-page .stash-empty {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: clamp(32px, 6vw, 65px) 24px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--ink);
+        color: var(--cream);
+        text-align: center;
+      }
+
+      .stash-page .stash-empty-flower {
+        margin-bottom: 15px;
+        color: var(--pink);
+        font-size: 3rem;
+      }
+
+      .stash-page .stash-empty h2 {
+        margin: 0 0 12px;
+        color: var(--cream);
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.9rem, 5vw, 2.7rem);
+        font-weight: 500;
+      }
+
+      .stash-page .stash-empty > p:not(.stash-eyebrow) {
+        max-width: 430px;
+        margin: 0 auto 24px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .stash-page .stash-empty .stash-primary-button {
+        width: fit-content;
+        margin: 0 auto;
+      }
+
+      /* Footer */
+
+      .stash-page .site-footer {
+        background: var(--ink);
+        border-top: 1px solid var(--border);
+        color: var(--cream);
+      }
+
+      .stash-page .footer-inner {
+        max-width: 1440px;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin: auto;
+        padding: 22px clamp(18px, 5vw, 60px);
+      }
+
+      .stash-page .footer-logo {
+        color: var(--cream);
+        font-size: 1.1rem;
+      }
+
+      .stash-page .footer-inner p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .stash-page .footer-inner p span {
+        color: var(--pink);
+      }
+
+      /* Toast */
+
+      .stash-page .toast {
+        position: fixed;
+        z-index: 1000;
+        right: 20px;
+        bottom: 20px;
+        max-width: calc(100% - 40px);
+        padding: 14px 20px;
+        border: 1px solid #805969;
+        border-radius: 12px;
+        background: #211a19;
+        color: var(--cream);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        transition: 0.2s ease;
+      }
+
+      .stash-page .toast.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 1000px) {
+        .stash-page .navbar {
+          justify-content: center;
+        }
+
+        .stash-page .nav-links {
+          justify-content: center;
+        }
+
+        .stash-page .stash-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .stash-page .sakura-decoration {
+          opacity: 0.4;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .stash-page .navbar {
+          gap: 14px;
+        }
+
+        .stash-page .logo {
+          justify-content: center;
+        }
+
+        .stash-page .nav-links a,
+        .stash-page .nav-stash-link {
+          padding: 9px 13px;
+          font-size: 0.78rem;
+        }
+
+        .stash-page .stash-main {
+          padding-top: 20px;
+        }
+
+        .stash-page .stash-page-hero {
+          min-height: 190px;
+        }
+
+        .stash-page .sakura-decoration {
+          right: -80px;
+          opacity: 0.25;
+        }
+
+        .stash-page .stash-layout {
+          gap: 20px;
+          padding: 14px;
+          border-radius: 16px;
+        }
+
+        .stash-page .stash-page-item {
+          grid-template-columns: 65px minmax(0, 1fr);
+          gap: 12px;
+          padding: 13px;
+        }
+
+        .stash-page .stash-page-item-image {
+          width: 65px;
+        }
+
+        .stash-page .stash-page-item-right {
+          grid-column: 1 / -1;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 10px;
+          padding-top: 12px;
+          border-top: 1px solid #40332e;
+        }
+
+        .stash-page .stash-page-item-sub {
+          margin-right: auto;
+        }
+
+        .stash-page .stash-summary {
+          padding: 19px;
+        }
+
+        .stash-page .footer-inner {
+          justify-content: center;
+          text-align: center;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .stash-page *,
+        .stash-page *::before,
+        .stash-page *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="stash-page">
+    <header class="site-header">
+      <nav class="navbar" aria-label="Main navigation">
+        <a class="logo" href="index.html" aria-label="RASSAM home">
+          <span class="logo-mark" aria-hidden="true">R</span>
+          <span>RASSAM</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="buy.html">Buy</a>
+          <a href="sell.html">Sell</a>
+          <a href="orders.html">Orders</a>
+        </div>
+
+        <a class="nav-stash-link active" href="stash.html" aria-current="page">
+          <span aria-hidden="true">♡</span>
+          Stash
+          <span id="stash-count" class="stash-count">0</span>
+        </a>
+      </nav>
+    </header>
+
+    <main class="stash-main">
+      <!-- CSS illustration: bonsai branches, blossoms and petals -->
+      <div class="sakura-decoration" aria-hidden="true">
+        <div class="sakura-sun"></div>
+        <div class="sakura-branch"></div>
+        <div class="sakura-crown"></div>
+        <div class="sakura-ground"></div>
+        <span class="sakura-petal sakura-petal-one"></span>
+        <span class="sakura-petal sakura-petal-two"></span>
+        <span class="sakura-petal sakura-petal-three"></span>
+      </div>
+
+      <section class="stash-page-hero">
+        <p class="stash-eyebrow">YOUR LITTLE COLLECTION</p>
+
+        <h1>
+          Your <span class="sakura-accent">Stash</span>
+          <span class="sakura-flower" aria-hidden="true">✿</span>
+        </h1>
+
+        <p id="stash-subtitle">
+          The components you've been saving, all in one place.
+        </p>
+      </section>
+
+      <section id="stash-page-empty" class="stash-empty" hidden>
+        <div class="stash-empty-flower" aria-hidden="true">❀</div>
+
+        <p class="stash-eyebrow">A LITTLE TOO QUIET HERE</p>
+
+        <h2>Your Stash is waiting.</h2>
+
+        <p>
+          Find the electronics you need and save them here for your next
+          project.
+        </p>
+
+        <a class="stash-primary-button" href="buy.html">
+          Explore components <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <section id="stash-page-content" class="stash-layout" hidden>
+        <div class="stash-items-column">
+          <div class="stash-section-heading">
+            <div>
+              <p class="stash-eyebrow">SAVED WITH LOVE</p>
+              <h2>Your components</h2>
+            </div>
+
+            <a class="stash-continue-link" href="buy.html">
+              Keep exploring <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div id="stash-item-list" class="stash-item-list">
+            <!-- Rendered by stash.js -->
+          </div>
+        </div>
+
+        <aside class="stash-summary" aria-labelledby="stash-summary-title">
+          <p class="stash-eyebrow">✿ &nbsp; YOUR COLLECTION</p>
+
+          <h2 id="stash-summary-title">Stash summary</h2>
+
+          <div id="stash-summary-lines" class="stash-summary-lines">
+            <!-- Rendered by stash.js -->
+          </div>
+
+          <div class="stash-summary-divider"></div>
+
+          <div class="stash-total-row">
+            <span>Total</span>
+            <strong id="stash-total">₹0</strong>
+          </div>
+
+          <!-- BUY MORE replaces checkout.
+             It does not trigger checkout.js. -->
+          <a class="stash-primary-button stash-buy-more" href="buy.html">
+            BUY MORE <span aria-hidden="true">↗</span>
+          </a>
+
+          <p class="stash-summary-note">
+            <span aria-hidden="true">♡</span>
+            <span>Good components. Better projects. Less waste.</span>
+          </p>
+        </aside>
+      </section>
+
+      <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <a class="logo footer-logo" href="index.html">
+          <span class="logo-mark" aria-hidden="true">R</span>
+          <span>RASSAM</span>
+        </a>
+
+        <p>Made with <span aria-label="love">♥</span> for builders.</p>
+
+        <p>© <span id="current-year"></span> RASSAM</p>
+      </div>
+    </footer>
+
+    <script>
+      const yearElement = document.getElementById("current-year");
+
+      if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+      }
+    </script>
+  </body>
+</html>
+```

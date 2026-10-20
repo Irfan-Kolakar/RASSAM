@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Discover affordable electronics components on RASSAM."
+    />
+    <title>Product Details — RASSAM</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="buy.css" />
+
+    <!-- Load order matters: app.js (catalogue + Stash) → checkout.js → buy.js -->
+    <script src="app.js" defer></script>
+    <script src="checkout.js" defer></script>
+    <script src="buy.js" defer></script>
+  </head>
+
+  <body class="buy-page">
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="rassam-mark" viewBox="0 0 32 32">
+        <path
+          d="M10 24V13M10 17c0-5 3-8 8-8h2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+        />
+        <circle cx="10" cy="24" r="2.4" fill="currentColor" />
+        <circle cx="23.5" cy="9" r="2.6" fill="currentColor" opacity=".5" />
+      </symbol>
+    </svg>
+
+    <!-- NAVIGATION -->
+    <header class="buy-header">
+      <nav class="buy-nav" aria-label="Main navigation">
+        <a href="index.html" class="buy-brand">
+          <span class="buy-brand-mark">R</span>
+          <span class="buy-brand-text">
+            RASSAM
+            <small>THE STUDENT MARKETPLACE</small>
+          </span>
+        </a>
+
+        <div class="buy-nav-links">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Explore</a>
+          <button
+            type="button"
+            class="buy-stash-link"
+            id="open-stash"
+            aria-controls="stash-drawer"
+            aria-expanded="false"
+          >
+            Stash <span class="stash-count" id="stash-count">0</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="buy-main">
+      <nav class="buy-navigation" aria-label="Product page navigation">
+        <a href="shop.html" id="buy-back" aria-label="Go back">
+          <span aria-hidden="true">←</span> Back
+        </a>
+        <a href="index.html" aria-label="Go to homepage">
+          <span aria-hidden="true">⌂</span> Home
+        </a>
+      </nav>
+
+      <div class="buy-topline">
+        <span class="buy-page-label">PRODUCT / DETAILS</span>
+      </div>
+
+      <!-- LOADING -->
+      <section id="buy-loading" class="buy-loading">
+        <span class="buy-loader"></span>
+        <p>Preparing your component...</p>
+      </section>
+
+      <!-- ERROR -->
+      <section id="buy-error" class="buy-error" hidden>
+        <span class="buy-error-symbol">!</span>
+        <h2>Component unavailable</h2>
+        <p id="buy-error-message">We couldn't find this component.</p>
+        <a href="shop.html" class="buy-button buy-button-primary">
+          Explore components →
+        </a>
+      </section>
+
+      <!-- PRODUCT DETAILS -->
+      <section id="buy-detail" hidden>
+        <!-- HERO HEADER -->
+        <header class="buy-hero">
+          <div class="buy-hero-copy">
+            <div class="buy-breadcrumb">
+              <a href="shop.html">Browse Components</a>
+              <span>/</span>
+              <span id="buy-category">COMPONENTS</span>
+            </div>
+
+            <h1 id="buy-name" class="buy-product-title">
+              Loading component...
+            </h1>
+
+            <p id="breadcrumb-name" class="buy-product-subtitle">
+              Electronics components, made accessible.
+            </p>
+
+            <div class="buy-product-meta">
+              <span id="buy-condition" class="buy-condition"
+                >GOOD CONDITION</span
+              >
+              <span id="buy-stock" class="buy-stock">IN STOCK</span>
+            </div>
+          </div>
+
+          <div class="buy-price-block">
+            <span class="buy-price-label">STUDENT PRICE</span>
+            <div class="buy-price-line">
+              <span id="buy-price" class="buy-price">₹0</span>
+              <span class="buy-price-note">/ item</span>
+            </div>
+            <p class="buy-price-footnote">
+              Affordable components. Bigger ideas.
+            </p>
+          </div>
+        </header>
+
+        <div class="buy-layout">
+          <!-- PRODUCT VISUAL -->
+          <div class="buy-visual-column">
+            <div class="buy-product-stage">
+              <div class="buy-stage-top">
+                <span class="buy-stage-index">R / COMPONENTS</span>
+                <span class="buy-stage-dot"></span>
+              </div>
+
+              <div id="buy-image-wrap" class="buy-image-wrap">
+                <!-- Product artwork injected by buy.js -->
+              </div>
+
+              <div class="buy-stage-bottom">
+                <span>PRE-OWNED. RE-POWERED.</span>
+                <span>EST. RASSAM</span>
+              </div>
+            </div>
+
+            <div class="buy-visual-caption">
+              <span class="buy-caption-mark">✳</span>
+              <p>
+                Good components deserve
+                <strong>another project.</strong>
+              </p>
+            </div>
+          </div>
+
+          <!-- PRODUCT INFORMATION -->
+          <div class="buy-info-column">
+            <h2 class="buy-section-title">About this component</h2>
+            <p id="buy-description" class="buy-description">
+              Discover your next project component.
+            </p>
+
+            <h2 class="buy-section-title">Specifications</h2>
+            <dl id="buy-specs" class="buy-specs"></dl>
+
+            <!-- QUANTITY -->
+            <div id="buy-qty-row" class="buy-quantity-section">
+              <div class="buy-quantity-heading">
+                <label for="buy-qty">QUANTITY</label>
+                <span id="buy-qty-max">Available stock</span>
+              </div>
+
+              <div class="buy-quantity-control">
+                <button
+                  type="button"
+                  id="buy-qty-dec"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+                <input
+                  type="number"
+                  id="buy-qty"
+                  min="1"
+                  value="1"
+                  inputmode="numeric"
+                  aria-label="Product quantity"
+                />
+                <button
+                  type="button"
+                  id="buy-qty-inc"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <!-- ACTIONS: Buy Now is primary, Stash It secondary -->
+            <div id="buy-actions" class="buy-actions">
+              <button
+                type="button"
+                id="buy-now"
+                class="buy-button buy-button-primary"
+              >
+                BUY NOW <span aria-hidden="true">↗</span>
+              </button>
+
+              <button
+                type="button"
+                id="buy-add-stash"
+                class="buy-button buy-button-secondary"
+              >
+                <span aria-hidden="true">＋</span> STASH IT!
+              </button>
+            </div>
+
+            <p id="buy-out-notice" class="buy-out-notice" hidden>
+              This component is currently out of stock.
+            </p>
+
+            <a class="buy-browse-link" href="shop.html"
+              >← Back to Browse Components</a
+            >
+
+            <div class="buy-trust-row">
+              <div>
+                <span class="buy-trust-icon">↗</span>
+                <span>Student-to-student</span>
+              </div>
+              <div>
+                <span class="buy-trust-icon">◇</span>
+                <span>Budget-friendly</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER NOTE -->
+        <div class="buy-bottom-note">
+          <span>BUILT FOR MAKERS.</span>
+          <span>POWERED BY THE RASSAM COMMUNITY.</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="buy-footer">
+      <span>© <span id="current-year"></span> RASSAM</span>
+      <span>MADE FOR THE NEXT BIG IDEA.</span>
+    </footer>
+
+    <!-- STASH DRAWER (logic lives in app.js) -->
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside
+      class="stash-drawer"
+      id="stash-drawer"
+      aria-labelledby="drawer-title"
+      aria-hidden="true"
+      inert
+    >
+      <div class="drawer-header">
+        <h2 id="drawer-title">Stash <span id="drawer-count"></span></h2>
+        <button
+          class="btn-icon"
+          id="close-stash"
+          type="button"
+          aria-label="Close stash"
+        >
+          ×
+        </button>
+      </div>
+      <div class="stash-items" id="stash-items"></div>
+      <div class="stash-empty" id="stash-empty">
+        <div class="stash-empty-art" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><use href="#rassam-mark" /></svg>
+        </div>
+        <h3>Nothing stashed yet.</h3>
+        <p>Find a part that sparks an idea.</p>
+        <a class="btn btn-primary" id="discover-components" href="shop.html">
+          Explore components
+        </a>
+      </div>
+      <div class="drawer-footer" id="drawer-footer" hidden>
+        <div class="drawer-subtotal">
+          <span>Subtotal</span><strong id="stash-subtotal">₹0</strong>
+        </div>
+        <p class="drawer-disclaimer">
+          Stashing doesn't reserve stock until you pay.
+        </p>
+        <button
+          class="btn btn-primary drawer-review"
+          id="review-stash"
+          type="button"
+        >
+          Checkout →
+        </button>
+        <button
+          class="btn-link continue-shopping"
+          id="continue-shopping"
+          type="button"
+        >
+          Keep exploring
+        </button>
+      </div>
+    </aside>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
