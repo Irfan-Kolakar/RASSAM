@@ -15,10 +15,7 @@ function isAdmin(req) {
     return false;
   }
 
-  return crypto.timingSafeEqual(
-    Buffer.from(supplied),
-    Buffer.from(expected),
-  );
+  return crypto.timingSafeEqual(Buffer.from(supplied), Buffer.from(expected));
 }
 
 module.exports = async function handler(req, res) {
@@ -46,7 +43,12 @@ module.exports = async function handler(req, res) {
       message: "Method not allowed.",
     });
   }
-
+  console.log("ADMIN AUTH DIAGNOSTIC:", {
+    tokenConfigured: Boolean(process.env.ADMIN_TOKEN),
+    tokenLength: (process.env.ADMIN_TOKEN || "").length,
+    suppliedTokenReceived: Boolean(req.headers["x-admin-token"]),
+    suppliedTokenLength: (req.headers["x-admin-token"] || "").length,
+  });
   if (!isAdmin(req)) {
     return res.status(401).json({
       success: false,
