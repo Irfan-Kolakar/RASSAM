@@ -1025,8 +1025,7 @@
       results.textContent = "Checking your order...";
 
       try {
-        const data = await apiRequest(
-          `/api/messages?orderId=${encodeURIComponent(orderId)}`,
+        const data = await apiRequest(`https://rassam-backend.vercel.app/api/messages?orderId=${encodeURIComponent(orderId)}`
         );
 
         showOrder(data);
@@ -1067,7 +1066,7 @@
       showStatus(messageStatus, "Sending message...");
 
       try {
-        await apiRequest("/api/messages", {
+        await apiRequest("https://rassam-backend.vercel.app/api/messages", {
           method: "POST",
           body: JSON.stringify({
             orderId,
@@ -1085,7 +1084,7 @@
         );
 
         const data = await apiRequest(
-          `/api/messages?orderId=${encodeURIComponent(orderId)}`,
+         `https://rassam-backend.vercel.app/api/messages?orderId=${encodeURIComponent(orderId)}`
         );
 
         showOrder(data);

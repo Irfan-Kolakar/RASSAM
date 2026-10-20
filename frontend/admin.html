@@ -742,7 +742,7 @@
           headers.set("Content-Type", "application/json");
           headers.set("X-Admin-Token", adminToken);
 
-          const response = await fetch(path, {
+         const response = await fetch(`https://rassam-backend.vercel.app${path}`, {
             ...options,
             headers,
             cache: "no-store",
@@ -857,18 +857,15 @@
 
               <div class="order-items"><strong>Items:</strong> ${itemText}</div>
               <div class="order-messages">${messageHTML}</div>
-
-              <form class="order-reply">
-                <textarea class="admin-reply-text" name="message" rows="2"
-                  maxlength="500" placeholder="Write a message to the customer"></textarea>
-                <select class="admin-select" name="delivery" aria-label="Update delivery status">
-                  <option value="">Delivery: no change</option>
-                  <option value="packed" ${delivery === "packed" ? "selected" : ""}>Packed</option>
-                  <option value="shipped" ${delivery === "shipped" ? "selected" : ""}>Shipped</option>
-                  <option value="delivered" ${delivery === "delivered" ? "selected" : ""}>Delivered</option>
-                </select>
-                <button class="admin-button" type="submit">Send update</button>
-              </form>
+<form class="order-reply">
+  <select class="admin-select" name="delivery" aria-label="Update delivery status" required>
+    <option value="" selected disabled>Choose delivery status</option>
+    <option value="packed">Packed</option>
+    <option value="shipped">Shipped</option>
+    <option value="delivered">Delivered</option>
+  </select>
+  <button class="admin-button" type="submit">Save status</button>
+</form>
             </article>
           `;
             })
@@ -987,59 +984,57 @@
 
         $("#logout").addEventListener("click", () => lockInbox());
 
-        ordersContainer.addEventListener("submit", async (event) => {
-          const form = event.target;
-          if (
-            !(form instanceof HTMLFormElement) ||
-            !form.matches(".order-reply")
-          )
-            return;
-          event.preventDefault();
+       ordersContainer.addEventListener("submit", async (event) => {
+const form = event.target;
 
-          const card = form.closest(".order-card");
-          const orderId = card?.dataset.id;
-          const message = form.elements.namedItem("message").value.trim();
-          const delivery = form.elements.namedItem("delivery").value;
+if (
+!(form instanceof HTMLFormElement) ||
+!form.matches(".order-reply")
+) {
+return;
+}
 
-          if (!orderId) {
-            setStatus(
-              dashboardStatus,
-              "Could not identify this order.",
-              "error",
-            );
-            return;
-          }
-          if (!message && !delivery) {
-            setStatus(
-              dashboardStatus,
-              "Write a message or choose a delivery update.",
-              "error",
-            );
-            return;
-          }
+event.preventDefault();
 
-          const submitButton = form.querySelector('button[type="submit"]');
-          submitButton.disabled = true;
-          submitButton.textContent = "Sending…";
+const card = form.closest(".order-card");
+const orderId = card?.dataset.id;
+const delivery = form.elements.namedItem("delivery").value;
 
-          try {
-            await api("/api/admin/reply", {
-              method: "POST",
-              body: JSON.stringify({ orderId, text: message, delivery }),
-            });
-            setStatus(dashboardStatus, "Your update was sent.", "success");
-            await loadOrders();
-          } catch (error) {
-            setStatus(
-              dashboardStatus,
-              error.message || "Unable to send update.",
-              "error",
-            );
-          } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = "Send update";
-          }
-        });
+if (!orderId || !["packed", "shipped", "delivered"].includes(delivery)) {
+setStatus(
+dashboardStatus,
+"Please choose a valid delivery status.",
+"error",
+);
+return;
+}
+
+const submitButton = form.querySelector('button[type="submit"]');
+submitButton.disabled = true;
+submitButton.textContent = "Saving...";
+
+try {
+await api("/api/admin/update", {
+method: "POST",
+body: JSON.stringify({ orderId, delivery }),
+});
+
+```
+setStatus(dashboardStatus, "Delivery status saved!", "success");
+await loadOrders();
+```
+
+} catch (error) {
+setStatus(
+dashboardStatus,
+error.message || "Unable to save delivery status.",
+"error",
+);
+} finally {
+submitButton.disabled = false;
+submitButton.textContent = "Save status";
+}
+});
 
         document.addEventListener("visibilitychange", () => {
           if (document.hidden) return;
