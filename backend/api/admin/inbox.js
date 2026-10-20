@@ -2,12 +2,12 @@
 
 const connectDB = require("../../lib/mongo");
 const crypto = require("crypto");
-
 function isAdmin(req) {
-  const expected = process.env.ADMIN_TOKEN || "";
-  const supplied = req.headers["x-admin-token"] || "";
+  const expected = process.env.ADMIN_TOKEN;
+  const supplied = req.headers["x-admin-token"];
 
   if (
+    typeof expected !== "string" ||
     typeof supplied !== "string" ||
     expected.length < 32 ||
     supplied.length !== expected.length
@@ -15,9 +15,15 @@ function isAdmin(req) {
     return false;
   }
 
-  return crypto.timingSafeEqual(Buffer.from(supplied), Buffer.from(expected));
-}
+  const expectedBuffer = Buffer.from(expected, "utf8");
+  const suppliedBuffer = Buffer.from(supplied, "utf8");
 
+  if (expectedBuffer.length !== suppliedBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(expectedBuffer, suppliedBuffer);
+}
 module.exports = async function handler(req, res) {
   const allowedOrigin = "https://rassam-market.vercel.app";
   const origin = req.headers.origin;
@@ -48,6 +54,7 @@ module.exports = async function handler(req, res) {
     tokenLength: (process.env.ADMIN_TOKEN || "").length,
     suppliedTokenReceived: Boolean(req.headers["x-admin-token"]),
     suppliedTokenLength: (req.headers["x-admin-token"] || "").length,
+    tokensMatch: isAdmin(req),
   });
   if (!isAdmin(req)) {
     return res.status(401).json({
