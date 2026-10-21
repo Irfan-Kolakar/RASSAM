@@ -38,7 +38,7 @@
     });
   }
 
-  function init() {
+  async function init() {
     const data = window.RASSAM;
     if (!data || !Array.isArray(data.PRODUCTS)) {
       showError(
@@ -48,6 +48,9 @@
     }
 
     setupBack();
+    if (data.ready) {
+      await data.ready;
+    }
 
     const id = (new URLSearchParams(location.search).get("id") || "")
       .trim()

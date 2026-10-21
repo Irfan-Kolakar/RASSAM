@@ -327,15 +327,35 @@
 
   // ── Product artwork ────────────────────────────────────
   function art(product) {
+    const imageUrl = [product.image, product.imageUrl, product.imageURL, product.icon]
+      .find((value) => typeof value === "string" && /^https?:\/\//i.test(value));
+
+    if (imageUrl) {
+      return `
+        <div class="product-art product-art-image">
+          <img
+            src="${escapeHTML(imageUrl)}"
+            alt="${escapeHTML(product.name || "Electronic component")}"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            style="width:100%;height:100%;object-fit:contain"
+          >
+        </div>
+      `;
+    }
+
+    const icon = /^https?:\/\//i.test(product.icon || "")
+      ? "⚙"
+      : (product.icon || "⚙");
+
     return `
-      <div class="product-art product-art-${escapeHTML(product.art)}" aria-hidden="true">
-        <span>${escapeHTML(product.icon)}</span>
+      <div class="product-art product-art-${escapeHTML(product.art || "default")}" aria-hidden="true">
+        <span>${escapeHTML(icon)}</span>
         <i></i>
         <b></b>
       </div>
     `;
   }
-
   // ── Homepage product grid (hidden "marketplace engine" on index.html) ─
   function renderProducts() {
     const grid = $("#product-grid");
@@ -854,7 +874,65 @@
     showToast,
     openCheckout: undefined, // set by checkout.js
   };
+  function loadLiveProducts() {
+    return fetch("https://rassam-backend.vercel.app/api/products", {
+      method: "GET",
+      cache: "no-store"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Products API returned HTTP " + response.status);
+        }
+        return response.json();
+      })
+      .then((result) => {
+        if (!result || result.success !== true || !Array.isArray(result.products)) {
+          throw new Error("Invalid products API response");
+        }
+
+        const liveProducts = result.products
+          .filter((product) => product && product.id && product.name)
+          .map((product) => ({
+            ...product,
+           id: String(product.id),
+            price: Number(product.price),
+            stock: Math.max(0, Math.floor(Number(product.stock) || 0)),
+            category: String(product.category || ""),
+            description: String(product.description || ""),
+            keywords: String(product.keywords || ""),
+            badge: String(product.badge || ""),
+            art: String(product.art || "default")
+          }))
+          .filter((product) =>
+            Number.isFinite(product.price) &&
+            product.price >= 0 &&
+            product.id.length > 0
+          );
+
+        if (!liveProducts.length) {
+          throw new Error("The API returned no valid products");
+        }
+
+        PRODUCTS.splice(0, PRODUCTS.length, ...liveProducts);
+
+        renderProducts();
+        renderStash();
+        updateStashCount();
+
+        window.dispatchEvent(new CustomEvent("rassam:products-updated", {
+          detail: { count: liveProducts.length }
+        }));
+
+        console.info("[RASSAM] Loaded " + liveProducts.length + " live MongoDB products.");
+        return liveProducts;
+      })
+      .catch((error) => {
+        console.error("[RASSAM] Could not load live products; keeping fallback catalogue.", error);
+        return PRODUCTS;
+      });
+  }
   window.RASSAM = api;
+  api.ready = loadLiveProducts();
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });

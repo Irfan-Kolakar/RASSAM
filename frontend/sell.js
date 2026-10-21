@@ -107,7 +107,7 @@
       msg.textContent = "Saving…";
       submit.disabled = true;
       try {
-        const res = await fetch("/api/listings", {
+        const res = await fetch("https://rassam-backend.vercel.app/api/listings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
