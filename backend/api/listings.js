@@ -108,10 +108,11 @@ module.exports = async function handler(req, res) {
     await connectDB();
 
     const db = require("mongoose").connection.db;
+    const listingId = `student-${randomUUID()}`;
+    const createdAt = new Date();
+
     const listing = {
-      id: `student-${randomUUID()}`,
-      sellerName,
-      sellerMobile,
+      id: listingId,
       name: title,
       category,
       condition,
@@ -120,10 +121,24 @@ module.exports = async function handler(req, res) {
       description,
       badge: "Student Listing",
       source: "student",
-      createdAt: new Date(),
+      createdAt,
+    };
+
+    const seller = {
+      listingId,
+      sellerName,
+      sellerMobile,
+      createdAt,
     };
 
     await db.collection("products").insertOne(listing);
+
+    try {
+      await db.collection("sellers").insertOne(seller);
+    } catch (sellerError) {
+      await db.collection("products").deleteOne({ id: listingId });
+      throw sellerError;
+    }
 
     res.setHeader("Cache-Control", "no-store");
 
