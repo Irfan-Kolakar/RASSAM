@@ -98,7 +98,7 @@
     }
     try {
       const res = await fetch(
-        `/api/messages?orderId=${encodeURIComponent(orderId)}`,
+        `https://rassam-backend.vercel.app/api/messages?orderId=${encodeURIComponent(orderId)}`,
       );
       const data = await res.json();
       if (!res.ok || !data.success)
@@ -139,7 +139,7 @@
       return;
     }
     try {
-      const res = await fetch("/api/messages", {
+      const res = await fetch("https://rassam-backend.vercel.app/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderId, text }),
