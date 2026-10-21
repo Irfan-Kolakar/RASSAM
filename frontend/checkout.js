@@ -1,4 +1,4 @@
-/* RASSAM — Checkout dialog. Works from the home page drawer, the Buy Components page
+/* RASSAM â€” Checkout dialog. Works from the home page drawer, the Buy Components page
    and the product page (Buy Now).
    Stash data comes only from window.RASSAM (app.js). The order is still POSTed to
    /api/orders: { name, phone, pincode, address, paymentMethod: "cod"|"online", items:[{id, qty}] }.
@@ -12,7 +12,7 @@
 
   const { PRODUCTS, money, escapeHTML } = data;
 
-  // ── Validation (browser side) ────────────────────────
+  // â”€â”€ Validation (browser side) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // The server MUST repeat these checks; frontend validation alone is not security.
   const NAME_RE = /^.{2,60}$/;
 
@@ -34,11 +34,11 @@
 
   const VALIDATORS = {
     name: (v) =>
-      NAME_RE.test(v.trim()) ? "" : "Enter your full name (2–60 characters).",
+      NAME_RE.test(v.trim()) ? "" : "Enter your full name (2â€“60 characters).",
     phone: (v) =>
       normalizePhone(v)
         ? ""
-        : "Enter a valid 10-digit Indian mobile number (starts with 6–9). +91 is optional.",
+        : "Enter a valid 10-digit Indian mobile number (starts with 6â€“9). +91 is optional.",
     pincode: (v) =>
       isPincode(v)
         ? ""
@@ -46,7 +46,7 @@
     address: (v) =>
       v.trim().length >= 10 && v.trim().length <= 300
         ? ""
-        : "Enter your full delivery address (10–300 characters).",
+        : "Enter your full delivery address (10â€“300 characters).",
   };
 
   // The Cancel button and fields are styled explicitly so they stay readable on every page.
@@ -177,21 +177,21 @@ dialog.checkout-dialog .checkout-top-close:hover {
       ? `
       <form class="sell-form" id="checkout-form" novalidate>
       <div class="checkout-heading">
-  <h3>Place your order 🌸</h3>
+  <h3>Place your order</h3>
   <button
     type="button"
     class="checkout-top-close"
     data-close
     aria-label="Close checkout"
     title="Close checkout"
-  >×</button>
+  >Ã—</button>
 </div>
         <div class="checkout-lines">
           ${lines
             .map(
               (l) => `
             <div class="checkout-line">
-              <span>${escapeHTML(l.name)} × ${l.qty}</span>
+              <span>${escapeHTML(l.name)} Ã— ${l.qty}</span>
               <strong>${money(l.sub)}</strong>
             </div>`,
             )
@@ -235,7 +235,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
         <p class="sell-msg" id="checkout-msg" role="status" aria-live="polite"></p>
         <div class="sell-actions">
           <button class="sell-cancel" type="button" data-close>Cancel</button>
-          <button class="btn btn-primary button-primary" type="submit">Place order <span aria-hidden="true">↗</span></button>
+          <button class="btn btn-primary button-primary" type="submit">Place order <span aria-hidden="true">â†—</span></button>
         </div>
       </form>`
       : `
@@ -258,6 +258,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
     const submit = form.querySelector('[type="submit"]');
 
     let submitting = false;
+    let acknowledgmentPending = false;
     form.noValidate = true;
 
     function checkField(field) {
@@ -284,22 +285,27 @@ dialog.checkout-dialog .checkout-top-close:hover {
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (submitting) return;
+      if (submitting || acknowledgmentPending) return;
 
-      // Validate every field; keep what the customer typed and show messages beside each field.
+      // Validate the existing checkout fields.
       let firstBad = null;
       const payInputs = form.querySelectorAll('input[name="paymentMethod"]');
       const payError = form.querySelector('[data-error-for="paymentMethod"]');
+
       if (!form.querySelector('input[name="paymentMethod"]:checked')) {
         payError.textContent =
-          "Choose Cash on Delivery or Online payment(not available).";
+          "Choose Cash on Delivery or Online payment (not available).";
         firstBad = payInputs[0];
       } else {
         payError.textContent = "";
       }
+
       Object.keys(VALIDATORS).forEach((field) => {
-        if (!checkField(field) && !firstBad) firstBad = form.elements[field];
+        if (!checkField(field) && !firstBad) {
+          firstBad = form.elements[field];
+        }
       });
+
       if (firstBad) {
         msg.textContent = "Please fix the highlighted fields.";
         firstBad.focus();
@@ -310,12 +316,39 @@ dialog.checkout-dialog .checkout-top-close:hover {
       fd.name = fd.name.trim();
       fd.address = fd.address.trim();
       fd.pincode = fd.pincode.trim();
-      fd.phone = normalizePhone(fd.phone); // clean 10-digit number (already validated)
-      const items = lines.map((l) => ({ id: l.id, qty: l.qty }));
+      fd.phone = normalizePhone(fd.phone);
 
-      msg.textContent = "Placing order…";
+      const items = lines.map((line) => ({
+        id: line.id,
+        qty: line.qty,
+      }));
+
+      // Ask for acknowledgment without replacing or destroying the form.
+      acknowledgmentPending = true;
+      let acknowledged = false;
+
+      try {
+        acknowledged = await requestOrderAcknowledgment();
+      } catch (error) {
+        console.error("Order acknowledgment could not be opened:", error);
+      } finally {
+        acknowledgmentPending = false;
+      }
+
+      if (!acknowledged) return;
+
       submitting = true;
       submit.disabled = true;
+
+      msg.textContent =
+        "Just a few valuable secondsâ€¦ ðŸŒ¿\n" +
+        "We're processing your order with care. Please wait a moment while we confirm your details.\n" +
+        "Please don't refresh or close this page while we process your order.";
+
+      msg.style.whiteSpace = "pre-line";
+
+      const processingOverlay = showOrderProcessing(dlg);
+
       try {
         const res = await fetch(
           "https://rassam-backend.vercel.app/api/orders",
@@ -325,36 +358,45 @@ dialog.checkout-dialog .checkout-top-close:hover {
             body: JSON.stringify({ ...fd, items }),
           },
         );
+
         const result = await res.json();
+
+        // Remove the waiting screen when the request has returned.
+        processingOverlay.remove();
+
         if (!res.ok || !result.success) {
           throw new Error(result.message || "Could not place the order.");
         }
 
         try {
-          localStorage.setItem("rassam-order", result.order.id); // lets the support widget follow this order
+          localStorage.setItem("rassam-order", result.order.id);
         } catch {
-          /* storage unavailable: harmless */
+          // Storage may be unavailable; the order can still succeed.
         }
-        const ids = lines.map((l) => l.id);
+
+        const ids = lines.map((line) => line.id);
 
         if (
           String(result.order.paymentMethod || "").toLowerCase() === "cod" ||
           String(result.order.status || "").toLowerCase() === "awaiting-payment"
         ) {
           data.removeItems(ids);
-          showDone(form, dlg, "Your order is placed successfully! 🌸", [
+
+          showDone(form, dlg, "Your order is placed successfully! ðŸŒ¸", [
             `Reference: <strong>${escapeHTML(result.order.id)}</strong>`,
-            `Payment: <strong>Cash on Delivery</strong> — pay ${money(
+            `Payment: <strong>Cash on Delivery</strong> â€” pay ${money(
               Number.isFinite(Number(result.order.amountRupees))
                 ? Number(result.order.amountRupees)
                 : lines.reduce((sum, line) => sum + line.sub, 0),
             )} when it arrives. Not paid yet.`,
           ]);
+
           return;
         }
 
-        // Online payment: open Razorpay. The order stays UNPAID until the server verifies the payment.
+        // Preserve the existing online-payment flow.
         submitting = false;
+
         await payOnline({
           form,
           dlg,
@@ -364,14 +406,169 @@ dialog.checkout-dialog .checkout-top-close:hover {
           ids,
         });
       } catch (err) {
-        msg.textContent = err.message;
+        processingOverlay.remove();
+        msg.textContent =
+          err instanceof Error
+            ? err.message
+            : "Could not place the order. Please try again.";
+
+        msg.style.whiteSpace = "";
         submitting = false;
         submit.disabled = false;
       }
     });
   }
 
-  // ── Result screens + online payment ───────────────────
+  // â”€â”€ Result screens + online payment â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  function requestOrderAcknowledgment() {
+    return new Promise((resolve) => {
+      const acknowledgment = document.createElement("dialog");
+
+      acknowledgment.setAttribute("aria-labelledby", "rassam-ack-title");
+      acknowledgment.style.cssText =
+        "width:min(92vw,520px);max-height:85vh;overflow:auto;" +
+        "padding:0;border:1px solid #dedbd2;border-radius:18px;" +
+        "background:#fffdf8;color:#20251f;" +
+        "box-shadow:0 24px 80px rgba(0,0,0,.28);";
+
+      acknowledgment.innerHTML = `
+        <div style="padding:24px;font-family:inherit;">
+          <p style="margin:0 0 8px;color:#68745f;font-size:12px;letter-spacing:.12em;text-transform:uppercase;">
+            One quick thing
+          </p>
+          <h2 id="rassam-ack-title" style="margin:0 0 16px;font-size:24px;line-height:1.2;">
+            Before you place your order
+          </h2>
+
+          <div style="font-size:14px;line-height:1.65;">
+            <p>
+              <strong>Used components:</strong>
+              RASSAM makes an effort to check used components, but we cannot
+              guarantee that every item will work perfectly in every setup.
+              Please review the listing and contact us if you have concerns.
+            </p>
+            <p>
+              <strong>Your privacy:</strong>
+              Your order details are used to process your order and coordinate
+              collection or delivery. Order-related communication may take place
+              through WhatsApp. WhatsApp has its own privacy practices, so please
+              avoid sharing unnecessary sensitive information.
+            </p>
+          </div>
+
+          <label style="display:flex;gap:10px;align-items:flex-start;margin:18px 0;padding:14px;border:1px solid #e3e1d9;border-radius:12px;font-size:13px;line-height:1.5;cursor:pointer;">
+            <input id="rassam-order-ack" type="checkbox"
+              style="margin-top:3px;flex:0 0 auto;width:17px;height:17px;">
+            <span>I have read and understood the information above and want to continue with my order.</span>
+          </label>
+
+          <p id="rassam-ack-error" role="alert"
+            style="display:none;margin:0 0 12px;color:#a12e2e;font-size:13px;">
+            Please check the acknowledgment box to continue.
+          </p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;">
+            <button type="button" data-ack-back
+              style="min-height:42px;padding:10px 16px;border:1px solid #d7d5cc;border-radius:10px;background:transparent;color:inherit;font:inherit;cursor:pointer;">
+              Go Back
+            </button>
+            <button type="button" data-ack-confirm disabled
+              style="min-height:42px;padding:10px 16px;border:0;border-radius:10px;background:#263b2c;color:#fff;font:inherit;font-weight:600;cursor:pointer;opacity:.55;">
+              Confirm &amp; Place Order
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(acknowledgment);
+
+      const checkbox = acknowledgment.querySelector("#rassam-order-ack");
+      const error = acknowledgment.querySelector("#rassam-ack-error");
+      const confirmButton = acknowledgment.querySelector("[data-ack-confirm]");
+      const backButton = acknowledgment.querySelector("[data-ack-back]");
+
+      let settled = false;
+
+      const finish = (accepted) => {
+        if (settled) return;
+        settled = true;
+
+        if (acknowledgment.open) acknowledgment.close();
+        acknowledgment.remove();
+        resolve(accepted);
+      };
+
+      checkbox.addEventListener("change", () => {
+        confirmButton.disabled = !checkbox.checked;
+        confirmButton.style.opacity = checkbox.checked ? "1" : ".55";
+        error.style.display = "none";
+      });
+
+      backButton.addEventListener("click", () => finish(false));
+
+      confirmButton.addEventListener("click", () => {
+        if (!checkbox.checked) {
+          error.style.display = "block";
+          checkbox.focus();
+          return;
+        }
+
+        finish(true);
+      });
+
+      acknowledgment.addEventListener("cancel", (event) => {
+        event.preventDefault();
+        finish(false);
+      });
+
+      try {
+        acknowledgment.showModal();
+      } catch (error) {
+        acknowledgment.remove();
+        resolve(false);
+      }
+    });
+  }
+
+  function showOrderProcessing(dlg) {
+    const overlay = document.createElement("div");
+
+    overlay.setAttribute("role", "status");
+    overlay.setAttribute("aria-live", "polite");
+
+    overlay.style.cssText =
+      "position:fixed;inset:0;z-index:2147483000;" +
+      "display:flex;align-items:center;justify-content:center;" +
+      "padding:22px;box-sizing:border-box;" +
+      "background:rgba(16,24,18,.66);";
+
+    overlay.innerHTML = `
+      <div style="width:min(100%,410px);box-sizing:border-box;padding:28px 24px;border-radius:20px;background:#fffdf8;color:#20251f;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.25);font-family:inherit;">
+        <div aria-hidden="true" style="font-size:30px;margin-bottom:12px;">ðŸŒ¿</div>
+        <h2 style="margin:0 0 12px;font-size:23px;line-height:1.25;">
+          Just a few valuable secondsâ€¦
+        </h2>
+        <p style="margin:0 0 12px;font-size:14px;line-height:1.65;">
+          We're processing your order with care. Please wait a moment while we confirm your details.
+        </p>
+        <p style="margin:0;color:#68745f;font-size:12px;line-height:1.6;">
+          Please don't refresh or close this page while we process your order.
+        </p>
+        <div aria-hidden="true" style="width:30px;height:30px;margin:20px auto 0;border:3px solid #dce3d9;border-top-color:#36543d;border-radius:50%;animation:rassam-order-spin .8s linear infinite;"></div>
+      </div>
+    `;
+
+    if (!document.getElementById("rassam-order-processing-style")) {
+      const style = document.createElement("style");
+      style.id = "rassam-order-processing-style";
+      style.textContent =
+        "@keyframes rassam-order-spin{to{transform:rotate(360deg)}}";
+      document.head.appendChild(style);
+    }
+
+    dlg.appendChild(overlay);
+    return overlay;
+  }
   function showDone(form, dlg, title, htmlLines) {
     form.innerHTML = `
       <h3>${title}</h3>
@@ -386,7 +583,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
     form.innerHTML = `
       <h3>Payment not completed.</h3>
       <p class="sell-msg">${escapeHTML(note)}</p>
-      <p class="sell-msg">Reference: <strong>${escapeHTML(order.id)}</strong> · Status: <strong>unpaid</strong>. Nothing has been charged for this order unless your bank says otherwise.</p>
+      <p class="sell-msg">Reference: <strong>${escapeHTML(order.id)}</strong> Â· Status: <strong>unpaid</strong>. Nothing has been charged for this order unless your bank says otherwise.</p>
       <div class="sell-actions">
         <button class="sell-cancel" type="button" data-close-unpaid>Close</button>
         <button class="btn btn-primary button-primary" type="button" data-retry>Pay now</button>
@@ -439,7 +636,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
   }
 
   async function payOnline({ form, dlg, order, payment, customer, ids }) {
-    form.innerHTML = `<h3>Opening secure payment…</h3><p class="sell-msg">Reference: <strong>${escapeHTML(order.id)}</strong></p>`;
+    form.innerHTML = `<h3>Opening secure paymentâ€¦</h3><p class="sell-msg">Reference: <strong>${escapeHTML(order.id)}</strong></p>`;
     try {
       await loadRazorpay();
     } catch (err) {
@@ -465,7 +662,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
       theme: { color: "#a63f68" },
       handler: async (response) => {
         settled = true;
-        form.innerHTML = `<h3>Verifying payment…</h3><p class="sell-msg">Please don't close this window.</p>`;
+        form.innerHTML = `<h3>Verifying paymentâ€¦</h3><p class="sell-msg">Please don't close this window.</p>`;
         try {
           const res = await fetch("/api/payments/verify", {
             method: "POST",
@@ -483,7 +680,7 @@ dialog.checkout-dialog .checkout-top-close:hover {
           data.removeItems(ids);
           showDone(form, dlg, "Payment received.", [
             `Reference: <strong>${escapeHTML(order.id)}</strong>`,
-            `Paid: <strong>${money(order.amountRupees)}</strong> — verified by our server. Thank you!`,
+            `Paid: <strong>${money(order.amountRupees)}</strong> â€” verified by our server. Thank you!`,
           ]);
         } catch (err) {
           form.innerHTML = `

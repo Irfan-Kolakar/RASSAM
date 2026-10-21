@@ -868,7 +868,121 @@
         }
       }
     </style>
-  </head>
+  <style id="rassam-stash-mobile-fix">
+@media screen and (max-width: 600px) {
+  body.stash-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .stash-page .stash-main {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
+
+  .stash-page .stash-layout {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 14px;
+    box-sizing: border-box;
+  }
+
+  .stash-page .stash-items-column,
+  .stash-page .stash-item-list,
+  .stash-page .stash-summary {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .stash-page .stash-page-item {
+    grid-template-columns: 60px minmax(0, 1fr);
+    gap: 10px;
+    padding: 13px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .stash-page .stash-page-item-image {
+    grid-column: 1;
+    grid-row: 1;
+    width: 60px;
+    height: 60px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .stash-page .stash-page-item-image img,
+  .stash-page .stash-page-item-image .product-art {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .stash-page .stash-page-item-info {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .stash-page .stash-page-item-info h3 {
+    font-size: 16px;
+    overflow-wrap: anywhere;
+  }
+
+  .stash-page .stash-page-item-right {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-width: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stash-page .stash-item-controls {
+    max-width: 100%;
+    flex-shrink: 1;
+  }
+
+  .stash-page .stash-page-item-sub {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .stash-page .stash-summary-line {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .stash-page .stash-summary-total {
+    flex-wrap: wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .stash-page .stash-summary-total strong {
+    font-size: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .stash-page .stash-checkout-btn,
+  .stash-page .stash-continue-btn {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+</style>
+</head>
 
   <body class="stash-page">
     <header class="site-header">
