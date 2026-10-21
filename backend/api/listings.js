@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 const connectDB = require("../lib/mongo");
 const { randomUUID } = require("crypto");
@@ -39,7 +39,23 @@ module.exports = async function handler(req, res) {
 
   try {
     const body = req.body || {};
+    const sellerName = typeof body.sellerName === "string" ? body.sellerName.trim() : "";
+    const sellerMobile = typeof body.sellerMobile === "string" ? body.sellerMobile.trim() : "";
     const title = typeof body.title === "string" ? body.title.trim() : "";
+
+    if (sellerName.length < 2 || sellerName.length > 80) {
+      return res.status(400).json({
+        success: false,
+        message: "Seller name must be between 2 and 80 characters.",
+      });
+    }
+
+    if (!/^[0-9]{10}$/.test(sellerMobile)) {
+      return res.status(400).json({
+        success: false,
+        message: "Enter a valid 10-digit mobile number.",
+      });
+    }
     const category = body.category;
     const condition = body.condition;
     const description =
@@ -94,6 +110,8 @@ module.exports = async function handler(req, res) {
     const db = require("mongoose").connection.db;
     const listing = {
       id: `student-${randomUUID()}`,
+      sellerName,
+      sellerMobile,
       name: title,
       category,
       condition,

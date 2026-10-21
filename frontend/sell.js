@@ -30,6 +30,12 @@
     dlg.innerHTML = `
       <form class="sell-form" id="sell-form" novalidate>
         <h3>List a component.</h3>
+        <label>Seller name
+          <input name="sellerName" required minlength="2" maxlength="80" autocomplete="name" placeholder="Your full name" />
+        </label>
+        <label>Mobile number
+          <input name="sellerMobile" type="tel" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile number" />
+        </label>
         <label>Title
           <input name="title" required minlength="3" maxlength="80" placeholder="e.g. HC-SR04 ultrasonic sensor" autocomplete="off" />
         </label>
@@ -95,6 +101,8 @@
 
       const raw = Object.fromEntries(new FormData(form).entries());
       const payload = {
+        sellerName: raw.sellerName.trim(),
+        sellerMobile: raw.sellerMobile.trim(),
         title: raw.title,
         category: raw.category,
         condition: raw.condition,
