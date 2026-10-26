@@ -5,17 +5,14 @@ const crypto = require("crypto");
 
 module.exports = async function handler(req, res) {
   // CORS: allow requests from the RASSAM frontend
-  const allowedOrigin = "https://rassam-market.vercel.app";
+  const allowedOrigins = new Set(["https://rassam-market.vercel.app","http://localhost:3000","http://127.0.0.1:3000"]);
   const origin = req.headers.origin;
 
-  if (origin === allowedOrigin) {
-    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  if (allowedOrigins.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization",
-    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   }
 
   // Browser preflight must finish before connecting to MongoDB
@@ -137,6 +134,58 @@ module.exports = async function handler(req, res) {
 
     // Check the total number of saved orders
     if (req.method === "GET") {
+      // Optional order lookup. Preserve the original count response
+      // when no orderId is supplied.
+      const requestedOrderId = String(req.query?.orderId || "").trim();
+
+      if (requestedOrderId) {
+        if (requestedOrderId.length > 100) {
+          return res.status(400).json({
+            success: false,
+            message: "Invalid order ID."
+          });
+        }
+
+        const foundOrder = await db.collection("orders").findOne(
+          { id: requestedOrderId },
+          {
+            projection: {
+              _id: 0,
+              id: 1,
+              status: 1,
+              delivery: 1,
+              createdAt: 1,
+              updatedAt: 1,
+              items: 1
+            }
+          }
+        );
+
+        if (!foundOrder) {
+          return res.status(404).json({
+            success: false,
+            message: "We couldn't find an order with that code. Please check it and try again."
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          order: {
+            id: foundOrder.id,
+            status: foundOrder.status,
+            delivery: foundOrder.delivery,
+            createdAt: foundOrder.createdAt,
+            updatedAt: foundOrder.updatedAt,
+            items: Array.isArray(foundOrder.items)
+              ? foundOrder.items.map(item => ({
+                  name: item.name,
+                  qty: item.qty
+                }))
+              : []
+          }
+        });
+      }
+
       const count = await db.collection("orders").countDocuments();
 
       return res.status(200).json({

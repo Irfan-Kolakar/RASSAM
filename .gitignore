@@ -5,3 +5,13 @@ node_modules/
 npm-debug.log*
 .vercel
 .env*
+# Private environment variables and credentials
+*.pem
+*.key
+credentials.json
+service-account*.json
+secrets/
+# Vercel local project configuration
+.vercel/
+**/.vercel/
+# Dependencies

@@ -3,11 +3,11 @@
 const connectDB = require("../lib/mongo");
 
 module.exports = async function handler(req, res) {
-  const allowedOrigin = "https://rassam-market.vercel.app";
+  const allowedOrigins = new Set(["https://rassam-market.vercel.app","http://localhost:3000","http://127.0.0.1:3000"]);
   const origin = req.headers.origin;
 
-  if (origin === allowedOrigin) {
-    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  if (allowedOrigins.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
     res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
