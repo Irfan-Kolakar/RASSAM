@@ -327,35 +327,47 @@
 
   // ── Product artwork ────────────────────────────────────
   function art(product) {
-    const imageUrl = [product.image, product.imageUrl, product.imageURL, product.icon]
-      .find((value) => typeof value === "string" && /^https?:\/\//i.test(value));
+  const imageUrl = [
+    product.image,
+    product.imageUrl,
+    product.imageURL,
+    product.icon,
+  ].find(
+    (value) =>
+      typeof value === "string" &&
+      (
+        /^https?:\/\//i.test(value) ||
+        /^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(value)
+      ),
+  );
 
-    if (imageUrl) {
-      return `
-        <div class="product-art product-art-image">
-          <img
-            src="${escapeHTML(imageUrl)}"
-            alt="${escapeHTML(product.name || "Electronic component")}"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            style="width:100%;height:100%;object-fit:contain"
-          >
-        </div>
-      `;
-    }
-
-    const icon = /^https?:\/\//i.test(product.icon || "")
-      ? "⚙"
-      : (product.icon || "⚙");
-
+  if (imageUrl) {
     return `
-      <div class="product-art product-art-${escapeHTML(product.art || "default")}" aria-hidden="true">
-        <span>${escapeHTML(icon)}</span>
-        <i></i>
-        <b></b>
+      <div class="product-art product-art-image">
+        <img
+          src="${escapeHTML(imageUrl)}"
+          alt="${escapeHTML(product.name || "Electronic component")}"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          style="width:100%;height:100%;object-fit:contain"
+          onerror="this.closest('.product-art-image')?.remove()"
+        >
       </div>
     `;
   }
+
+  const icon = /^https?:\/\//i.test(product.icon || "")
+    ? "⚙"
+    : (product.icon || "⚙");
+
+  return `
+    <div class="product-art product-art-${escapeHTML(product.art || "default")}" aria-hidden="true">
+      <span>${escapeHTML(icon)}</span>
+      <i></i>
+      <b></b>
+    </div>
+  `;
+}
   // ── Homepage product grid (hidden "marketplace engine" on index.html) ─
   function renderProducts() {
     const grid = $("#product-grid");
@@ -580,7 +592,7 @@
     const result = addItem(id, 1);
     showToast(
       result.ok
-        ? `${product.name} added to INK 🌿. Open INK IT! in the top corner to continue.`
+        ? `${product.name} added to Stash 🌿. Open STASH IT! in the top corner to continue.`
         : result.message,
     );
   }

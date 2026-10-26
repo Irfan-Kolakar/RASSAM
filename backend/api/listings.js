@@ -111,18 +111,34 @@ module.exports = async function handler(req, res) {
     const listingId = `student-${randomUUID()}`;
     const createdAt = new Date();
 
-    const listing = {
-      id: listingId,
-      name: title,
-      category,
-      condition,
-      price,
-      stock,
-      description,
-      badge: "Student Listing",
-      source: "student",
-      createdAt,
-    };
+    const image =
+  typeof body.image === "string" &&
+  /^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(body.image) &&
+  body.image.length <= 500000
+    ? body.image
+    : "";
+
+const listing = {
+  id: `student-${randomUUID()}`,
+  sellerName,
+  sellerMobile,
+  name: title,
+  category,
+  condition,
+  price,
+  stock,
+  description,
+image:
+  typeof body.image === "string" &&
+  /^data:image\/(?:jpeg|png|webp|gif);base64,/i.test(body.image) &&
+  body.image.length <= 500000
+    ? body.image
+    : "",
+  image,
+  badge: "Student Listing",
+  source: "student",
+  createdAt: new Date(),
+};
 
     const seller = {
       listingId,
