@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f8eee9" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>RASSAM — Admin Studio</title>
+    <title>INK — Admin Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -565,7 +565,96 @@
           scroll-behavior: auto !important;
         }
       }
-    </style>
+
+      .admin-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+        margin: 0 0 20px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 16px;
+        background: var(--sakura-paper);
+      }
+      .admin-section-nav button {
+        padding: 10px 14px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--sakura-muted);
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .admin-section-nav button[aria-selected="true"] {
+        background: #29232b;
+        color: white;
+      }
+      .admin-view[hidden],
+      .admin-panel[hidden] {
+        display: none !important;
+      }
+      .admin-studio-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .admin-studio-card {
+        min-width: 0;
+        padding: 24px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 20px;
+        background: var(--sakura-paper);
+      }
+      .admin-studio-card h2 {
+        margin-top: 0;
+        font-size: 20px;
+      }
+      .admin-studio-card p,
+      .admin-data-item small {
+        color: var(--sakura-muted);
+        line-height: 1.65;
+      }
+      .admin-data-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .admin-data-item {
+        padding: 14px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 12px;
+        overflow-wrap: anywhere;
+      }
+      .admin-data-item strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .admin-studio-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .admin-studio-actions button {
+        padding: 9px 12px;
+        border: 1px solid var(--sakura-border);
+        border-radius: 10px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+      @media (max-width: 650px) {
+        .admin-studio-grid {
+          grid-template-columns: 1fr;
+        }
+        .admin-section-nav button {
+          flex: 1 1 auto;
+        }
+      }
+</style>
   </head>
 
   <body class="admin-page">
@@ -574,7 +663,7 @@
         <div class="admin-brand">
           <div class="admin-brand-mark" aria-hidden="true">R</div>
           <div>
-            <div class="admin-brand-name">RASSAM</div>
+            <div class="admin-brand-name">INK</div>
             <span class="admin-brand-sub">THE STUDENT MARKETPLACE</span>
           </div>
         </div>
@@ -586,7 +675,7 @@
 
     <div class="admin-shell">
       <section class="admin-banner">
-        <p class="admin-eyebrow">RASSAM · MANAGEMENT</p>
+        <p class="admin-eyebrow">INK · MANAGEMENT</p>
         <h1>Orders, with care.</h1>
         <p>
           Your marketplace operations in one place. Manage orders, keep
@@ -658,7 +747,83 @@
             </div>
           </div>
 
-          <section class="admin-panel">
+                    <nav class="admin-section-nav" id="admin-section-nav" aria-label="Admin sections">
+            <button type="button" data-admin-tab="overview" aria-selected="true">Overview</button>
+            <button type="button" data-admin-tab="sellers" aria-selected="false">Sellers</button>
+            <button type="button" data-admin-tab="buyers" aria-selected="false">Buyers</button>
+            <button type="button" data-admin-tab="orders" aria-selected="false">Orders</button>
+            <button type="button" data-admin-tab="messages" aria-selected="false">Messages</button>
+            <button type="button" data-admin-tab="about" aria-selected="false">About</button>
+          </nav>
+
+          <section class="admin-view" data-admin-view="overview" id="view-overview">
+            <div class="admin-studio-grid">
+              <article class="admin-studio-card">
+                <h2>Marketplace overview.</h2>
+                <p>Your INK marketplace at a glance.</p>
+                <div class="admin-data-list" id="studio-stats">
+                  <div class="admin-data-item">Loading marketplace data after sign-in…</div>
+                </div>
+              </article>
+              <article class="admin-studio-card">
+                <h2>Quick actions.</h2>
+                <p>Jump straight to the area you need.</p>
+                <div class="admin-studio-actions">
+                  <button type="button" data-admin-go="sellers">Sellers</button>
+                  <button type="button" data-admin-go="buyers">Buyers</button>
+                  <button type="button" data-admin-go="orders">Orders</button>
+                  <button type="button" data-admin-go="messages">Messages</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-view" data-admin-view="sellers" id="view-sellers" hidden>
+            <article class="admin-studio-card">
+              <h2>Sellers.</h2>
+              <p>Seller and listing information for administration only.</p>
+              <div id="seller-editor" class="admin-data-item" hidden></div><div class="admin-data-list" id="studio-sellers">
+                <div class="admin-data-item">Sign in to load seller records.</div>
+              </div>
+            </article>
+          </section>
+
+          <section class="admin-view" data-admin-view="buyers" id="view-buyers" hidden>
+            <article class="admin-studio-card">
+              <h2>Buyers.</h2>
+              <p>Buyer information returned by the authenticated admin API.</p>
+              <div class="admin-data-list" id="studio-buyers">
+                <div class="admin-data-item">Sign in to load buyer records.</div>
+              </div>
+            </article>
+          </section>
+
+          <section class="admin-view" data-admin-view="messages" id="view-messages" hidden>
+            <article class="admin-studio-card">
+              <h2>Customer messages.</h2>
+              <p>Messages associated with marketplace orders.</p>
+              <p id="studio-message-status" role="status" aria-live="polite"></p>
+              <div class="admin-data-list" id="studio-messages">
+                <div class="admin-data-item">Sign in to load messages.</div>
+              </div>
+            </article>
+          </section>
+
+          <section class="admin-view" data-admin-view="about" id="view-about" hidden>
+            <article class="admin-studio-card">
+              <h2>About INK.</h2>
+              <p>INK is an independent student-focused electronics marketplace that helps students find affordable components for projects and learning.</p>
+              <div class="admin-data-item">
+                <strong>Our principle</strong>
+                <small>Help usable electronics and components find their next project.</small>
+              </div>
+              <div class="admin-data-item">
+                <strong>Independent project</strong>
+                <small>INK is an independent project and is not affiliated with the college.</small>
+              </div>
+            </article>
+          </section>
+<section class="admin-panel" id="view-orders" data-admin-view="orders" hidden>
             <div class="admin-panel-head">
               <div>
                 <h2 class="admin-section-title">Orders inbox.</h2>
@@ -698,7 +863,7 @@
       </main>
 
       <footer class="admin-footer">
-        RASSAM · MADE WITH <span>♥</span> FOR STUDENT BUILDERS
+        INK · Independent project · Not affiliated with the college
       </footer>
     </div>
 
@@ -1019,10 +1184,10 @@ method: "POST",
 body: JSON.stringify({ orderId, delivery }),
 });
 
-```
+
 setStatus(dashboardStatus, "Delivery status saved!", "success");
 await loadOrders();
-```
+
 
 } catch (error) {
 setStatus(
@@ -1035,6 +1200,238 @@ submitButton.disabled = false;
 submitButton.textContent = "Save status";
 }
 });
+
+        // INK Admin Studio navigation and authenticated data.
+        (() => {
+          const dashboard = document.querySelector("#dashboard");
+          const nav = document.querySelector("#admin-section-nav");
+          if (!dashboard || !nav) return;
+
+          const tabs = [...nav.querySelectorAll("[data-admin-tab]")];
+          const views = [...dashboard.querySelectorAll("[data-admin-view]")];
+          const ordersPanel = dashboard.querySelector(".admin-panel");
+          let loaded = false;
+
+          function esc(value) {
+            return String(value ?? "").replace(/[&<>"']/g, c => ({
+              "&": "&amp;", "<": "&lt;", ">": "&gt;",
+              '"': "&quot;", "'": "&#39;"
+            })[c]);
+          }
+
+          function showView(name) {
+            views.forEach(view => {
+              view.hidden = view.dataset.adminView !== name;
+            });
+
+            if (ordersPanel) ordersPanel.hidden = name !== "orders";
+
+            tabs.forEach(tab => {
+              tab.setAttribute("aria-selected", String(tab.dataset.adminTab === name));
+            });
+
+            if (name === "orders" && typeof loadOrders === "function") {
+              loadOrders();
+            }
+          }
+
+          nav.addEventListener("click", event => {
+            const tab = event.target.closest("[data-admin-tab]");
+            if (tab) showView(tab.dataset.adminTab);
+          });
+
+          dashboard.addEventListener("click", event => {
+            const button = event.target.closest("[data-admin-go]");
+            if (button) showView(button.dataset.adminGo);
+          });
+
+          async function loadData() {
+            try {
+              const data = await api("/api/admin/data");
+              const stats = data.stats || {};
+
+              const values = [
+                ["Products / listings", stats.productCount ?? stats.listings ?? (data.products || []).length],
+                ["Sellers", stats.sellerCount ?? (Array.isArray(data.sellers) ? data.sellers.length : stats.sellers ?? "—")],
+                ["Buyers", stats.buyerCount ?? (Array.isArray(data.buyers) ? data.buyers.length : stats.buyers ?? "—")],
+                ["Orders", stats.orderCount ?? (data.orders || []).length]
+              ];
+
+              document.querySelector("#studio-stats").innerHTML = values.map(([label, value]) =>
+                `<div class="admin-data-item"><small>${esc(label)}</small><strong>${esc(value)}</strong></div>`
+              ).join("");
+
+              const sellers = data.sellers || [];
+              document.querySelector("#studio-sellers").innerHTML = sellers.length
+                ? sellers.map(seller => {
+                    const name = seller.sellerName || seller.name || seller.fullName || "Seller";
+                    const mobile = seller.sellerMobile || seller.mobile || seller.phone || "";
+                    return `<div class="admin-data-item"><strong>${esc(name)}</strong><small>${mobile ? "Contact: " + esc(mobile) : "No contact details returned"}</small></div>`;
+                  }).join("")
+                : '<div class="admin-data-item">No seller records returned by the API.</div>';
+
+              const buyers = data.buyers || [];
+              document.querySelector("#studio-buyers").innerHTML = buyers.length
+                ? buyers.map(buyer => `<div class="admin-data-item"><strong>${esc(buyer.name || buyer.fullName || "Buyer")}</strong><small>${esc(buyer.phone || buyer.mobile || buyer.email || "No contact details returned")}</small></div>`).join("")
+                : '<div class="admin-data-item">The current API does not return a separate buyers list yet.</div>';
+
+              const messages = [];
+              (data.orders || []).forEach(order => {
+                (order.messages || []).forEach(message => {
+                  messages.push({
+                    ...message,
+                    orderId: order.orderId || order.id || order._id
+                  });
+                });
+              });
+
+              messages.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+              document.querySelector("#studio-messages").innerHTML = messages.length
+                ? messages.map(message => `<div class="admin-data-item">
+                    <strong>${esc(message.from === "admin" ? "Admin reply" : "Customer message")}</strong>
+                    <small>Order: ${esc(message.orderId || "—")} · ${esc(message.createdAt ? new Date(message.createdAt).toLocaleString() : "")}</small>
+                    <p>${esc(message.text || message.message || "")}</p>
+                    ${message.from === "admin" ? "" : `<form class="studio-reply" data-order-id="${esc(message.orderId || "")}">
+                      <label>Reply<textarea name="reply" required maxlength="500" rows="3" style="display:block;width:100%;margin-top:8px;padding:10px;border:1px solid var(--sakura-border);border-radius:10px;background:transparent;color:inherit"></textarea></label>
+                      <div class="admin-studio-actions"><button type="submit">Send reply</button></div>
+                    </form>`}
+                  </div>`).join("")
+                : '<div class="admin-data-item">No messages were returned for the loaded orders.</div>';
+
+              document.querySelector("#studio-message-status").textContent = "Admin data loaded.";
+              loaded = true;
+            } catch (error) {
+              document.querySelector("#studio-stats").innerHTML =
+                '<div class="admin-data-item">Could not load data. Check the admin data API and authentication.</div>';
+              document.querySelector("#studio-message-status").textContent = "Unable to load messages.";
+              console.error("Admin Studio data load failed:", error);
+            }
+          }
+
+          document.querySelector("#studio-messages").addEventListener("submit", async event => {
+            const form = event.target.closest(".studio-reply");
+            if (!form) return;
+            event.preventDefault();
+
+            const button = form.querySelector('button[type="submit"]');
+            const text = new FormData(form).get("reply").toString().trim();
+            if (!text) return;
+
+            button.disabled = true;
+
+            try {
+              await api("/api/admin/reply", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ orderId: form.dataset.orderId, text })
+              });
+
+              document.querySelector("#studio-message-status").textContent = "Reply saved.";
+              await loadData();
+            } catch (error) {
+              document.querySelector("#studio-message-status").textContent = "Reply failed. Check the admin reply API.";
+              button.disabled = false;
+              console.error("Admin reply failed:", error);
+            }
+          });
+
+          const observer = new MutationObserver(() => {
+            if (!dashboard.hidden && !loaded) loadData();
+          });
+
+          observer.observe(dashboard, {
+            attributes: true,
+            attributeFilter: ["hidden"]
+          });
+        })();
+        // INK Admin Studio enhancements: seller/product editing and safe buyer/order summaries.
+        const studioSellers = document.querySelector("#studio-sellers");
+        const sellerEditor = document.querySelector("#seller-editor");
+        function moneyText(value) {
+          const n = Number(value);
+          return Number.isFinite(n) ? `₹${n.toLocaleString("en-IN")}` : "—";
+        }
+        function renderSellerRecords(sellers, products) {
+          const byId = new Map((products || []).map(p => [String(p.id || p._id), p]));
+          if (!studioSellers) return;
+          studioSellers.innerHTML = sellers.length ? sellers.map((seller, index) => {
+            const product = byId.get(String(seller.listingId)) || {};
+            const id = String(product.id || product._id || seller.listingId || "");
+            return `<article class="admin-data-item">
+              <strong>${esc(seller.sellerName || "Seller")}</strong>
+              <small>Contact: ${esc(seller.sellerMobile || "Not provided")} · Listing: ${esc(id || "—")}</small>
+              <p>${esc(product.name || "Listing details unavailable")} · ${esc(moneyText(product.price))} · Stock ${esc(product.stock ?? "—")}</p>
+              <div class="admin-studio-actions"><button type="button" data-edit-listing="${esc(id)}">Edit listing</button></div>
+            </article>`;
+          }).join("") : '<div class="admin-data-item">No seller records returned by the API.</div>';
+        }
+        if (studioSellers) studioSellers.addEventListener("click", async event => {
+          const button = event.target.closest("[data-edit-listing]");
+          if (!button) return;
+          try {
+            const data = await api("/api/admin/data");
+            const id = button.dataset.editListing;
+            const product = (data.products || []).find(p => String(p.id || p._id) === id);
+            if (!product || !sellerEditor) throw new Error("Listing details could not be loaded.");
+            sellerEditor.hidden = false;
+            sellerEditor.innerHTML = `<strong>Edit listing</strong>
+              <form id="listing-edit-form" data-listing-id="${esc(id)}" style="display:grid;gap:10px;margin-top:12px">
+                <label>Product title<input class="admin-input" name="name" maxlength="80" required value="${esc(product.name || "")}"></label>
+                <label>Price (₹)<input class="admin-input" name="price" type="number" min="1" max="100000" required value="${esc(product.price ?? "")}"></label>
+                <label>Stock<input class="admin-input" name="stock" type="number" min="0" max="999" required value="${esc(product.stock ?? 0)}"></label>
+                <label>Condition<select class="admin-select" name="condition"><option ${product.condition === "New" ? "selected" : ""}>New</option><option ${product.condition === "Like New" ? "selected" : ""}>Like New</option><option ${product.condition === "Good" ? "selected" : ""}>Good</option><option ${product.condition === "Fair" ? "selected" : ""}>Fair</option></select></label>
+                <label>Image URL (optional)<input class="admin-input" name="image" maxlength="2000" value="${esc(product.image || product.imageUrl || "")}" placeholder="https://…"></label>
+                <label>Description<textarea class="admin-reply-text" name="description" maxlength="500" rows="3">${esc(product.description || "")}</textarea></label>
+                <div class="admin-studio-actions"><button type="submit">Save to database</button><button type="button" id="cancel-listing-edit">Cancel</button></div>
+                <p role="status" id="listing-edit-status"></p>
+              </form>`;
+            sellerEditor.scrollIntoView({behavior:"smooth",block:"center"});
+          } catch (error) { setStatus(dashboardStatus, error.message || "Unable to edit listing.", "error"); }
+        });
+        if (sellerEditor) sellerEditor.addEventListener("click", event => {
+          if (event.target.id === "cancel-listing-edit") sellerEditor.hidden = true;
+        });
+        if (sellerEditor) sellerEditor.addEventListener("submit", async event => {
+          const form = event.target.closest("#listing-edit-form");
+          if (!form) return;
+          event.preventDefault();
+          const button = form.querySelector('[type="submit"]'); button.disabled = true;
+          const payload = Object.fromEntries(new FormData(form).entries());
+          payload.price = Number(payload.price); payload.stock = Number(payload.stock);
+          try {
+            await api("/api/admin/update-product", {method:"POST",body:JSON.stringify({id:form.dataset.listingId, ...payload})});
+            form.querySelector("#listing-edit-status").textContent = "Saved to MongoDB.";
+            await loadStudioData();
+          } catch (error) { form.querySelector("#listing-edit-status").textContent = error.message || "Save failed."; }
+          finally { button.disabled = false; }
+        });
+        async function loadStudioData() {
+          const data = await api("/api/admin/data");
+          const stats = data.stats || {};
+          const values = [["Products / listings", stats.listings ?? stats.productCount ?? (data.products || []).length], ["Sellers", stats.sellers ?? stats.sellerCount ?? (data.sellers || []).length], ["Buyers", stats.buyers ?? stats.buyerCount ?? (data.buyers || []).length], ["Orders", stats.orders ?? stats.orderCount ?? (data.orders || []).length]];
+          document.querySelector("#studio-stats").innerHTML = values.map(([label,value]) => `<div class="admin-data-item"><small>${esc(label)}</small><strong>${esc(value)}</strong></div>`).join("");
+          renderSellerRecords(data.sellers || [], data.products || []);
+          const buyers = data.buyers || [];
+          document.querySelector("#studio-buyers").innerHTML = buyers.length ? buyers.map(b => `<div class="admin-data-item"><strong>${esc(b.name || "Buyer")}</strong><small>${esc(b.phone || "No phone")} · ${esc(b.orderCount || 1)} order(s)</small></div>`).join("") : '<div class="admin-data-item">No buyer records returned.</div>';
+          const messages=[]; (data.orders||[]).forEach(o=>(o.messages||[]).forEach(m=>messages.push({...m,orderId:o.id||o.orderId||o._id})));
+          messages.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+          document.querySelector("#studio-messages").innerHTML = messages.length ? messages.map(m=>`<div class="admin-data-item"><strong>${esc(m.from === "admin" ? "Admin reply" : "Customer message")}</strong><small>Order: ${esc(m.orderId||"—")} · ${esc(m.createdAt ? new Date(m.createdAt).toLocaleString() : "")}</small><p>${esc(m.text||m.message||"")}</p>${m.from === "admin" ? "" : `<form class="studio-reply" data-order-id="${esc(m.orderId||"")}"><label>Reply<textarea name="reply" required maxlength="500" rows="3" class="admin-reply-text"></textarea></label><div class="admin-studio-actions"><button type="submit">Send reply</button></div></form>`}</div>`).join("") : '<div class="admin-data-item">No messages returned for loaded orders.</div>';
+          document.querySelector("#studio-message-status").textContent = "Admin data loaded.";
+        }
+        // Replace initial renderer with the shared loader after successful authentication.
+        const originalLoadData = typeof loadData === "function" ? loadData : null;
+        const studioMessages = document.querySelector("#studio-messages");
+        if (studioMessages) studioMessages.addEventListener("submit", async event => {
+          const form = event.target.closest(".studio-reply"); if (!form) return;
+          event.preventDefault(); const button=form.querySelector('[type="submit"]'); button.disabled=true;
+          const textValue=String(new FormData(form).get("reply")||"").trim();
+          try { await api("/api/admin/reply", {method:"POST",body:JSON.stringify({orderId:form.dataset.orderId,text:textValue})}); document.querySelector("#studio-message-status").textContent="Reply saved."; await loadStudioData(); }
+          catch(error){ document.querySelector("#studio-message-status").textContent=error.message||"Reply failed."; }
+          finally { button.disabled=false; }
+        });
+        const studioObserver = new MutationObserver(() => { if (!dashboard.hidden) loadStudioData().catch(error => console.error("Studio load failed", error)); });
+        studioObserver.observe(dashboard,{attributes:true,attributeFilter:["hidden"]});
 
         document.addEventListener("visibilitychange", () => {
           if (document.hidden) return;

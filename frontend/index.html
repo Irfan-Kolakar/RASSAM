@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#08090b" />
+    <meta name="theme-color" content="#e9dfcc" />
     <meta
       name="description"
-      content="RASSAM — student-to-student electronics marketplace."
+      content="INK — student-to-student electronics marketplace."
     />
-    <title>RASSAM — Good projects deserve good components</title>
+    <title>INK — Good projects deserve good components</title>
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237170ff'/%3E%3Cpath d='M10 24V13M10 17c0-5 3-8 8-8h2' fill='none' stroke='%23f7f8f8' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='10' cy='24' r='2.4' fill='%23f7f8f8'/%3E%3Ccircle cx='23.5' cy='9' r='2.6' fill='%23f7f8f8'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23171713'/%3E%3Cpath d='M7 10h5v20H7zM16 30V10h4l8 11V10h5v20h-4l-8-11v11z' fill='%23f5efe3'/%3E%3Ccircle cx='33' cy='7' r='3' fill='%238ed36a'/%3E%3C/svg%3E"
     />
     <script>
       document.documentElement.classList.add("js");
@@ -32,27 +32,20 @@
 
     <script src="app.js" defer></script>
     <script src="filters.js" defer></script>
-    <script src="featured.js" defer></script>
     <script src="motion.js" defer></script>
     <script src="fx.js" defer></script>
-    <script src="sell.js" defer></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="checkout.js" defer></script>
+    <script src="order-success.js" defer></script>
     <script src="brand.js" defer></script>
     <script src="chat.js" defer></script>
   </head>
   <body id="top">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
-      <symbol id="rassam-mark" viewBox="0 0 32 32">
-        <path
-          d="M10 24V13M10 17c0-5 3-8 8-8h2"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.4"
-          stroke-linecap="round"
-        />
-        <circle cx="10" cy="24" r="2.4" fill="currentColor" />
-        <circle cx="23.5" cy="9" r="2.6" fill="currentColor" opacity=".5" />
+      <symbol id="INK-mark" viewBox="0 0 40 40">
+        <rect x="2" y="2" width="36" height="36" rx="11" fill="currentColor" opacity=".09" />
+        <path d="M10 11h5v18h-5zM19 29V11h4l7 10V11h5v18h-4l-7-10v10z" fill="currentColor" />
+        <circle cx="31.5" cy="7.5" r="3" fill="#8ecf69" />
       </symbol>
     </svg>
 
@@ -61,16 +54,16 @@
     <div class="announcement">
       <span class="announcement-dot"></span>
       Cash on Delivery, made simple. We keep you updated after every order.
-      <span class="announcement-right">RASSAM 1.0</span>
+      <span class="announcement-right">INK 1.0</span>
     </div>
 
     <header class="navbar">
-      <a class="logo" href="index.html" aria-label="RASSAM home">
+      <a class="logo" href="index.html" aria-label="INK home">
         <span class="logo-mark"
           ><svg viewBox="0 0 32 32" aria-hidden="true">
-            <use href="#rassam-mark" /></svg
+            <use href="#INK-mark" /></svg
         ></span>
-        <span>rassam</span>
+        <span>INK</span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#marketplace">Discover</a>
@@ -94,7 +87,7 @@
           aria-controls="stash-drawer"
           aria-expanded="false"
         >
-          STASH IT! <span class="stash-count" id="stash-count">0</span>
+          INK IT! <span class="stash-count" id="stash-count">0</span>
         </button>
         <button
           class="menu-toggle"
@@ -116,264 +109,50 @@
       hidden
     >
       <a href="#marketplace">Discover <span>↗</span></a>
-      <a href="shop.html">Buy Components <span>↗</span></a>
+      <a href="index.html">Home <span>↗</span></a>
       <a href="#marketplace">Browse parts <span>↗</span></a>
       <a href="#sell">Sell <span>↗</span></a>
     </nav>
 
     <main id="main">
-      <!-- FLORAL EDITORIAL HERO -->
+      <!-- INK TECH HERO -->
       <section
-        class="hero hero-floral section-shell"
+        class="hero tech-hero section-shell"
         aria-labelledby="hero-title"
       >
-        <div class="floral-copy">
-          <p class="floral-kicker">
-            <span class="floral-kicker-dot"></span> RASSAM · THE STUDENT
+        <div class="tech-hero-copy">
+          <p class="tech-kicker">
+            <span class="tech-kicker-dot"></span> INK · THE STUDENT
             COMPONENT EXCHANGE
           </p>
           <h1 id="hero-title">
             Good ideas<br />deserve a <em>second life.</em>
           </h1>
-          <p class="floral-description">
+          <a class="btn buy-components-hero" href="shop.html">BUY COMPONENTS <span aria-hidden="true">↗</span></a>
+          <p class="tech-description">
             Find the parts you need. Pass on the parts you no longer use. A
             little less waste, a lot more making.
           </p>
-          <a class="floral-buy-button" href="shop.html"
-            >Buy components <span aria-hidden="true">↗</span></a
-          >
-          <p class="floral-footnote">
+          <p class="tech-footnote">
             PRE-LOVED PARTS · STUDENT PRICES · BIG IDEAS
           </p>
         </div>
-        <div class="floral-art" aria-hidden="true">
-          <div class="floral-orbit floral-orbit-one"></div>
-          <div class="floral-orbit floral-orbit-two"></div>
-          <svg
-            class="flower-illustration"
-            viewBox="0 0 560 620"
-            role="img"
-            aria-label="Decorative botanical flower illustration"
-          >
-            <g
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                class="flower-stem"
-                d="M280 565 C277 474 294 396 276 311 C268 273 270 247 280 218"
-                stroke-width="3"
-              />
-              <path
-                d="M279 427 C218 417 183 376 173 326 C222 335 264 368 279 427Z"
-                stroke-width="2.5"
-              />
-              <path
-                d="M282 480 C339 457 378 414 391 361 C342 370 300 413 282 480Z"
-                stroke-width="2.5"
-              />
-              <path
-                d="M279 427 C248 391 218 363 186 343 M282 480 C316 443 350 410 379 379"
-                stroke-width="1.5"
-              />
-              <g class="flower-petals" transform="translate(280 195)">
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(0)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(45)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(90)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(135)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(180)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(225)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(270)" />
-                <ellipse cy="-77" rx="37" ry="77" transform="rotate(315)" />
-                <circle r="35" stroke-width="2.5" />
-                <circle r="22" stroke-width="1.4" stroke-dasharray="2 7" />
-              </g>
-              <path
-                d="M112 164 C146 139 172 147 187 177 C154 196 130 189 112 164Z"
-                stroke-width="1.8"
-              />
-              <path
-                d="M111 164 L177 177 M430 270 C458 244 484 252 496 282 C467 299 443 292 430 270Z"
-                stroke-width="1.8"
-              />
-              <path d="M430 270 L486 282" stroke-width="1.4" />
-              <path
-                d="M350 104 C369 82 393 88 403 112 C381 128 362 122 350 104Z"
-                stroke-width="1.6"
-              />
-              <path d="M350 104 L395 111" stroke-width="1.2" />
+        <div class="hero-circuit-art" aria-hidden="true">
+          <svg viewBox="0 0 640 560" role="presentation" focusable="false">
+            <defs>
+              <radialGradient id="circuitGlow"><stop offset="0" stop-color="#a6f36a" stop-opacity=".25"/><stop offset="1" stop-color="#a6f36a" stop-opacity="0"/></radialGradient>
+              <linearGradient id="circuitLine" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b9f78a" stop-opacity=".9"/><stop offset="1" stop-color="#72c95b" stop-opacity=".08"/></linearGradient>
+            </defs>
+            <circle cx="340" cy="270" r="240" fill="url(#circuitGlow)"/>
+            <g class="circuit-traces" fill="none" stroke="url(#circuitLine)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M95 100H230V165H300V215H365V120H480V80H545"/><path d="M70 185H165V240H255V300H355V355H460V290H560"/><path d="M105 410H190V360H250V420H330V470H430V415H540"/><path d="M225 60V115H280V155H320V195"/><path d="M430 205H500V170H575"/><path d="M375 455V390H420V350H500V390H580"/><path d="M135 280H180V325H215"/>
+              <rect x="285" y="245" width="95" height="95" rx="12"/><path d="M305 230V245M325 230V245M345 230V245M365 230V245M305 340V355M325 340V355M345 340V355M365 340V355M270 265H285M270 285H285M270 305H285M270 325H285M380 265H395M380 285H395M380 305H395M380 325H395"/>
             </g>
-            <g fill="currentColor" opacity=".65">
-              <circle cx="100" cy="340" r="3" />
-              <circle cx="443" cy="160" r="3" />
-              <circle cx="414" cy="452" r="2" />
-              <circle cx="160" cy="493" r="2.5" />
-            </g>
+            <g class="circuit-nodes" fill="#b8f78a"><circle cx="95" cy="100" r="4"/><circle cx="545" cy="80" r="4"/><circle cx="70" cy="185" r="4"/><circle cx="560" cy="300" r="4"/><circle cx="105" cy="410" r="4"/><circle cx="540" cy="415" r="4"/><circle cx="225" cy="60" r="4"/><circle cx="575" cy="170" r="4"/><circle cx="580" cy="390" r="4"/><circle cx="135" cy="280" r="4"/></g>
           </svg>
-          <span class="floral-art-note floral-note-top"
-            >MAKE SOMETHING<br />MATTER.</span
-          >
-          <span class="floral-art-note floral-note-bottom"
-            >FIG. 01 — THE NEXT IDEA</span
-          >
         </div>
       </section>
 
-      <!-- SAKURA EDITORIAL INTERLUDE -->
-      <section
-        class="sakura-section section-shell"
-        id="marketplace"
-        aria-labelledby="sakura-title"
-      >
-        <div class="sakura-copy">
-          <p class="sakura-kicker">A SMALL PART. A NEW POSSIBILITY.</p>
-          <h2 id="sakura-title">Let good ideas<br /><em>blossom again.</em></h2>
-          <p>
-            Find useful components passed on by students, and give your next
-            project a thoughtful start.
-          </p>
-          <a class="sakura-button" href="shop.html"
-            >Buy components <span aria-hidden="true">↗</span></a
-          >
-        </div>
-        <div class="sakura-art" aria-hidden="true">
-          <svg
-            class="sakura-illustration"
-            viewBox="0 0 640 540"
-            role="img"
-            aria-label="Soft sakura blossom illustration"
-          >
-            <defs>
-              <radialGradient id="petalwash">
-                <stop offset="0" stop-color="#f8d9d7" />
-                <stop offset=".72" stop-color="#e9aaa9" />
-                <stop offset="1" stop-color="#d88e91" />
-              </radialGradient>
-              <linearGradient id="sakurabranch" x1="0" y1="1" x2="1" y2="0">
-                <stop stop-color="#65584a" />
-                <stop offset="1" stop-color="#9b8170" />
-              </linearGradient>
-            </defs>
-            <g fill="none" stroke="url(#sakurabranch)" stroke-linecap="round">
-              <path
-                d="M75 475 C190 390 260 304 335 215 C397 141 464 105 572 64"
-                stroke-width="8"
-              />
-              <path d="M238 338 C210 274 179 235 127 206" stroke-width="5" />
-              <path d="M337 214 C327 153 304 119 266 88" stroke-width="4" />
-              <path d="M414 150 C467 160 505 187 530 225" stroke-width="4" />
-              <path d="M486 105 C500 77 520 61 550 49" stroke-width="3" />
-            </g>
-            <g fill="#b7b79b" opacity=".85">
-              <path
-                d="M181 285 C137 264 117 236 127 206 C165 217 189 246 181 285Z"
-              />
-              <path
-                d="M360 184 C321 166 300 135 266 88 C311 101 347 139 360 184Z"
-              />
-              <path
-                d="M443 155 C477 158 510 185 530 225 C487 216 458 191 443 155Z"
-              />
-            </g>
-            <g class="sakura-bloom" transform="translate(127 206)">
-              <use href="#sakura-flower" />
-            </g>
-            <g
-              class="sakura-bloom bloom-two"
-              transform="translate(266 88) scale(.78)"
-            >
-              <use href="#sakura-flower" />
-            </g>
-            <g
-              class="sakura-bloom bloom-three"
-              transform="translate(414 150) scale(1.04)"
-            >
-              <use href="#sakura-flower" />
-            </g>
-            <g
-              class="sakura-bloom bloom-four"
-              transform="translate(550 49) scale(.68)"
-            >
-              <use href="#sakura-flower" />
-            </g>
-            <g
-              class="sakura-bloom bloom-five"
-              transform="translate(335 215) scale(.72)"
-            >
-              <use href="#sakura-flower" />
-            </g>
-            <g fill="#d99b9b" opacity=".8">
-              <ellipse
-                cx="210"
-                cy="136"
-                rx="5"
-                ry="10"
-                transform="rotate(-36 210 136)"
-              />
-              <ellipse
-                cx="458"
-                cy="292"
-                rx="4"
-                ry="8"
-                transform="rotate(28 458 292)"
-              />
-              <ellipse
-                cx="520"
-                cy="320"
-                rx="5"
-                ry="9"
-                transform="rotate(44 520 320)"
-              />
-              <ellipse
-                cx="295"
-                cy="365"
-                rx="4"
-                ry="8"
-                transform="rotate(-18 295 365)"
-              />
-            </g>
-            <defs>
-              <g
-                id="sakura-flower"
-                fill="url(#petalwash)"
-                stroke="#b7b99b"
-                stroke-width="1.2"
-              >
-                <path
-                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
-                />
-                <path
-                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
-                  transform="rotate(72)"
-                />
-                <path
-                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
-                  transform="rotate(144)"
-                />
-                <path
-                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
-                  transform="rotate(216)"
-                />
-                <path
-                  d="M0 0 C-33 -15 -36 -52 -16 -65 C-3 -73 8 -56 7 -39 C24 -61 45 -53 46 -34 C48 -16 26 -5 0 0Z"
-                  transform="rotate(288)"
-                />
-                <circle r="9" fill="#9a8966" stroke="none" />
-                <g stroke="#9a8966" stroke-width="1.5">
-                  <path
-                    d="M0 0 L-4 -14 M0 0 L5 -15 M0 0 L13 -8 M0 0 L14 3 M0 0 L-12 7"
-                  />
-                </g>
-              </g>
-            </defs>
-          </svg>
-          <span class="sakura-caption"
-            >FIG. 02 &nbsp; / &nbsp; NEW LIFE, NEW IDEAS</span
-          >
-        </div>
-      </section>
 
       <!-- MARKETPLACE -->
       <section
@@ -458,32 +237,12 @@
           </button>
         </div>
         <p class="marketplace-footnote">
-          Adding to your stash doesn't reserve anything until you pay.
+          Adding items to INK doesn't reserve stock until checkout.
         </p>
       </section>
 
       <!-- Popular Picks removed: the full catalogue remains in the marketplace/shop. -->
 
-      <!-- BROWSE BY SHELF -->
-      <section class="featured" id="featured" aria-labelledby="featured-title">
-        <div class="section-shell">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">02 · Walk the shelves</p>
-              <h2 id="featured-title">Browse by <em>shelf.</em></h2>
-            </div>
-            <p class="section-note">
-              Scroll across. Each card filters the shop.
-            </p>
-          </div>
-        </div>
-        <div class="featured-viewport">
-          <div class="featured-track" id="featured-track"></div>
-        </div>
-        <div class="featured-progress" aria-hidden="true">
-          <span id="featured-bar"></span>
-        </div>
-      </section>
 
       <!-- RELAY -->
       <section
@@ -499,7 +258,7 @@
             </h2>
           </div>
           <p class="section-note">
-            RASSAM connects the people who finish with the people who are
+            INK connects the people who finish with the people who are
             starting.
           </p>
         </div>
@@ -531,18 +290,17 @@
       <section class="sell-section section-shell" id="sell">
         <div class="sell-inner">
           <div class="sell-copy">
-            <p class="eyebrow">04 · Sell</p>
-            <h2>Got spare parts?<br /><em>Pass them on.</em></h2>
+            <p class="eyebrow">04 · SELL ON INK</p>
+            <h2>Turn spare parts<br /><em>into someone’s next build.</em></h2>
             <p>
-              That sensor in your drawer could be the missing piece in someone's
-              final-year project.
+              List your unused electronics in minutes. Add a quick photo, set your price, and help another student build more for less.
             </p>
           </div>
           <div class="sell-action">
             <button class="btn btn-primary" type="button" id="sell-button">
-              List a component →
+              SELL COMPONENTS ↗
             </button>
-            <small>Listings are reviewed by the admin.</small>
+            <small>Quick listing · Real student buyers</small>
           </div>
         </div>
       </section>
@@ -569,7 +327,7 @@
           </article>
           <article class="step-card">
             <span class="step-num">02</span>
-            <h3>Stash your picks.</h3>
+            <h3>INK your picks.</h3>
             <p>
               Collect what you want in one place and review before moving on.
             </p>
@@ -593,7 +351,7 @@
       >
         <div class="story-grid">
           <div class="story-copy" data-reveal>
-            <p class="eyebrow">06 · Why RASSAM exists</p>
+            <p class="eyebrow">06 · Why INK exists</p>
             <h2 id="story-title">
               Every drawer has a part <em>nobody needs anymore.</em>
             </h2>
@@ -604,7 +362,7 @@
               month's budget.
             </p>
             <p>
-              RASSAM connects those two people. Seniors pass on what they've
+              INK connects those two people. Seniors pass on what they've
               finished with, juniors build what they dreamed of.
             </p>
           </div>
@@ -645,21 +403,21 @@
 
     <footer class="footer section-shell">
       <div class="footer-top">
-        <a class="logo" href="index.html" aria-label="RASSAM home">
+        <a class="logo" href="index.html" aria-label="INK home">
           <span class="logo-mark"
             ><svg viewBox="0 0 32 32" aria-hidden="true">
-              <use href="#rassam-mark" /></svg
+              <use href="#INK-mark" /></svg
           ></span>
-          <span>rassam</span>
+          <span>INK</span>
         </a>
         <p>Built for curious minds and unfinished projects.</p>
         <a class="footer-email" href="mailto:zyaaa589@gmail.com">Contact: zyaaa589@gmail.com</a>
         <a class="btn-link" href="#">Back to top ↑</a>
       </div>
       <div class="footer-bottom">
-        <span>© <span id="current-year">2026</span> RASSAM</span>
+        <span>© <span id="current-year">2026</span> INK</span>
         <span>Independent project · Not affiliated with the college</span>
-        <span>RASSAM 1.0</span>
+        <span>INK 1.0</span>
       </div>
     </footer>
     <!-- ORDER UPDATES POPUP -->
@@ -675,7 +433,7 @@
     >
       <div class="order-updates-header">
         <div>
-          <p class="order-updates-eyebrow">RASSAM · ORDER SUPPORT</p>
+          <p class="order-updates-eyebrow">INK · ORDER SUPPORT</p>
           <h2 id="order-updates-title">Stay in the <em>loop.</em></h2>
           <p>Track your order and talk to our team.</p>
         </div>
@@ -726,7 +484,7 @@
 
         <div class="order-message-divider"></div>
 
-        <label for="order-update-message">Message RASSAM</label>
+        <label for="order-update-message">Message INK</label>
 
         <textarea
           id="order-update-message"
@@ -753,7 +511,7 @@
     </section>
     <!-- END ORDER UPDATES POPUP -->
 
-    <!-- STASH DRAWER -->
+    <!-- INK DRAWER -->
     <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
     <aside
       class="stash-drawer"
@@ -763,12 +521,12 @@
       inert
     >
       <div class="drawer-header">
-        <h2 id="drawer-title">Stash <span id="drawer-count"></span></h2>
+        <h2 id="drawer-title">INK <span id="drawer-count"></span></h2>
         <button
           class="btn-icon"
           id="close-stash"
           type="button"
-          aria-label="Close stash"
+          aria-label="Close INK bag"
         >
           ×
         </button>
@@ -776,10 +534,10 @@
       <div class="stash-items" id="stash-items"></div>
       <div class="stash-empty" id="stash-empty">
         <div class="stash-empty-art" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><use href="#rassam-mark" /></svg>
+          <svg viewBox="0 0 32 32"><use href="#INK-mark" /></svg>
         </div>
-        <h3>Your stash is empty rn 🌸</h3>
-        <p>Find a part you love and stash it first.</p>
+        <h3>Your INK bag is empty</h3>
+        <p>Find a component you need and save it here.</p>
         <button class="btn btn-primary" id="discover-components" type="button">
           Explore components
         </button>
@@ -796,7 +554,7 @@
           id="review-stash"
           type="button"
         >
-          Grab your stash →
+          Review your INK bag →
         </button>
         <button
           class="btn-link continue-shopping"
@@ -809,5 +567,85 @@
     </aside>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <!-- INK component listing dialog -->
+    <dialog class="sell-dialog" id="sell-dialog" aria-labelledby="sell-dialog-title">
+      <form class="sell-form" id="sell-form">
+        <div class="sell-form-head">
+          <div><p class="eyebrow">SELL ON INK</p><h2 id="sell-dialog-title">List a component</h2><p>Share the essentials. Keep it quick.</p></div>
+          <button class="sell-dialog-close" type="button" id="close-sell-dialog" aria-label="Close listing form">×</button>
+        </div>
+        <label>Component name<input name="title" required minlength="2" maxlength="100" placeholder="e.g. ESP32 Dev Board" /></label>
+        <div class="sell-form-grid">
+          <label>Category<select name="category" required><option value="">Choose category</option><option>Microcontrollers & Development Boards</option><option>Sensors & Electronic Components</option><option>Motors, Drivers & Robotics</option><option>Batteries, Power & Project Kits</option><option>Tools, Lab Equipment & Accessories</option></select></label>
+          <label>Condition<select name="condition" required><option value="">Choose condition</option><option>New</option><option>Like New</option><option>Good</option><option>Fair</option></select></label>
+        </div>
+        <div class="sell-form-grid sell-quantity-grid">
+          <label>Quantity<input name="stock" type="number" min="1" max="999" value="1" required /></label>
+        </div>
+        <label>Description<textarea name="description" rows="3" maxlength="1000" placeholder="Mention compatibility, included parts, or known issues."></textarea></label>
+        <div class="photo-picker">
+          <div class="photo-picker-copy"><strong>Component photo</strong><span>A clear photo helps buyers recognise the part.</span></div>
+          <label class="photo-button" for="sell-photo">＋ Take a photo / Choose image</label>
+          <input id="sell-photo" name="photo" type="file" accept="image/*" capture="environment" />
+          <img id="sell-photo-preview" alt="Component photo preview" hidden />
+        </div>
+        <div class="sell-form-grid">
+          <label>Your name<input name="sellerName" required minlength="2" maxlength="80" autocomplete="name" /></label>
+          <label>Mobile number<input name="sellerMobile" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit number" autocomplete="tel" /></label>
+        </div>
+        <p class="sell-form-status" id="sell-form-status" role="status" aria-live="polite"></p>
+        <button class="btn btn-primary sell-submit" type="submit">SUBMIT LISTING ↗</button>
+        <small class="sell-form-note">Seller contact details are used to manage the listing and are not shown on public product cards. You'll confirm the listing price separately when submitting.</small>
+      </form>
+    </dialog>
+
+
+    <script>
+      // INK motion layer: independent of optional motion.js/fx.js files.
+      (() => {
+        const boot = () => {
+          const staleSection = [...document.querySelectorAll('main section')].find((section) => {
+            const copy = (section.innerText || '').toLowerCase();
+            return copy.includes('05 · find your next part') ||
+              (copy.includes('starts with one part') && copy.includes('browse boards, sensors, motors'));
+          });
+          if (staleSection) staleSection.remove();
+          const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (reduce) return;
+          // CSS supplies a graceful fallback if the GSAP CDN is unavailable.
+          if (!window.gsap) {
+            document.documentElement.classList.add('ink-motion-fallback');
+            return;
+          }
+          if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+          const hero = document.querySelector('.tech-hero');
+          const copy = hero?.querySelector('.tech-hero-copy');
+          const art = hero?.querySelector('.hero-circuit-art');
+          if (copy) gsap.fromTo(copy, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.95, ease: 'power3.out', clearProps: 'opacity,visibility,transform' });
+          if (art) {
+            gsap.fromTo(art, { autoAlpha: 0, scale: 0.94, rotate: -3 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.25, delay: 0.12, ease: 'power3.out' });
+            gsap.to(art, { y: '+=10', duration: 3.4, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+            const traces = art.querySelector('.circuit-traces');
+            if (traces) gsap.to(traces, { strokeDashoffset: -360, duration: 14, repeat: -1, ease: 'none' });
+          }
+          const revealTargets = gsap.utils.toArray('.relay-card, .sell-inner, .final-cta, .buy-components-card, .step-card, .section-head');
+          const greenButtons = gsap.utils.toArray('.buy-components-hero, .buy-components-secondary, .sell-action .btn');
+          if (greenButtons.length) gsap.fromTo(greenButtons, { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .65, stagger: .1, delay: .35, ease: 'power2.out', clearProps: 'all' });
+          gsap.utils.toArray('.ink-orbit').forEach((orbit, i) => gsap.to(orbit, { rotation: i % 2 ? -360 : 360, duration: 44 + i * 12, repeat: -1, ease: 'none', transformOrigin: '50% 50%' }));
+          if (window.ScrollTrigger) {
+            revealTargets.forEach((el) => gsap.fromTo(el, { y: 24, autoAlpha: 0 }, {
+              y: 0, autoAlpha: 1, duration: 0.75, ease: 'power2.out',
+              scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+              clearProps: 'transform,opacity,visibility'
+            }));
+          } else {
+            gsap.fromTo(revealTargets, { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.12, clearProps: 'all' });
+          }
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+        else boot();
+      })();
+    </script>
+
   </body>
 </html>

@@ -1,6 +1,6 @@
-/* RASSAM — Shared catalogue + the ONE Stash module.
+/* INK — Shared catalogue + the ONE Stash module.
    Every page (home, Buy Components, product page, checkout) reads and writes the Stash
-   through window.RASSAM so quantities, totals and storage stay consistent.
+   through the existing window.RASSAM API so quantities, totals and storage stay consistent.
    Storage format (unchanged): localStorage["rassam-stash-v1"] = { "<productId>": quantity }
    This demo does not reserve stock; the server must re-check prices and stock. */
 
@@ -299,7 +299,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(stash));
       return true;
     } catch {
-      showToast("Browser storage is unavailable. Your Stash may not persist.");
+      showToast("Browser storage is unavailable. Your INK bag may not persist.");
       return false;
     }
   }
@@ -395,10 +395,10 @@
                   class="add-to-stash"
                   type="button"
                   data-add="${escapeHTML(product.id)}"
-                  aria-label="Add ${escapeHTML(product.name)} to Stash"
+                  aria-label="Add ${escapeHTML(product.name)} to INK"
                   ${maximum <= 0 || quantity >= maximum ? "disabled" : ""}
                 >
-                  ${maximum <= 0 ? "OUT OF STOCK" : quantity ? `STASHED (${quantity})` : "STASH IT!"}
+                  ${maximum <= 0 ? "OUT OF STOCK" : quantity ? `STASHED (${quantity})` : "ADD TO INK"}
                   <span aria-hidden="true">↗</span>
                 </button>
               </div>
@@ -445,16 +445,16 @@
     const badge = $("#stash-count");
     if (badge) {
       badge.textContent = total;
-      badge.setAttribute("aria-label", `${total} items in Stash`);
+      badge.setAttribute("aria-label", `${total} items in INK`);
     }
 
     const drawerCount = $("#drawer-count");
     if (drawerCount) {
       drawerCount.textContent =
         total === 1
-          ? "· 1 item stashed"
+          ? "· 1 item in INK"
           : total > 1
-            ? `· ${total} items stashed`
+            ? `· ${total} items in INK`
             : "";
       drawerCount.classList.add("sakura-stash-count");
     }
@@ -505,7 +505,7 @@
               ${money(subtotal)}
               <button class="remove-item" type="button"
                 data-remove="${escapeHTML(product.id)}"
-                aria-label="Remove ${escapeHTML(product.name)} from Stash">Remove</button>
+                aria-label="Remove ${escapeHTML(product.name)} from INK">Remove</button>
             </div>
           </article>
         `;
@@ -580,7 +580,7 @@
     const result = addItem(id, 1);
     showToast(
       result.ok
-        ? `${product.name} added to your Stash 🌸 ,Click Stash in right corner to place order !`
+        ? `${product.name} added to INK 🌿. Open INK IT! in the top corner to continue.`
         : result.message,
     );
   }
@@ -610,7 +610,7 @@
 
     delete stash[id];
     commit();
-    showToast(`${product.name} removed from your Stash.`);
+    showToast(`${product.name} removed from INK.`);
   }
 
   function removeItems(ids) {
@@ -629,6 +629,8 @@
   }
 
   function openStash() {
+    const orderPanel = $("#order-updates-panel");
+    if (orderPanel && !orderPanel.hidden) $("#close-order-updates")?.click();
     const drawer = $("#stash-drawer");
     const backdrop = $("#drawer-backdrop");
     if (!drawer || !backdrop || isDrawerOpen()) return;
@@ -750,7 +752,7 @@
     // This fallback only runs on a page that does not load checkout.js.
     $("#review-stash")?.addEventListener("click", () => {
       if (totalQuantity() === 0) {
-        showToast("Your Stash is empty — find a component first 🌸");
+        showToast("Your INK bag is empty — find a component first.");
         return;
       }
       if (typeof api.openCheckout === "function") {
@@ -761,10 +763,85 @@
       }
     });
 
+    const sellDialog = $("#sell-dialog");
+    const sellForm = $("#sell-form");
+    const sellPhoto = $("#sell-photo");
+    const sellPhotoPreview = $("#sell-photo-preview");
+    const sellFormStatus = $("#sell-form-status");
+    let compressedPhoto = "";
     $("#sell-button")?.addEventListener("click", () => {
-      showToast(
-        "Seller tools are coming soon. Demo listings cannot be purchased yet.",
-      );
+      if (typeof sellDialog?.showModal === "function") sellDialog.showModal();
+    });
+    $("#close-sell-dialog")?.addEventListener("click", () => sellDialog?.close());
+    sellDialog?.addEventListener("click", (event) => {
+      if (event.target === sellDialog) sellDialog.close();
+    });
+    sellPhoto?.addEventListener("change", () => {
+      const file = sellPhoto.files?.[0];
+      if (!file) { compressedPhoto = ""; if (sellPhotoPreview) sellPhotoPreview.hidden = true; return; }
+      if (!file.type.startsWith("image/")) { if (sellFormStatus) sellFormStatus.textContent = "Choose an image file."; sellPhoto.value = ""; return; }
+      const objectUrl = URL.createObjectURL(file);
+      const image = new Image();
+      image.onload = () => {
+        const maxSide = 600;
+        const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const context = canvas.getContext("2d", { alpha: false });
+        if (!context) { URL.revokeObjectURL(objectUrl); return; }
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        compressedPhoto = canvas.toDataURL("image/jpeg", 0.58);
+        if (sellPhotoPreview) { sellPhotoPreview.src = compressedPhoto; sellPhotoPreview.hidden = false; }
+        URL.revokeObjectURL(objectUrl);
+      };
+      image.onerror = () => { URL.revokeObjectURL(objectUrl); if (sellFormStatus) sellFormStatus.textContent = "Could not read that photo. Try another image."; };
+      image.src = objectUrl;
+    });
+    sellForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!sellForm.reportValidity()) return;
+      const submitButton = sellForm.querySelector('[type="submit"]');
+      if (submitButton) { submitButton.disabled = true; submitButton.textContent = "SUBMITTING…"; }
+      if (sellFormStatus) sellFormStatus.textContent = "Sending your listing…";
+      const formData = new FormData(sellForm);
+      const priceAnswer = window.prompt("Enter the selling price in ₹ for this component:");
+      if (priceAnswer === null) {
+        if (submitButton) { submitButton.disabled = false; submitButton.textContent = "SUBMIT LISTING ↗"; }
+        if (sellFormStatus) sellFormStatus.textContent = "Submission cancelled. Your details are still here.";
+        return;
+      }
+      const listingPrice = Number(priceAnswer.trim());
+      if (!Number.isFinite(listingPrice) || listingPrice < 1 || listingPrice > 1000000) {
+        if (submitButton) { submitButton.disabled = false; submitButton.textContent = "SUBMIT LISTING ↗"; }
+        if (sellFormStatus) sellFormStatus.textContent = "Enter a valid price between ₹1 and ₹10,00,000.";
+        return;
+      }
+      const payload = {
+        title: String(formData.get("title") || "").trim(),
+        category: String(formData.get("category") || ""),
+        condition: String(formData.get("condition") || ""),
+        price: listingPrice,
+        stock: Number(formData.get("stock")),
+        description: String(formData.get("description") || "").trim(),
+        sellerName: String(formData.get("sellerName") || "").trim(),
+        sellerMobile: String(formData.get("sellerMobile") || "").trim(),
+      };
+      if (compressedPhoto) payload.image = compressedPhoto;
+      try {
+        const response = await fetch("https://rassam-backend.vercel.app/api/listings", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.message || result.error || "The listing could not be submitted.");
+        if (sellFormStatus) sellFormStatus.textContent = "Listing submitted successfully. It will appear after review.";
+        sellForm.reset(); compressedPhoto = ""; if (sellPhotoPreview) { sellPhotoPreview.hidden = true; sellPhotoPreview.removeAttribute("src"); }
+        if (submitButton) submitButton.textContent = "SUBMITTED ✓";
+        window.setTimeout(() => { sellDialog?.close(); if (submitButton) { submitButton.disabled = false; submitButton.textContent = "SUBMIT LISTING ↗"; } if (sellFormStatus) sellFormStatus.textContent = ""; }, 1800);
+      } catch (error) {
+        if (sellFormStatus) sellFormStatus.textContent = error.message || "Could not submit the listing. Please try again.";
+        if (submitButton) { submitButton.disabled = false; submitButton.textContent = "TRY AGAIN ↗"; }
+      }
     });
 
     // Mobile menu.
@@ -858,7 +935,7 @@
     bindEvents();
   }
 
-  // ── Shared API for every RASSAM page ──────────────────
+  // ── Shared API for every INK page ──────────────────
   const api = {
     PRODUCTS,
     money,
@@ -923,11 +1000,11 @@
           detail: { count: liveProducts.length }
         }));
 
-        console.info("[RASSAM] Loaded " + liveProducts.length + " live MongoDB products.");
+        console.info("[INK] Loaded " + liveProducts.length + " live MongoDB products.");
         return liveProducts;
       })
       .catch((error) => {
-        console.error("[RASSAM] Could not load live products; keeping fallback catalogue.", error);
+        console.error("[INK] Could not load live products; keeping fallback catalogue.", error);
         return PRODUCTS;
       });
   }
@@ -939,8 +1016,8 @@
   } else {
     init();
   }
-  /* ===== RASSAM: Order Updates Popup ===== */
-  /* ===== RASSAM: Order Updates Popup ===== */
+  /* ===== INK: Order Updates Popup ===== */
+  /* ===== INK: Order Updates Popup ===== */
 
   (() => {
     const openButton = document.getElementById("open-order-updates");
@@ -970,13 +1047,14 @@
       !checkButton ||
       !sendButton
     ) {
-      console.warn("RASSAM Order Updates: Required HTML elements are missing.");
+      console.warn("Stash Order Updates: Required HTML elements are missing.");
       return;
     }
 
     let checkedOrderId = "";
 
     function openPanel() {
+      window.RASSAM?.closeStash?.();
       panel.hidden = false;
       backdrop.hidden = false;
       panel.setAttribute("aria-hidden", "false");

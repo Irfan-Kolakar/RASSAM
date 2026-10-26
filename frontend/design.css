@@ -3196,9 +3196,9 @@ body {
   isolation: isolate;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  gap: clamp(20px, 5vw, 72px);
+  gap: 0;
   min-height: min(720px, calc(100svh - 100px));
   padding: clamp(52px, 7vw, 104px) clamp(24px, 6vw, 92px) clamp(52px, 7vw, 90px);
   background: var(--rassam-cream) !important;
@@ -3228,7 +3228,7 @@ body {
 .floral-copy {
   position: relative;
   z-index: 2;
-  max-width: 590px;
+  max-width: 760px;
 }
 .floral-kicker {
   display: flex;
@@ -3412,28 +3412,12 @@ body {
 
 @media (max-width: 900px) {
   .hero-floral {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    gap: 5px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: min(650px, calc(100svh - 100px));
     padding-top: 62px;
   }
   .floral-copy {
     max-width: 680px;
-  }
-  .floral-art {
-    min-height: 400px;
-    margin-top: -4px;
-  }
-  .flower-illustration {
-    width: min(100%, 440px);
-  }
-  .floral-note-top {
-    right: 7%;
-    top: 5%;
-  }
-  .floral-note-bottom {
-    left: 7%;
-    bottom: 3%;
   }
 }
 @media (max-width: 560px) {
@@ -3455,12 +3439,6 @@ body {
   .floral-footnote {
     font-size: 8px;
     margin-top: 25px;
-  }
-  .floral-art {
-    min-height: 320px;
-  }
-  .floral-art-note {
-    font-size: 7px;
   }
   .marketplace {
     padding: 18px 14px;
@@ -5547,5 +5525,419 @@ body.order-updates-open {
   #featured .shelf-card p {
     color: #c2cfb8 !important;
     -webkit-text-fill-color: #c2cfb8 !important;
+  }
+}
+
+
+/* Homepage hero cleanup: keep the sakura editorial illustration below, but remove the hero flower and the tiny flowers around its CTA. */
+.floral-buy-button::before,
+.floral-buy-button::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* RASSAM final UI pass: black COD announcement, clean tech wordmark, no floral button ornaments. */
+.announcement {
+  background: #08090b !important;
+  color: #ffffff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.14) !important;
+}
+.announcement > span:not(.announcement-dot) {
+  color: #ffffff !important;
+}
+.announcement-dot {
+  background: #ff5a1f !important;
+  box-shadow: 0 0 10px rgba(255, 90, 31, 0.45);
+}
+.announcement-right {
+  color: #ffffff !important;
+}
+.logo {
+  font-family: var(--sans, Arial, sans-serif) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: none !important;
+}
+.logo-mark {
+  background: #ff5a1f !important;
+  color: #ffffff !important;
+  border-radius: 7px !important;
+  box-shadow: 0 0 0 1px rgba(255, 90, 31, 0.2), 0 5px 16px rgba(255, 90, 31, 0.14);
+}
+/* Remove only the flower/sakura pseudo-elements; button hover and motion effects stay intact. */
+.floral-buy-button::before,
+.floral-buy-button::after,
+.sakura-button::before,
+.sakura-button::after,
+.btn-primary::before,
+.btn-primary::after,
+.btn-ghost::before,
+.btn-ghost::after,
+.btn-link::before,
+.btn-link::after,
+.relay-action::before,
+.relay-action::after,
+.final-cta .cta-actions .btn-ghost[href="#sell"]::before,
+.final-cta .cta-actions .btn-ghost[href="#sell"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+
+/* STASH brand refresh: restrained electronics-lab aesthetic, no botanical decoration. */
+:root { --stash-orange: #ff5a1f; }
+.tech-hero {
+  min-height: clamp(390px, 58vh, 620px) !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #08090b !important;
+  color: #f7f7f5 !important;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.tech-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(46%, 600px);
+  z-index: -1;
+  opacity: .34;
+  background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, #000 35%, #000);
+  pointer-events: none;
+}
+.tech-hero-copy { width: min(100%, 850px); padding: clamp(54px, 8vw, 112px) 0; }
+.tech-kicker, .tech-footnote { color: #a5a7ac; font: 600 11px/1.5 var(--mono, monospace); letter-spacing: .15em; text-transform: uppercase; }
+.tech-kicker { display:flex; align-items:center; gap:10px; }
+.tech-kicker-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--stash-orange); box-shadow:0 0 12px #ff5a1f88; }
+.tech-hero h1 { color:#fff !important; max-width:850px; font-size:clamp(48px, 8vw, 100px) !important; line-height:.98 !important; letter-spacing:-.065em !important; }
+.tech-hero h1 em { color:var(--stash-orange) !important; font-style:normal; }
+.tech-description { color:#c2c4c9 !important; max-width:590px; font-size:clamp(16px, 1.8vw, 19px); line-height:1.7; }
+.tech-footnote { margin-top:26px; }
+/* Entire shelf carousel is removed from markup; hide any stale style hooks safely. */
+#featured, .sakura-section, .sakura-art, .sakura-illustration, .floral-art { display:none !important; }
+/* High-contrast sell card and call-to-action. */
+.sell-section { padding-top:clamp(34px, 6vw, 78px) !important; padding-bottom:clamp(34px, 6vw, 78px) !important; }
+.sell-inner { border:1px solid rgba(255,90,31,.36) !important; border-radius:22px !important; padding:clamp(24px, 5vw, 54px) !important; background:radial-gradient(ellipse at 100% 0%, rgba(255,90,31,.13), transparent 46%), #101114 !important; gap:28px !important; }
+.sell-copy h2 { color:#fff !important; font-size:clamp(32px, 5vw, 58px) !important; line-height:1.05 !important; }
+.sell-copy h2 em { color:var(--stash-orange) !important; font-style:normal; }
+.sell-copy p:not(.eyebrow) { color:#c2c4c9 !important; }
+.sell-action .btn, .sell-submit { min-height:54px; font-weight:800; letter-spacing:.06em; }
+.sell-action .btn { background:var(--stash-orange) !important; color:#fff !important; box-shadow:0 10px 28px #ff5a1f30; }
+.sell-action small { color:#a5a7ac !important; }
+/* Reliable mobile navbar: actions stay in their own row, never cover the page content. */
+@media (max-width: 700px) {
+  .navbar { display:grid !important; grid-template-columns:minmax(0,1fr) auto !important; align-items:center !important; gap:10px !important; padding:12px 16px !important; }
+  .navbar .logo { min-width:0; }
+  .navbar .nav-links { display:none !important; }
+  .navbar .nav-actions { grid-column:1 / -1; display:grid !important; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto !important; gap:8px !important; width:100%; min-width:0; }
+  .navbar .order-updates-button, .navbar .stash-nav-button { display:flex !important; align-items:center; justify-content:center; min-width:0 !important; width:100% !important; min-height:42px !important; padding:8px 10px !important; white-space:nowrap !important; font-size:10px !important; letter-spacing:.06em !important; }
+  .navbar .menu-toggle { display:flex !important; grid-column:auto; justify-self:end; }
+  .announcement { display:flex !important; align-items:center; gap:8px; padding:9px 12px !important; font-size:10px !important; line-height:1.45 !important; }
+  .announcement-right { display:none !important; }
+  .tech-hero { min-height:auto !important; }
+  .tech-hero-copy { padding:54px 0 62px !important; }
+  .tech-hero h1 { font-size:clamp(42px, 12vw, 68px) !important; }
+  .sell-inner { display:flex !important; flex-direction:column !important; align-items:stretch !important; }
+  .sell-action { width:100%; }
+  .sell-action .btn { width:100%; }
+  .order-updates-panel { z-index:10020 !important; max-width:100vw !important; }
+  .order-updates-backdrop { z-index:10010 !important; }
+  .stash-drawer { z-index:10030 !important; width:min(100vw, 430px) !important; max-width:100vw !important; }
+  .sell-dialog { width:calc(100% - 24px) !important; max-height:calc(100dvh - 24px) !important; padding:0 !important; }
+  .sell-form { padding:20px !important; }
+}
+/* Fast, native-feeling component listing dialog. */
+.sell-dialog { width:min(620px, calc(100% - 32px)); max-height:min(90dvh, 900px); padding:0; border:1px solid #303238; border-radius:20px; background:#0e0f12; color:#f7f7f5; box-shadow:0 24px 90px #000b; overflow:auto; }
+.sell-dialog::backdrop { background:#000b; backdrop-filter:blur(5px); }
+.sell-form { display:grid; gap:16px; padding:28px; }
+.sell-form-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; padding-bottom:10px; }
+.sell-form-head h2 { margin:5px 0 6px; color:#fff; font-size:clamp(27px, 5vw, 38px); letter-spacing:-.04em; }
+.sell-form-head p:not(.eyebrow) { margin:0; color:#a5a7ac; }
+.sell-dialog-close { flex:0 0 38px; height:38px; border:1px solid #35373d; border-radius:50%; color:#fff; background:#17181c; font-size:25px; cursor:pointer; }
+.sell-form label { display:grid; gap:7px; color:#e8e9eb; font-size:12px; font-weight:650; }
+.sell-form input:not([type=file]), .sell-form select, .sell-form textarea { width:100%; min-height:45px; padding:11px 12px; border:1px solid #303238; border-radius:10px; background:#15161a; color:#fff; font:inherit; outline:none; }
+.sell-form input:focus, .sell-form select:focus, .sell-form textarea:focus { border-color:var(--stash-orange); box-shadow:0 0 0 3px #ff5a1f20; }
+.sell-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.photo-picker { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px; border:1px dashed #484a51; border-radius:13px; padding:14px; }
+.photo-picker-copy { display:grid; gap:4px; }
+.photo-picker-copy strong { font-size:13px; }
+.photo-picker-copy span { color:#a5a7ac; font-size:11px; line-height:1.45; }
+.photo-button { display:inline-flex !important; align-items:center; justify-content:center; min-height:40px; padding:9px 12px; border:1px solid #ff5a1f88; border-radius:9px; color:#fff !important; background:#ff5a1f17; cursor:pointer; text-align:center; }
+#sell-photo { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+#sell-photo-preview { grid-column:1/-1; width:100%; max-height:220px; object-fit:contain; border-radius:10px; background:#08090b; }
+.sell-form-status { margin:0; color:#ffb18f; font-size:12px; line-height:1.5; }
+.sell-submit { width:100%; }
+.sell-form-note { color:#90939a; font-size:10px; line-height:1.5; }
+@media(max-width:480px) { .sell-form-grid { grid-template-columns:1fr; } .photo-picker { grid-template-columns:1fr; } .photo-button { width:100%; } }
+
+/* STASH homepage refinements — additive only, preserving the existing visual system. */
+.tech-hero { position: relative !important; isolation: isolate !important; }
+.tech-hero-copy { position: relative; z-index: 2; animation: stash-hero-enter .9s cubic-bezier(.2,.7,.2,1) both; }
+.hero-circuit-art {
+  position: absolute; z-index: 1; right: clamp(-85px, -2vw, -12px); top: 50%;
+  width: min(56%, 660px); aspect-ratio: 640 / 560; transform: translateY(-50%);
+  opacity: .56; pointer-events: none; mix-blend-mode: screen;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 20%, #000 82%, transparent 100%);
+}
+.hero-circuit-art svg { display:block; width:100%; height:100%; overflow:visible; }
+.circuit-traces { stroke-dasharray: 14 9; animation: circuit-flow 16s linear infinite; }
+.circuit-nodes { animation: circuit-pulse 4.2s ease-in-out infinite alternate; filter: drop-shadow(0 0 5px #a6f36a66); }
+@keyframes circuit-flow { to { stroke-dashoffset: -360; } }
+@keyframes circuit-pulse { from { opacity:.38; } to { opacity:1; } }
+@keyframes stash-hero-enter { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+.buy-components-hero, .buy-components-secondary {
+  display:inline-flex !important; align-items:center; justify-content:center; gap:20px;
+  min-height:52px; padding:0 22px; border:1px solid #a7e477 !important;
+  border-radius:999px !important; background:#a7e477 !important; color:#10140d !important;
+  font-size:11px; font-weight:850; letter-spacing:.11em; text-decoration:none !important;
+  box-shadow:0 8px 28px rgba(167,228,119,.18); transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.buy-components-hero { margin:24px 0 2px; position:relative; z-index:3; }
+.buy-components-hero span, .buy-components-secondary span { font-size:17px; transition:transform .25s ease; }
+.buy-components-hero:hover, .buy-components-secondary:hover { transform:translateY(-3px); background:#c0f596 !important; box-shadow:0 13px 34px rgba(167,228,119,.28); }
+.buy-components-hero:hover span, .buy-components-secondary:hover span { transform:translate(3px,-2px); }
+.buy-components-section { padding-top:0 !important; padding-bottom:clamp(38px,6vw,78px) !important; }
+.buy-components-card {
+  display:flex; align-items:center; justify-content:space-between; gap:28px;
+  padding:clamp(24px,5vw,52px); border:1px solid rgba(167,228,119,.25); border-radius:22px;
+  background:radial-gradient(ellipse at 90% 0%, rgba(167,228,119,.11), transparent 48%), #0d100d;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035); overflow:hidden; position:relative;
+}
+.buy-components-card::after { content:""; position:absolute; width:220px; height:220px; right:12%; top:-135px; border:1px solid rgba(167,228,119,.2); border-radius:50%; box-shadow:0 0 0 22px rgba(167,228,119,.025),0 0 0 46px rgba(167,228,119,.02); pointer-events:none; }
+.buy-components-copy { position:relative; z-index:1; }
+.buy-components-copy h2 { margin:7px 0 12px; color:#f7f7f5 !important; font-size:clamp(30px,5vw,56px); line-height:1.03; letter-spacing:-.055em; }
+.buy-components-copy h2 em { color:#a7e477 !important; font-style:normal; }
+.buy-components-copy p:not(.eyebrow) { max-width:540px; margin:0; color:#b6bcb3 !important; line-height:1.7; }
+.buy-components-secondary { position:relative; z-index:1; flex-shrink:0; }
+/* Keep reveal content visible even if an optional motion script fails to initialise. */
+.js [data-reveal] { opacity:1 !important; transform:none !important; animation: stash-reveal-in .8s cubic-bezier(.2,.7,.2,1) both; }
+.js [data-reveal]:nth-child(2) { animation-delay:.12s; }
+.js [data-reveal]:nth-child(3) { animation-delay:.22s; }
+@keyframes stash-reveal-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.sell-quantity-grid { grid-template-columns:minmax(0,1fr); }
+@media (max-width:700px) {
+  .hero-circuit-art { width:100%; right:-34%; top:47%; opacity:.26; }
+  .tech-hero-copy { z-index:2; }
+  .tech-hero h1 { max-width:100%; }
+  .buy-components-hero { margin-top:20px; min-height:49px; }
+  .buy-components-card { align-items:stretch; flex-direction:column; gap:22px; }
+  .buy-components-secondary { width:100%; min-height:50px; }
+  .buy-components-copy h2 { font-size:clamp(32px,9vw,48px); }
+  .buy-components-card::after { right:-70px; top:-120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tech-hero-copy, .circuit-traces, .circuit-nodes, .js [data-reveal] { animation:none !important; }
+  .buy-components-hero, .buy-components-secondary { transition:none !important; }
+}
+
+
+/* INK homepage: warm beige, ink-black typography, and restrained animated circuit art. */
+:root { --ink-paper: #e9dfcc; --ink-paper-light: #f4eddf; --ink-black: #171713; --ink-muted: #5e5a50; }
+.tech-hero {
+  background: radial-gradient(ellipse at 76% 44%, rgba(255,255,255,.48), transparent 37%),
+              linear-gradient(115deg, var(--ink-paper-light) 0%, var(--ink-paper) 64%, #ded1b9 100%) !important;
+  color: var(--ink-black) !important;
+  border: 0 !important;
+}
+.tech-hero::before {
+  width: min(62%, 780px) !important;
+  opacity: .42 !important;
+  background-image: linear-gradient(rgba(23,23,19,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(23,23,19,.09) 1px, transparent 1px) !important;
+  mask-image: linear-gradient(90deg, transparent, #000 26%, #000 84%, transparent) !important;
+}
+.tech-kicker, .tech-footnote { color: #5e5a50 !important; }
+.tech-kicker-dot { background: #24241e !important; box-shadow: 0 0 0 4px rgba(36,36,30,.10) !important; }
+.tech-hero h1 { color: #171713 !important; }
+.tech-hero h1 em { color: #6b7353 !important; }
+.tech-description { color: #514d44 !important; }
+.hero-circuit-art { opacity: .67 !important; mix-blend-mode: multiply !important; }
+.hero-circuit-art svg defs radialGradient stop:first-child { stop-color: #777e5c !important; stop-opacity: .19 !important; }
+.hero-circuit-art svg defs linearGradient stop:first-child { stop-color: #34372b !important; stop-opacity: .88 !important; }
+.hero-circuit-art svg defs linearGradient stop:last-child { stop-color: #7c8066 !important; stop-opacity: .14 !important; }
+.circuit-nodes { fill: #25271e !important; filter: drop-shadow(0 0 5px rgba(37,39,30,.22)) !important; }
+.buy-components-hero, .buy-components-secondary {
+  background: #20211b !important; color: #f4eddf !important; border-color: #20211b !important;
+  box-shadow: 0 10px 28px rgba(32,33,27,.18) !important;
+}
+.buy-components-hero:hover, .buy-components-secondary:hover { background: #3c4030 !important; box-shadow: 0 14px 34px rgba(32,33,27,.22) !important; }
+.buy-components-hero span, .buy-components-secondary span { color: #e9dfcc !important; }
+/* Navbar and announcement remain deliberately black to frame the light hero. */
+@media (max-width: 700px) {
+  .tech-hero { background: radial-gradient(ellipse at 82% 35%, rgba(255,255,255,.5), transparent 44%), linear-gradient(145deg,#f4eddf,#e4d8c3) !important; }
+  .hero-circuit-art { width: 94% !important; right: -35% !important; top: 47% !important; opacity: .24 !important; }
+  .tech-hero-copy { padding: 48px 0 54px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-circuit-art, .circuit-traces, .circuit-nodes { animation: none !important; }
+}
+
+
+/* INK visual identity refresh — warm paper, vivid green actions, restrained motion. */
+:root {
+  --ink-paper: #e9dfcc;
+  --ink-paper-light: #f5efe3;
+  --ink-paper-deep: #d8cbb4;
+  --ink-black: #171713;
+  --ink-muted: #5e5a50;
+  --ink-green: #8ed36a;
+  --ink-green-deep: #2d5c32;
+  color-scheme: light;
+}
+html { background: var(--ink-paper); }
+body {
+  background: var(--ink-paper) !important;
+  color: var(--ink-black) !important;
+  overflow-x: clip;
+}
+/* The Buy catalogue and Sell Components panels are the only large dark zones. */
+.announcement, .navbar, .mobile-nav, .footer,
+.tech-hero, .relay, .how-it-works, .final-cta,
+#how-it-works, .footer.section-shell {
+  background-color: var(--ink-paper) !important;
+  color: var(--ink-black) !important;
+}
+.announcement { border-bottom: 1px solid rgba(23,23,19,.13) !important; }
+.navbar { border-bottom: 1px solid rgba(23,23,19,.12) !important; }
+.navbar .logo, .nav-links a, .mobile-nav a, .footer, .footer a { color: var(--ink-black) !important; }
+.nav-links a:hover, .mobile-nav a:hover, .footer a:hover { color: var(--ink-green-deep) !important; }
+.marketplace, #marketplace-engine, .buy-components-section, .buy-components-card,
+.sell-section, .sell-inner {
+  background-color: #11120f !important;
+  color: #f5efe3 !important;
+}
+.marketplace, #marketplace-engine, .buy-components-section, .sell-section {
+  position: relative;
+  isolation: isolate;
+}
+.marketplace::before, .sell-section::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at 12% 10%, rgba(142,211,106,.11), transparent 38%),
+              radial-gradient(ellipse at 90% 85%, rgba(233,223,204,.055), transparent 35%);
+}
+.sell-inner {
+  border: 1px solid rgba(142,211,106,.25) !important;
+  background: radial-gradient(ellipse at 100% 0%, rgba(142,211,106,.12), transparent 48%), #11120f !important;
+  box-shadow: 0 28px 80px rgba(28,30,20,.13);
+}
+.sell-copy h2 em { color: var(--ink-green) !important; }
+.sell-copy p:not(.eyebrow), .sell-action small { color: #c8c4b9 !important; }
+/* High-visibility green actions, including the Sell Components CTA. */
+.buy-components-hero, .buy-components-secondary,
+.sell-action .btn, .sell-submit, .cta-actions .btn-primary {
+  background: var(--ink-green) !important;
+  color: #172015 !important;
+  border: 1px solid var(--ink-green) !important;
+  box-shadow: 0 10px 28px rgba(84,139,59,.22) !important;
+  font-weight: 800 !important;
+  transition: transform .28s cubic-bezier(.2,.75,.25,1), background .28s ease, box-shadow .28s ease !important;
+}
+.buy-components-hero:hover, .buy-components-secondary:hover,
+.sell-action .btn:hover, .sell-submit:hover, .cta-actions .btn-primary:hover {
+  background: #a7e783 !important; color: #11180f !important;
+  transform: translateY(-3px); box-shadow: 0 16px 36px rgba(84,139,59,.3) !important;
+}
+.buy-components-hero span, .buy-components-secondary span { color: inherit !important; }
+/* Beige sections get fine-grain drafting lines and soft, animated orbital rings. */
+.tech-hero, .relay, .how-it-works, .final-cta {
+  position: relative; isolation: isolate;
+  background-image:
+    radial-gradient(ellipse at 90% 18%, rgba(255,255,255,.56), transparent 35%),
+    linear-gradient(135deg, rgba(255,255,255,.12), transparent 55%) !important;
+}
+.tech-hero::after, .relay::after, .how-it-works::after, .final-cta::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  width: clamp(180px, 30vw, 420px); aspect-ratio: 1; border-radius: 50%;
+  right: -9%; top: 8%; border: 1px solid rgba(45,92,50,.15);
+  box-shadow: 0 0 0 18px rgba(45,92,50,.025), 0 0 0 42px rgba(45,92,50,.02), inset 0 0 70px rgba(255,255,255,.18);
+  animation: ink-orbit-breathe 9s ease-in-out infinite alternate;
+}
+.relay::after { right: auto; left: -12%; top: 25%; width: clamp(150px, 22vw, 300px); animation-delay: -4s; }
+.how-it-works::after { top: 15%; right: -12%; animation-delay: -2s; }
+.final-cta::after { top: -25%; right: 2%; width: clamp(170px, 24vw, 330px); }
+.tech-hero::before {
+  background-image: linear-gradient(rgba(23,23,19,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(23,23,19,.055) 1px, transparent 1px) !important;
+  opacity: .65 !important;
+}
+.tech-hero-copy, .section-head, .relay-cards, .steps, .cta-inner, .footer-top, .footer-bottom { position: relative; z-index: 1; }
+.tech-hero h1 em, .relay h2 em, .how-it-works h2 em, .final-cta h2 em { color: var(--ink-green-deep) !important; }
+.relay h2, .how-it-works h2, .final-cta h2, .relay-card h3, .step-card h3 { color: var(--ink-black) !important; }
+.relay p, .how-it-works p, .final-cta p, .step-card p, .relay-card p { color: var(--ink-muted) !important; }
+.relay-card, .step-card { border-color: rgba(23,23,19,.14) !important; background: rgba(245,239,227,.7) !important; box-shadow: 0 12px 36px rgba(54,47,33,.045); }
+.relay-action { color: var(--ink-green-deep) !important; }
+.logo { gap: 10px !important; font-weight: 900 !important; letter-spacing: -.07em !important; }
+.logo-mark { width: 38px !important; height: 38px !important; border-radius: 12px !important; display: grid !important; place-items: center !important; background: var(--ink-black) !important; color: var(--ink-paper-light) !important; box-shadow: 0 6px 18px rgba(23,23,19,.15); transition: transform .3s ease, box-shadow .3s ease; }
+.logo-mark svg { width: 32px !important; height: 32px !important; }
+.logo:hover .logo-mark { transform: rotate(-5deg) translateY(-2px); box-shadow: 0 10px 24px rgba(23,23,19,.22); }
+.stash-nav-button, .order-updates-button { border-color: rgba(23,23,19,.2) !important; color: var(--ink-black) !important; }
+.stash-nav-button:hover, .order-updates-button:hover { background: rgba(23,23,19,.06) !important; }
+.announcement, .footer-bottom { color: var(--ink-muted) !important; }
+.announcement-dot { background: var(--ink-green-deep) !important; box-shadow: 0 0 0 4px rgba(45,92,50,.1) !important; }
+/* Animated circuit traces remain visible over paper without overpowering content. */
+.hero-circuit-art { opacity: .72 !important; mix-blend-mode: multiply !important; filter: saturate(.7); }
+.circuit-traces { stroke-dasharray: 7 11; animation: ink-circuit-flow 20s linear infinite; }
+.circuit-nodes { animation: ink-node-pulse 3.4s ease-in-out infinite alternate; }
+@keyframes ink-orbit-breathe { from { transform: translate3d(0,-8px,0) scale(.98); opacity:.65; } to { transform: translate3d(0,12px,0) scale(1.035); opacity:1; } }
+@keyframes ink-circuit-flow { to { stroke-dashoffset: -360; } }
+@keyframes ink-node-pulse { from { opacity:.48; } to { opacity:1; } }
+@keyframes ink-paper-enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.ink-motion-fallback .tech-hero-copy { animation: ink-paper-enter .85s cubic-bezier(.2,.7,.2,1) both; }
+.ink-motion-fallback .relay-card, .ink-motion-fallback .sell-inner, .ink-motion-fallback .step-card { animation: ink-paper-enter .8s cubic-bezier(.2,.7,.2,1) both; }
+.ink-motion-fallback .relay-card:nth-child(2), .ink-motion-fallback .step-card:nth-child(2) { animation-delay:.12s; }
+@media (max-width:700px) {
+  .tech-hero::after, .relay::after, .how-it-works::after, .final-cta::after { opacity:.55; right:-28%; }
+  .hero-circuit-art { opacity:.28 !important; }
+  .navbar { background: var(--ink-paper) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tech-hero::after, .relay::after, .how-it-works::after, .final-cta::after,
+  .circuit-traces, .circuit-nodes, .ink-motion-fallback .tech-hero-copy,
+  .ink-motion-fallback .relay-card, .ink-motion-fallback .sell-inner,
+  .ink-motion-fallback .step-card { animation:none !important; }
+  .logo-mark, .buy-components-hero, .buy-components-secondary, .sell-action .btn { transition:none !important; }
+}
+
+/* Keep every editorial/story section on paper; only catalogue and selling panels stay dark. */
+.story, .story-grid, .story-copy, .story-stats, .how-it-works, .steps,
+.step-card, .stat-card, .cta-inner {
+  background-color: var(--ink-paper) !important;
+  color: var(--ink-black) !important;
+}
+.story-copy h2, .story-copy h2 em, .stat-card strong { color: var(--ink-black) !important; }
+.story-copy p, .stat-card p, .step-card p { color: var(--ink-muted) !important; }
+.step-card, .stat-card { border: 1px solid rgba(23,23,19,.12) !important; border-radius: 18px; }
+.story-stats .stat-card { background: rgba(245,239,227,.82) !important; }
+
+
+/* INK SAFETY: disable common falling-petal overlay classes on the marketplace.
+   Remove the page's actual animation source when its Buy/shop files are available. */
+.sakura-petal, .sakura-petals, .falling-petal, .petal-fall, [data-sakura-petal], [data-petal-fall] {
+  animation: none !important;
+  display: none !important;
+}
+
+/* INK refinement — blend the existing circuit illustration into the paper hero. */
+.tech-hero {
+  isolation: isolate;
+}
+
+.tech-hero .hero-circuit-art {
+  mix-blend-mode: multiply;
+  opacity: 0.48;
+  filter: saturate(0.72) contrast(0.92);
+  pointer-events: none;
+}
+
+.tech-hero .hero-circuit-art svg {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .tech-hero .hero-circuit-art {
+    opacity: 0.26;
+    filter: saturate(0.65) contrast(0.9);
   }
 }

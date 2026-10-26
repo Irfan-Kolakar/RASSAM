@@ -382,14 +382,19 @@ dialog.checkout-dialog .checkout-top-close:hover {
         ) {
           data.removeItems(ids);
 
-          showDone(form, dlg, "Your order is placed successfully! ðŸŒ¸", [
-            `Reference: <strong>${escapeHTML(result.order.id)}</strong>`,
-            `Payment: <strong>Cash on Delivery</strong> â€” pay ${money(
-              Number.isFinite(Number(result.order.amountRupees))
-                ? Number(result.order.amountRupees)
-                : lines.reduce((sum, line) => sum + line.sub, 0),
-            )} when it arrives. Not paid yet.`,
-          ]);
+          if (window.INKOrderSuccess && typeof window.INKOrderSuccess.show === "function") {
+            window.INKOrderSuccess.show({ orderId: result.order.id, paymentMethod: "Cash on Delivery" });
+            dlg.close();
+          } else {
+            showDone(form, dlg, "Your order is placed successfully!", [
+              `Reference: <strong>${escapeHTML(result.order.id)}</strong>`,
+              `Payment: <strong>Cash on Delivery</strong> — pay ${money(
+                Number.isFinite(Number(result.order.amountRupees))
+                  ? Number(result.order.amountRupees)
+                  : lines.reduce((sum, line) => sum + line.sub, 0),
+              )} when it arrives. Not paid yet.`,
+            ]);
+          }
 
           return;
         }

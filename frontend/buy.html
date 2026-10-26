@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Discover affordable electronics components on RASSAM."
+      content="Discover affordable electronics components on INK."
     />
-    <title>Product Details — RASSAM</title>
+    <title>Product Details — INK</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,13 +20,22 @@
 
     <!-- Load order matters: app.js (catalogue + Stash) → checkout.js → buy.js -->
     <script src="app.js" defer></script>
+    <script src="order-success.js" defer></script>
     <script src="checkout.js" defer></script>
     <script src="buy.js" defer></script>
+  <style>
+      /* INK Buy page: disable legacy Sakura/petal overlays without affecting product artwork. */
+      body.buy-page .sakura, body.buy-page .sakura-petal, body.buy-page .petal,
+      body.buy-page .petals, body.buy-page .falling-petals, body.buy-page .petal-container,
+      body.buy-page .sakura-container, body.buy-page [data-petal], body.buy-page [data-sakura] {
+        display:none !important; animation:none !important; pointer-events:none !important;
+      }
+    </style>
   </head>
 
   <body class="buy-page">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
-      <symbol id="rassam-mark" viewBox="0 0 32 32">
+      <symbol id="ink-mark" viewBox="0 0 32 32">
         <path
           d="M10 24V13M10 17c0-5 3-8 8-8h2"
           fill="none"
@@ -45,7 +54,7 @@
         <a href="index.html" class="buy-brand">
           <span class="buy-brand-mark">R</span>
           <span class="buy-brand-text">
-            RASSAM
+            INK
             <small>THE STUDENT MARKETPLACE</small>
           </span>
         </a>
@@ -151,7 +160,7 @@
 
               <div class="buy-stage-bottom">
                 <span>PRE-OWNED. RE-POWERED.</span>
-                <span>EST. RASSAM</span>
+                <span>EST. INK</span>
               </div>
             </div>
 
@@ -250,13 +259,13 @@
         <!-- FOOTER NOTE -->
         <div class="buy-bottom-note">
           <span>BUILT FOR MAKERS.</span>
-          <span>POWERED BY THE RASSAM COMMUNITY.</span>
+          <span>POWERED BY THE INK COMMUNITY.</span>
         </div>
       </section>
     </main>
 
     <footer class="buy-footer">
-      <span>© <span id="current-year"></span> RASSAM</span>
+      <span>© <span id="current-year"></span> INK</span>
       <span>MADE FOR THE NEXT BIG IDEA.</span>
     </footer>
 
@@ -283,7 +292,7 @@
       <div class="stash-items" id="stash-items"></div>
       <div class="stash-empty" id="stash-empty">
         <div class="stash-empty-art" aria-hidden="true">
-          <svg viewBox="0 0 32 32"><use href="#rassam-mark" /></svg>
+          <svg viewBox="0 0 32 32"><use href="#ink-mark" /></svg>
         </div>
         <h3>Nothing stashed yet.</h3>
         <p>Find a part that sparks an idea.</p>
