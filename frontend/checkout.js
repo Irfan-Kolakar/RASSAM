@@ -7,6 +7,21 @@
 (() => {
   "use strict";
 
+  // Load the branded success popup on checkout routes that forgot to include its script.
+  let orderSuccessScriptPromise = null;
+  function ensureOrderSuccessScript() {
+    if (window.INKOrderSuccess && typeof window.INKOrderSuccess.show === "function") return Promise.resolve(true);
+    if (orderSuccessScriptPromise) return orderSuccessScriptPromise;
+    orderSuccessScriptPromise = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = new URL("order-success.js", document.baseURI).href;
+      script.addEventListener("load", () => resolve(!!(window.INKOrderSuccess && typeof window.INKOrderSuccess.show === "function")), { once: true });
+      script.addEventListener("error", () => resolve(false), { once: true });
+      document.head.appendChild(script);
+    });
+    return orderSuccessScriptPromise;
+  }
+
   const data = window.RASSAM;
   if (!data) return;
 
@@ -382,17 +397,21 @@ dialog.checkout-dialog .checkout-top-close:hover {
         ) {
           data.removeItems(ids);
 
-          if (window.INKOrderSuccess && typeof window.INKOrderSuccess.show === "function") {
-            window.INKOrderSuccess.show({ orderId: result.order.id, paymentMethod: "Cash on Delivery" });
-            dlg.close();
+          const popupLoaded = await ensureOrderSuccessScript();
+          if (popupLoaded && window.INKOrderSuccess && typeof window.INKOrderSuccess.show === "function") {
+            const shown = window.INKOrderSuccess.show({ orderId: result.order.id, paymentMethod: "Cash on Delivery" });
+            if (shown) {
+              dlg.close();
+            } else {
+              showDone(form, dlg, "Your order is placed successfully!", [
+                `Order ID: <strong>${escapeHTML(result.order.id)}</strong>`,
+                `Payment: <strong>Cash on Delivery</strong>. Pay when it arrives.`,
+              ]);
+            }
           } else {
             showDone(form, dlg, "Your order is placed successfully!", [
-              `Reference: <strong>${escapeHTML(result.order.id)}</strong>`,
-              `Payment: <strong>Cash on Delivery</strong> — pay ${money(
-                Number.isFinite(Number(result.order.amountRupees))
-                  ? Number(result.order.amountRupees)
-                  : lines.reduce((sum, line) => sum + line.sub, 0),
-              )} when it arrives. Not paid yet.`,
+              `Order ID: <strong>${escapeHTML(result.order.id)}</strong>`,
+              `Payment: <strong>Cash on Delivery</strong>. Pay when it arrives.`,
             ]);
           }
 

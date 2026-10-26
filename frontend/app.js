@@ -805,7 +805,7 @@
       if (submitButton) { submitButton.disabled = true; submitButton.textContent = "SUBMITTING…"; }
       if (sellFormStatus) sellFormStatus.textContent = "Sending your listing…";
       const formData = new FormData(sellForm);
-      const priceAnswer = window.prompt("Enter the selling price in ₹ for this component:");
+      const priceAnswer = window.prompt("Enter your expected selling price in ₹ for this component. If you are unsure, enter your best estimate. Our team can review the price and will contact you before making any change.");
       if (priceAnswer === null) {
         if (submitButton) { submitButton.disabled = false; submitButton.textContent = "SUBMIT LISTING ↗"; }
         if (sellFormStatus) sellFormStatus.textContent = "Submission cancelled. Your details are still here.";
