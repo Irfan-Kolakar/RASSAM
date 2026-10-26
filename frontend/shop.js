@@ -1,4 +1,4 @@
-/* RASSAM — Buy Components (Browse) page.
+/* RASSAM â€” Buy Components (Browse) page.
    Catalogue, search, category / price / stock filters and sorting.
    The Stash drawer, badge, quantities and toasts are handled ONLY by app.js. */
 (() => {
@@ -10,7 +10,7 @@
   const { PRODUCTS, money, escapeHTML, art } = data;
   const $ = (selector) => document.querySelector(selector);
 
-  // ── State ────────────────────────────────────────────
+  // â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const state = {
     q: "",
     cat: "all",
@@ -36,7 +36,7 @@
         ? `Only ${product.stock} left`
         : `${product.stock} in stock`;
 
-  // ── Filtering + sorting ──────────────────────────────
+  // â”€â”€ Filtering + sorting â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function filtered() {
     const terms = state.q.toLowerCase().split(/\s+/).filter(Boolean);
     const min = state.min === "" ? -Infinity : Number(state.min);
@@ -63,7 +63,7 @@
     return list;
   }
 
-  // ── Rendering ────────────────────────────────────────
+  // â”€â”€ Rendering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function renderFilters() {
     const rows = [
       ["all", "All components", PRODUCTS.length],
@@ -101,7 +101,7 @@
         ([key, label]) => `
         <button type="button" class="filter-chip" data-chip="${escapeHTML(key)}"
           aria-label="Remove filter ${escapeHTML(label)}">
-          ${escapeHTML(label)} <span aria-hidden="true">×</span>
+          ${escapeHTML(label)} <span aria-hidden="true">Ã—</span>
         </button>`,
       )
       .join("");
@@ -153,11 +153,11 @@
               ${priceHTML(p)}
               <div class="shop-card-actions">
                 <a class="btn shop-buy-link" href="${buyURL(p)}"
-                  aria-label="Buy ${name} now">BUY NOW <span aria-hidden="true">↗</span></a>
+                  aria-label="Buy ${name} now">BUY NOW <span aria-hidden="true">â†—</span></a>
                 <button class="btn shop-stash-btn${quantity ? " is-stashed" : ""}"
                   type="button" data-add="${escapeHTML(p.id)}" ${p.stock <= 0 ? "disabled" : ""}
                   aria-label="Add ${name} to Stash">
-                  ${quantity ? `IN STASH (${quantity}) · ADD MORE` : "STASH IT!"}
+                  ${quantity ? `IN STASH (${quantity}) Â· ADD MORE` : "STASH IT!"}
                 </button>
               </div>
             </div>
@@ -172,7 +172,7 @@
     renderGrid();
   }
 
-  // ── Price slider helpers (filters.js owns the slider) ─
+  // â”€â”€ Price slider helpers (filters.js owns the slider) â”€
   function setSlider(which, toMax) {
     const slider = $(which);
     if (!slider) return;
@@ -188,7 +188,7 @@
     render();
   }
 
-  // ── Events ───────────────────────────────────────────
+  // â”€â”€ Events â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   $("#shop-search").value = state.q;
   $("#shop-sort").value = state.sort;
 
@@ -270,6 +270,9 @@
 
   // app.js announces every Stash change (add, remove, quantity, checkout, other tab).
   window.addEventListener("rassam:stash-updated", renderGrid);
+
+  // Refresh products, filters and counts when live MongoDB products finish loading.
+  window.addEventListener("rassam:products-updated", render);
 
   render();
 })();

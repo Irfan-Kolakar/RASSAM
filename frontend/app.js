@@ -1011,23 +1011,44 @@
   window.RASSAM = api;
   api.ready = loadLiveProducts();
 
-  // The shop grid can be mounted by page scripts after this shared module starts.
-  // Repaint once the live catalogue is ready and again after the first layout frames,
-  // so the page never depends on clicking Stash to show the current MongoDB products.
+  // Repaint the live catalogue if the page inserts its grid after this shared
+  // module initializes. This avoids relying on a Stash click to trigger rendering.
+  const repaintCatalogueIfMounted = () => {
+    const grid = document.getElementById("product-grid");
+    if (!grid) return false;
+    renderProducts();
+    renderStash();
+    updateStashCount();
+    return true;
+  };
+
+  let catalogueMountObserver = null;
+  if (!repaintCatalogueIfMounted() && document.documentElement) {
+    catalogueMountObserver = new MutationObserver(() => {
+      if (repaintCatalogueIfMounted() && catalogueMountObserver) {
+        catalogueMountObserver.disconnect();
+        catalogueMountObserver = null;
+      }
+    });
+    catalogueMountObserver.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+    window.setTimeout(() => {
+      if (catalogueMountObserver) {
+        catalogueMountObserver.disconnect();
+        catalogueMountObserver = null;
+      }
+    }, 15000);
+  }
+
   api.ready.then(() => {
-    const repaintLiveCatalogue = () => {
-      renderProducts();
-      renderStash();
-      updateStashCount();
-    };
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", repaintLiveCatalogue, { once: true });
-    } else {
-      window.requestAnimationFrame(repaintLiveCatalogue);
+    if (repaintCatalogueIfMounted() && catalogueMountObserver) {
+      catalogueMountObserver.disconnect();
+      catalogueMountObserver = null;
     }
-    window.setTimeout(repaintLiveCatalogue, 150);
-    window.setTimeout(repaintLiveCatalogue, 500);
   });
+
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
