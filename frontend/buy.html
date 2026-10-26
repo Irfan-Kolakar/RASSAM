@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="buy.css" />
 
     <!-- Load order matters: app.js (catalogue + Stash) → checkout.js → buy.js -->
-    <script src="app.js" defer></script>
+    <script src="app.js?v=ink-sync-fix-20261026" defer></script>
     <script src="order-success.js" defer></script>
     <script src="checkout.js" defer></script>
     <script src="buy.js" defer></script>
@@ -30,6 +30,7 @@
       body.buy-page .sakura-container, body.buy-page [data-petal], body.buy-page [data-sakura] {
         display:none !important; animation:none !important; pointer-events:none !important;
       }
+      body.buy-page .buy-brand-mark svg { display:block; width:24px; height:24px; }
       /* Keep Stash anchored at the top-right on the product detail page. */
       body.buy-page .buy-nav {
         display:flex !important;
@@ -269,7 +270,7 @@
                 id="buy-add-stash"
                 class="buy-button buy-button-secondary"
               >
-                <span aria-hidden="true">+</span> STASH IT!
+                <span aria-hidden="true">＋</span> STASH IT!
               </button>
             </div>
 
