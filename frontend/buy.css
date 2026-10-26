@@ -1365,3 +1365,10 @@ body.buy-page .buy-browse-link:focus-visible {
     object-fit: contain;
   }
 }
+
+/* INK logo mark on the Buy Components page */
+.buy-brand-mark svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
