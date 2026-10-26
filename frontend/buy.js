@@ -203,8 +203,8 @@
       if (!stashButton) return;
       const inStash = data.getStash()[product.id] || 0;
       stashButton.innerHTML = inStash
-        ? `<span aria-hidden="true">✓</span> IN STASH (${inStash})`
-        : `<span aria-hidden="true">＋</span> STASH IT!`;
+        ? `<span aria-hidden="true">\u2713</span> IN STASH (${inStash})`
+        : `<span aria-hidden="true">+</span> STASH IT!`;
     };
 
     stashButton?.addEventListener("click", () => {
@@ -212,7 +212,7 @@
       const result = data.addItem(product.id, quantity);
       data.showToast(
         result.ok
-          ? `${product.name} × ${quantity} added to your Stash 🌸`
+          ? `${product.name} added to your Stash!`
           : result.message,
       );
     });
@@ -231,7 +231,7 @@
       const result = data.addItem(product.id, quantity);
       data.showToast(
         result.ok
-          ? `${product.name} × ${quantity} added to your Stash 🌸`
+          ? `${product.name} added to your Stash!`
           : result.message,
       );
       if (result.ok) data.openStash();
